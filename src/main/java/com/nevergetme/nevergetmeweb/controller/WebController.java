@@ -30,7 +30,7 @@ public class WebController {
     Map<String,String> getSensitiveWord(String words, HttpServletRequest request){
         Map<String,String> map=new HashMap<>();
         String output=filter.replaceSensitiveWord(words,1,"*");
-        //System.out.println(words+":"+output);
+        map.put("state","1");
         map.put("output",output);
         map.put("input",words);
         map.put("ip",request.getRemoteAddr());

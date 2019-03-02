@@ -30,7 +30,7 @@
         <nav class="nav nav-masthead justify-content-center">
           <a class="nav-link active" href="">Home</a>
           <a class="nav-link" href="">Features</a>
-          <a class="nav-link" href="">Login in</a>
+          <a class="nav-link" href="/login.html">Login in</a>
         </nav>
       </div>
     </header>
@@ -130,8 +130,21 @@
         },
         function (data, status) {
           console.log(data);
-          $('#receiverShow').text(data.output)
-          $('#exampleModalCenter').modal(exampleModalCenter)
+          if(data.state=="1"){
+              $('#receiverShow').text(data.output)
+              $('#exampleModalCenter').modal(exampleModalCenter)
+          }else if(data.state=="0"){
+              $('#receiverShow').text("Login in first")
+              $('#exampleModalCenter').modal(exampleModalCenter)
+          }
+          // if(status==200){
+          //     $('#receiverShow').text(data.output)
+          //     $('#exampleModalCenter').modal(exampleModalCenter)
+          // }else if(status==302){
+          //     $('#receiverShow').text("Login in first")
+          //     $('#exampleModalCenter').modal(exampleModalCenter)
+          // }
+
           // alert("数据：" + data.output + "\n状态：" + status);
         });
     });

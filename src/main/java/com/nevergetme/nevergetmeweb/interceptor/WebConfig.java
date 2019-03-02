@@ -16,7 +16,7 @@ public class WebConfig implements WebMvcConfigurer{
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(myInterceptor).addPathPatterns("/**").excludePathPatterns("/login.html").excludePathPatterns("/*.min.js.*");
+        registry.addInterceptor(myInterceptor).addPathPatterns("/sensitiveword");//.excludePathPatterns("/login.html").excludePathPatterns("/*.min.js.*");
     }
 
 }

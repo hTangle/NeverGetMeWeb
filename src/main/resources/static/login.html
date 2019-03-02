@@ -48,8 +48,31 @@
             <input type="checkbox" value="remember-me"> Remember me
         </label>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <button class="btn btn-lg btn-primary btn-block" type="button" id="SendInfo">Sign in</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
 </form>
+<script>
+    $(document).ready(function () {
+        $('#SendInfo').click(function () {
+            console.log("click here");
+            if($('#inputEmail').val()!=""&&$('#inputPassword').val()!=""){
+                $.post("/user/login",
+                    {
+                        userName:$("#inputEmail").val(),
+                        password:$("#inputPassword").val()
+                    },
+                    function (data, status) {
+                        console.log(data);
+                        if(data.state=="1"){
+                            history.back(-1);
+                        }
+                        //$('#receiverShow').text(data.output)
+                        //$('#exampleModalCenter').modal(exampleModalCenter)
+                        // alert("数据：" + data.output + "\n状态：" + status);
+                    });
+            }
+        });
+    });
+</script>
 </body>
 </html>
