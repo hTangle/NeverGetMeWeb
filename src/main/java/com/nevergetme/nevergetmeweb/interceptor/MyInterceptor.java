@@ -38,11 +38,6 @@ public class MyInterceptor implements HandlerInterceptor {
             out = response.getWriter();
             out.append(res.toString());
             return false;
-
-//            response.setCharacterEncoding("UTF-8");
-//            response.set
-            //response.sendError(302);
-            //response.sendRedirect(request.getContextPath()+"/login.html");
         } else {
             session.setAttribute("userId", session.getAttribute("userId"));
             return true;

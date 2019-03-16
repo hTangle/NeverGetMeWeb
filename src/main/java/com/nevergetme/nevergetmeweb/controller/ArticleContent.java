@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +25,26 @@ public class ArticleContent {
 
     @RequestMapping(value = "/article/list")
     public @ResponseBody
-    List<Article> getAllTheArticle(HttpServletRequest request){
-        return articleService.findAllArticle();
+    Map<String,Object> getAllTheArticle(HttpServletRequest request){
+        //HttpSession session = request.getSession(true);
+        //if(session.getAttribute("userId") != null){
+            //int userId=(Integer) session.getAttribute("userId");
+            List<Article> articles=articleService.findUserArticle(103450);
+            Map<String,Object> map=new HashMap<>();
+            map.put("count",articles.size());
+            map.put("state",1);
+            map.put("data",articles);
+            return map;
+        //}
+        //return new HashMap<>();
+    }
+
+    @RequestMapping(value = "/article/details")
+    public @ResponseBody Map<String,Object> getArticleById(int id,HttpServletRequest request){
+        Article articles=articleService.getArticleById(id);
+        Map<String,Object> map=new HashMap<>();
+        map.put("state",1);
+        map.put("data",articles);
+        return map;
     }
 }

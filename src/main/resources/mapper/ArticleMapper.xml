@@ -4,4 +4,10 @@
     <select id="getAllArticle" resultType="com.nevergetme.nevergetmeweb.bean.Article">
         select * from article
     </select>
+        <select id="getUserArticle" parameterType="java.lang.Integer" resultType="com.nevergetme.nevergetmeweb.bean.Article">
+            select * from article where userid=#{userid}
+        </select>
+        <select id="getArticleById" parameterType="java.lang.Integer" resultType="com.nevergetme.nevergetmeweb.bean.Article">
+            select * from article where id=#{id}
+        </select>
 </mapper>

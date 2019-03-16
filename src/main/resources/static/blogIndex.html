@@ -83,12 +83,12 @@
     </div>
 </div>
 <script type="text/template">
-    <a href="/article/details?{articleUrl}" class="list-group-item list-group-item-action">
+    <a href="/article/details?id={id}" class="list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{articleTitle}</h5>
-            <small>{articleTime}</small>
+            <h5 class="mb-1">{title}</h5>
+            <small>{updateTime}</small>
         </div>
-        <p class="mb-1">{articleContent}</p>
+        <p class="mb-1">{content}</p>
     </a>
 </script>
 <script>
@@ -104,28 +104,53 @@
             return (format && format[m2]) ? format[m2](dta[m2]) : dta[m2];
         });
     }
-    var data={
-    data:[{
-        articleTitle: "1",
-        articleTime: "1",
-        articleContent: "content1",
-        articleUrl:"e23set345s"
-    },{
-        articleTitle: "2",
-        articleTime: "2",
-        articleContent: "content2",
-        articleUrl:"e23set345s"
-    }
-    ]
-    }
-    var html = $('script[type="text/template"]').html();
-    var arr = [];
-    $.each(data.data, function(i, o) {
-        //这里取到o就是上面rows数组中的值, formatTemplate是最开始定义的方法.
-        arr.push(formatTemplate(o, html));
+    // var data={
+    // data:[{
+    //     articleTitle: "1",
+    //     articleTime: "1",
+    //     articleContent: "content1",
+    //     articleUrl:"e23set345s"
+    // },{
+    //     articleTitle: "2",
+    //     articleTime: "2",
+    //     articleContent: "content2",
+    //     articleUrl:"e23set345s"
+    // }
+    // ]
+    // }
+
+
+    $(document).ready(function () {
+        $.post("/article/list",
+            {
+                // userName:$("#inputEmail").val(),
+                // password:$("#inputPassword").val()
+            },
+            function (data, status) {
+                console.log(data.data);
+                if(data.state=="1"){
+                    //history.back(-1);
+                    var html = $('script[type="text/template"]').html();
+                    var arr = [];
+                    $.each(data.data, function(i, o) {
+                        //这里取到o就是上面rows数组中的值, formatTemplate是最开始定义的方法.
+                        arr.push(formatTemplate(o, html));
+                    });
+                    //好了，最后把数组化成字符串，并添加到table中去。
+                    $('#articleTables').append(arr.join(''));
+                }
+                //$('#receiverShow').text(data.output)
+                //$('#exampleModalCenter').modal(exampleModalCenter)
+                // alert("数据：" + data.output + "\n状态：" + status);
+            });
+
+        // $('#SendInfo').click(function () {
+        //     console.log("click here");
+        //     if($('#inputEmail').val()!=""&&$('#inputPassword').val()!=""){
+        //
+        //     }
+        // });
     });
-    //好了，最后把数组化成字符串，并添加到table中去。
-    $('#articleTables').append(arr.join(''));
 </script>
 </body>
 </html>

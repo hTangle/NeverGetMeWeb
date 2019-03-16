@@ -34,7 +34,7 @@ public class UserLogin {
             if(list.size()==1){
                 if(list.get(0).getPassword().equals(password)){
                     HttpSession session = request.getSession(true);
-                    session.setAttribute("userId", "20190302");
+                    session.setAttribute("userId", list.get(0).getId());
                     map.put("state","1");
                 }
             }else{
@@ -43,21 +43,6 @@ public class UserLogin {
         }else {
             map.put("state","-1");
         }
-//        if(userName.equals("admin@seu.com")&&password.equals("admin")){
-//            HttpSession session = request.getSession(true);
-//            session.setAttribute("userId", "20190302");
-//            map.put("state","1");
-//        }else{
-//            map.put("state","0");
-//        }
         return map;
-//
-//
-//        String output=filter.replaceSensitiveWord(words,1,"*");
-//        //System.out.println(words+":"+output);
-//        map.put("output",output);
-//        map.put("input",words);
-//        map.put("ip",request.getRemoteAddr());
-//        return map;
     }
 }
