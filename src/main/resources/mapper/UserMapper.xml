@@ -5,11 +5,21 @@
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
+        <result column="phone" property="phone"/>
     </resultMap>
     <select id="findAll" resultType="user">
         select * from user
     </select>
     <select id="findUser" parameterType="java.lang.String" resultType="user">
         select id,password from user where username=#{username}
+    </select>
+    <select id="findUserByUserName" parameterType="java.lang.String" resultType="user">
+        select * from user where username=#{username}
+    </select>
+    <select id="findUserByUserId" parameterType="java.lang.Integer" resultType="user">
+        select * from user where id=#{id}
+    </select>
+    <select id="findUserByPhone" parameterType="java.lang.String" resultType="user">
+        select * from user where phone=#{phone}
     </select>
 </mapper>

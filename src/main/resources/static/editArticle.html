@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EditArticle</title>
+    <link rel="stylesheet" href="plug/editor.md-master/css/editormd.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="plug/editor.md-master/editormd.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
+<!--<div class="container">-->
+    <!--<div class="row">-->
+        <!--<div class="col-lg-8">-->
+            <!--<input type="text" class="form-control" placeholder="articleTitle" aria-label="articleTitle" aria-describedby="basic-addon1">-->
+        <!--</div>-->
+        <!--<div class="col-lg-2">-->
+            <!--One of three columns-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<div class="container">
+<div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="articleTitle" aria-label="articleTitle" aria-describedby="button-addon2">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2">发布文章</button>
+    </div>
+</div>
+</div>
+
+<div id="layout" class="editor">
+    <div id="test-editormd">
+        <textarea></textarea>
+    </div>
+</div>
+<script>
+    var testEditor;
+    testEditor = editormd("test-editormd", {
+        width: "100%",
+        height: 640,
+        syncScrolling: "single",
+        path: "/plug/editor.md-master/lib/",   //你的path路径（原资源文件中lib包在我们项目中所放的位置）
+        theme: "dark",//工具栏主题
+        previewTheme: "dark",//预览主题
+        editorTheme: "pastel-on-dark",//编辑主题
+        saveHTMLToTextarea: true,
+        emoji: false,
+        taskList: true,
+        tocm: true,         // Using [TOCM]
+        tex: true,                   // 开启科学公式TeX语言支持，默认关闭
+        flowChart: true,             // 开启流程图支持，默认关闭
+        sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭,
+        toolbarIcons : function() {  //自定义工具栏，后面有详细介绍
+            return editormd.toolbarModes['full']; // full, simple, mini
+        },
+        imageUpload : true,
+        imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+        imageUploadURL : "/article/uploadImage",//注意你后端的上传图片服务地址
+    });
+</script>
+</body>
+</html>

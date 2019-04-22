@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 
 @Component
 public class MyInterceptor implements HandlerInterceptor {
+//    DefaultListableBeanFactory
     Logger logger = LoggerFactory.getLogger(MyInterceptor.class);
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
