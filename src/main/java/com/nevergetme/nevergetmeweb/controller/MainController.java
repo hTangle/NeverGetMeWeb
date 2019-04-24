@@ -30,4 +30,11 @@ public class MainController {
         response.setHeader("articleId",articleId+"");
         return "showArticle";
     }
+    @GetMapping("/editArticle")
+    public String editArticle(HttpServletRequest request,HttpServletResponse response,Model model){
+        if(request.getSession(true).getAttribute("userid")==null){
+            return "login";
+        }
+        return "editArticle.html";
+    }
 }

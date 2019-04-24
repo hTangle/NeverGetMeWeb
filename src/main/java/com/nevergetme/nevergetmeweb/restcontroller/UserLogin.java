@@ -35,7 +35,7 @@ public class UserLogin {
             if(list.size()==1){
                 if(list.get(0).getPassword().equals(password)){
                     HttpSession session = request.getSession(true);
-                    session.setAttribute("userId", list.get(0).getId());
+                    session.setAttribute("userid", list.get(0).getId());
                     map.put("state","1");
                 }
             }else{

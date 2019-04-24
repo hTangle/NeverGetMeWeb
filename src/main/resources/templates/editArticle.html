@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>EditArticle</title>
-    <link rel="stylesheet" href="plug/editor.md-master/css/editormd.css">
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script src="plug/editor.md-master/editormd.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <link href="css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="/plug/editor.md-master/css/editormd.css">
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script src="/plug/editor.md-master/editormd.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <link href="/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
         html, body {
             margin: 0;
@@ -84,6 +84,9 @@
                 },
                 function (data, status) {
                     console.log(data);
+                    if(data.artilceId){
+                        window.location.href="/article/showArticle/"+data.artilceId;
+                    }
                     //$('#receiverShow').text(data.output)
                     //$('#exampleModalCenter').modal(exampleModalCenter)
                     // alert("数据：" + data.output + "\n状态：" + status);
