@@ -8,4 +8,6 @@ public interface ArticleService {
     public List<Article> findAllArticle();
     public List<Article> findUserArticle(int userid);
     public Article getArticleById(int id);
+    public int createNewArticle(Article article);
+    public List<Article> getArticleList();
 }

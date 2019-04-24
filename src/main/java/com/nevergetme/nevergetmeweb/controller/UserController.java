@@ -1,33 +1,23 @@
 package com.nevergetme.nevergetmeweb.controller;
 
 import com.nevergetme.nevergetmeweb.bean.User;
-import com.nevergetme.nevergetmeweb.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
-@RestController
-@EnableAutoConfiguration
+@Controller
 public class UserController {
-    @Autowired
-    private UserService userService;
-    @RequestMapping(value = "/user/user",method = RequestMethod.GET)
-    public @ResponseBody
-    User findUserByUserId(String id, HttpServletRequest request){
-        return userService.findUserByUserId(Integer.parseInt(id));
-    }
-    @RequestMapping(value = "/user/getUserInformation",method = RequestMethod.POST)
-    public @ResponseBody
-    User getUserInformation(HttpServletRequest request){
-        //到这说明用户已经登录了
-        HttpSession session = request.getSession(true);
-        int id=(Integer)session.getAttribute("id");
-        return userService.findUserByUserId(id);
+    @RequestMapping("/list")
+    public String  listUser(Model model) {
+        List<User> userList = new ArrayList<User>();
+        for (int i = 0; i <10; i++) {
+            userList.add(new User(i,"张三"+i));
+        }
+
+        model.addAttribute("users", userList);
+        return "/list";
     }
 }

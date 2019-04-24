@@ -9,4 +9,6 @@ public interface ArticleMapper {
     public List<Article> getAllArticle();
     public List<Article> getUserArticle(int userId);
     public Article getArticleById(int id);
+    public int createNewArticle(Article article);
+    public List<Article> getArticleList();
 }

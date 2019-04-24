@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ReadArticle</title>
+    <link rel="stylesheet" href="plug/editor.md-master/css/editormd.css"/>
+    <script src="js/jquery.min.js"></script>
+    <script src="plug/editor.md-master/lib/marked.min.js"></script>
+    <script src="plug/editor.md-master/lib/prettify.min.js"></script>
+    <script src="plug/editor.md-master/lib/raphael.min.js"></script>
+    <script src="plug/editor.md-master/lib/underscore.min.js"></script>
+    <script src="plug/editor.md-master/lib/sequence-diagram.min.js"></script>
+    <script src="plug/editor.md-master/lib/flowchart.min.js"></script>
+    <script src="plug/editor.md-master/editormd.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+
+    <div class="card">
+        <div class="card-header">
+            <h1 id="articleTitle"></h1>
+        </div>
+        <div class="card-body">
+            <div id="layout" class="editor">
+                <div id="test-editormd">
+                    <textarea></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var myurl=GetQueryString("id");
+        if(myurl ==null && myurl.toString().length<1)
+        {
+            history.back(-1);
+        }
+        $.post("/article/getArticle", {articleId: myurl}, function (data, status) {
+            var testEditor = editormd.markdownToHTML("test-editormd", {
+                markdown: data.content,
+                htmlDecode: "style,script,iframe",  // you can filter tags decode
+            });
+            $("#articleTitle").text(data.title);
+        })
+    });
+    function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+
+</script>
+</body>
+</html>

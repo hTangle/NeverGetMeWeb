@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nevergetme.nevergetmeweb.mapper.ArticleMapper">
+    <resultMap id="articleResultMap" type="com.nevergetme.nevergetmeweb.bean.Article">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="publishDate" property="publishDate"/>
+        <result column="updateDate" property="updateDate"/>
+        <result column="likes" property="likes"/>
+        <association property="author" javaType="com.nevergetme.nevergetmeweb.bean.User">
+            <id property="id" column="user_id"/>
+            <result property="username" column="username"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="articleResultMapList" type="com.nevergetme.nevergetmeweb.bean.Article">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="publishDate" property="publishDate"/>
+        <result column="updateDate" property="updateDate"/>
+        <result column="likes" property="likes"/>
+        <result column="shortcut" property="shortcut"/>
+        <association property="author" javaType="com.nevergetme.nevergetmeweb.bean.User">
+            <id property="id" column="user_id"/>
+            <result property="username" column="username"/>
+        </association>
+    </resultMap>
+
+    <select id="getAllArticle" resultType="com.nevergetme.nevergetmeweb.bean.Article">
+        select * from article
+    </select>
+    <select id="getUserArticle" parameterType="java.lang.Integer" resultType="com.nevergetme.nevergetmeweb.bean.Article">
+        select * from article where authorId=#{userid}
+    </select>
+    <select id="getArticleById" parameterType="java.lang.Integer" resultMap="articleResultMap">
+        select article.id,article.title,article.content,
+               DATE_FORMAT(article.publishDate,'%Y-%m-%d %H:%i:%s') publishDate,
+               DATE_FORMAT(article.updateDate,'%Y-%m-%d %H:%i:%s') updateDate,article.likes,
+               user.id as user_id,user.username
+               from article left join user on article.authorId=user.id where article.id=#{id}
+    </select>
+    <insert id="createNewArticle" parameterType="com.nevergetme.nevergetmeweb.bean.Article" useGeneratedKeys="true" keyProperty="id">
+        insert into article(authorId,title,content) values(#{authorId},#{title},#{content})
+    </insert>
+    <select id="getArticleList" resultMap="articleResultMapList">
+        select article.id,article.title,article.shortcut,
+               DATE_FORMAT(article.publishDate,'%Y-%m-%d %H:%i:%s') publishDate,
+               DATE_FORMAT(article.updateDate,'%Y-%m-%d %H:%i:%s') updateDate,article.likes,
+               user.id as user_id,user.username
+        from article left join user on article.authorId=user.id
+    </select>
+
+</mapper>

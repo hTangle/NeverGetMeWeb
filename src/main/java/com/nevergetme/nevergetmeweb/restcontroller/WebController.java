@@ -1,4 +1,4 @@
-package com.nevergetme.nevergetmeweb.controller;
+package com.nevergetme.nevergetmeweb.restcontroller;
 
 import com.nevergetme.nevergetmeweb.sensitiveword.SensitivewordFilter;
 import org.apache.catalina.core.ApplicationContext;

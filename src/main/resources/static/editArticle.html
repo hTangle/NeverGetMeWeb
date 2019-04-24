@@ -9,37 +9,51 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/popper.min.js"></script>
     <link href="css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            height: 100%;
+        }
+    </style>
+
 </head>
 <body>
-<!--<div class="container">-->
-    <!--<div class="row">-->
-        <!--<div class="col-lg-8">-->
-            <!--<input type="text" class="form-control" placeholder="articleTitle" aria-label="articleTitle" aria-describedby="basic-addon1">-->
-        <!--</div>-->
-        <!--<div class="col-lg-2">-->
-            <!--One of three columns-->
+<div class="h-100 w-90">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="input-group mb-3">
+            <input type="text" class="form-control" id="articleTitle" placeholder="articleTitle" aria-label="articleTitle"
+            aria-describedby="button-addon2">
+            <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2">发布文章</button>
+            </div>
+            </div>
+            <!--<form class="form-inline my-2 my-lg-0">-->
+                <!--<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
+                <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
+            <!--</form>-->
+        </div>
+    </nav>
+    <!--<div class="input-group mb-3">-->
+        <!--<input type="text" class="form-control" id="articleTitle" placeholder="articleTitle" aria-label="articleTitle"-->
+               <!--aria-describedby="button-addon2">-->
+        <!--<div class="input-group-append">-->
+            <!--<button class="btn btn-outline-secondary" type="button" id="button-addon2">发布文章</button>-->
         <!--</div>-->
     <!--</div>-->
-<!--</div>-->
-<div class="container">
-<div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="articleTitle" aria-label="articleTitle" aria-describedby="button-addon2">
-    <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2">发布文章</button>
+    <div id="layout" class="editor h-100" style="top:45px">
+        <div id="test-editormd">
+            <textarea></textarea>
+        </div>
     </div>
-</div>
 </div>
 
-<div id="layout" class="editor">
-    <div id="test-editormd">
-        <textarea></textarea>
-    </div>
-</div>
+
 <script>
     var testEditor;
     testEditor = editormd("test-editormd", {
         width: "100%",
-        height: 640,
+        height: "100%",
         syncScrolling: "single",
         path: "/plug/editor.md-master/lib/",   //你的path路径（原资源文件中lib包在我们项目中所放的位置）
         theme: "dark",//工具栏主题
@@ -52,12 +66,29 @@
         tex: true,                   // 开启科学公式TeX语言支持，默认关闭
         flowChart: true,             // 开启流程图支持，默认关闭
         sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭,
-        toolbarIcons : function() {  //自定义工具栏，后面有详细介绍
+        toolbarIcons: function () {  //自定义工具栏，后面有详细介绍
             return editormd.toolbarModes['full']; // full, simple, mini
         },
-        imageUpload : true,
-        imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-        imageUploadURL : "/article/uploadImage",//注意你后端的上传图片服务地址
+        imageUpload: true,
+        imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+        imageUploadURL: "/article/uploadImage",//注意你后端的上传图片服务地址
+    });
+    $(document).ready(function () {
+        $("#button-addon2").click(function () {
+            console.log(testEditor.getMarkdown());
+            $.post("/article/createArticle",
+                {
+                    userId: 10000,
+                    articleTitle: $("#articleTitle").val(),
+                    articleContent: testEditor.getMarkdown()
+                },
+                function (data, status) {
+                    console.log(data);
+                    //$('#receiverShow').text(data.output)
+                    //$('#exampleModalCenter').modal(exampleModalCenter)
+                    // alert("数据：" + data.output + "\n状态：" + status);
+                });
+        });
     });
 </script>
 </body>
