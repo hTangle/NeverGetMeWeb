@@ -9,6 +9,9 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <!--引入插件-->
+    <script th:src="@{/plug/editor.md-master/plugins/image-handle-paste/image-handle-paste.js}"></script>
+
     <style type="text/css">
         html, body {
             margin: 0;
@@ -73,6 +76,7 @@
         imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
         imageUploadURL: "/article/uploadImage",//注意你后端的上传图片服务地址
     });
+    testEditor.imagePaste();
     $(document).ready(function () {
         $("#button-addon2").click(function () {
             console.log(testEditor.getMarkdown());
