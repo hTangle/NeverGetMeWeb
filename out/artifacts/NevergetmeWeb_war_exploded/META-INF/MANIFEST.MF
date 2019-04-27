@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: nevergetmeweb
-Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: hTangle
-Implementation-Vendor-Id: com.nevergetme
-Created-By: IntelliJ IDEA
-Build-Jdk: 1.8
-Main-Class: ${start-class}
-
