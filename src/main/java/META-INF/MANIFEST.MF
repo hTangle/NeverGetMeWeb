@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Implementation-Title: nevergetmeweb
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: NeverGetMe
+Implementation-Vendor-Id: com.nevergetme
+Created-By: IntelliJ IDEA
+Main-Class: com.nevergetme.nevergetmeweb.NevergetmewebApplication
+

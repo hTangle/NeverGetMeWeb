@@ -75,7 +75,7 @@ public class ArticleRestContent {
             map.put("message", "upload failed");
             e.printStackTrace();
         }
-        map.put("url", "/source/img/" + fileName);
+        map.put("url", "/" + fileName);
         return map;
     }
 

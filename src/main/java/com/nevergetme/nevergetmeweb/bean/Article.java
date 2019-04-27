@@ -1,5 +1,6 @@
 package com.nevergetme.nevergetmeweb.bean;
 
+import com.nevergetme.nevergetmeweb.utility.ContentUtility;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -43,5 +44,6 @@ public class Article implements Serializable {
         this.title=title;
         this.authorId=authorId;
         this.content=content;
+        this.shortcut= ContentUtility.getArticleShortCut(content);
     }
 }

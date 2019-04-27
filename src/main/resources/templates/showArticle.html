@@ -3,22 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>ReadArticle</title>
-    <link rel="stylesheet" href="/plug/editor.md-master/css/editormd.css"/>
-    <script src="/js/jquery.min.js"></script>
-    <script src="/plug/editor.md-master/lib/marked.min.js"></script>
-    <script src="/plug/editor.md-master/lib/prettify.min.js"></script>
-    <script src="/plug/editor.md-master/lib/raphael.min.js"></script>
-    <script src="/plug/editor.md-master/lib/underscore.min.js"></script>
-    <script src="/plug/editor.md-master/lib/sequence-diagram.min.js"></script>
-    <script src="/plug/editor.md-master/lib/flowchart.min.js"></script>
-    <script src="/plug/editor.md-master/editormd.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/popper.min.js"></script>
-    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/plug/editor.md-master/css/editormd.css}"/>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/plug/editor.md-master/lib/marked.min.js}"></script>
+    <script th:src="@{/plug/editor.md-master/lib/prettify.min.js}"></script>
+    <script th:src="@{/plug/editor.md-master/lib/raphael.min.js}"></script>
+    <script th:src="@{/plug/editor.md-master/lib/underscore.min.js}"></script>
+    <script th:src="@{/plug/editor.md-master/lib/sequence-diagram.min.js}"></script>
+    <script th:src="@{/plug/editor.md-master/lib/flowchart.min.js}"></script>
+    <script th:src="@{/plug/editor.md-master/editormd.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 </head>
 <body>
-<div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand" href="#">Nevergetme</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/editArticle">写博客</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<div class="container" style="margin-top: 10px">
     <div class="card">
         <div class="card-header">
             <h1 id="articleTitle" th:text="${article.title}"></h1>

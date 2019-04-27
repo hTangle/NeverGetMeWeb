@@ -1,17 +1,14 @@
 
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Signin Template · Bootstrap</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sign-in/">
-
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
-
-
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -29,11 +26,11 @@
         }
     </style>
     <!-- Custom styles for this template -->
-    <link href="/css/signin.css" rel="stylesheet">
-    <script src="/js/jquery.min.js"></script>
+    <link th:href="@{/css/signin.css}" rel="stylesheet">
+    <script th:src="@{/js/jquery.min.js}"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/popper.min.js"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
 </head>
 <body class="text-center">
 <form class="form-signin">

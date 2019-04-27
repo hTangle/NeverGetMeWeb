@@ -41,12 +41,12 @@
                from article left join user on article.authorId=user.id where article.id=#{id}
     </select>
     <insert id="createNewArticle" parameterType="com.nevergetme.nevergetmeweb.bean.Article" useGeneratedKeys="true" keyProperty="id">
-        insert into article(authorId,title,content) values(#{authorId},#{title},#{content})
+        insert into article(authorId,title,content,shortcut) values(#{authorId},#{title},#{content},#{shortcut})
     </insert>
     <select id="getArticleList" resultMap="articleResultMapList">
         select article.id,article.title,article.shortcut,
-               DATE_FORMAT(article.publishDate,'%Y-%m-%d %H:%i:%s') publishDate,
-               DATE_FORMAT(article.updateDate,'%Y-%m-%d %H:%i:%s') updateDate,article.likes,
+               DATE_FORMAT(article.publishDate,'%Y-%m-%d %H:%i') publishDate,
+               DATE_FORMAT(article.updateDate,'%Y-%m-%d %H:%i') updateDate,article.likes,
                user.id as user_id,user.username
         from article left join user on article.authorId=user.id
     </select>

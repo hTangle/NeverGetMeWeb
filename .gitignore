@@ -23,4 +23,7 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+/out/
+/target/
+/src/main/resources/application-prod.properties
 /*.ini
