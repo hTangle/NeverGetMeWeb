@@ -37,4 +37,9 @@ public class ArticleServerImpl implements ArticleService {
     public List<Article> getArticleList() {
         return articleMapper.getArticleList();
     }
+
+    @Override
+    public void updateVisitTimes(int id) {
+        articleMapper.updateVisitTimes(id);
+    }
 }

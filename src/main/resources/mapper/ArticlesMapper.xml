@@ -8,6 +8,7 @@
         <result column="publishDate" property="publishDate"/>
         <result column="updateDate" property="updateDate"/>
         <result column="likes" property="likes"/>
+        <result column="visitTimes" property="visitTimes"/>
         <association property="author" javaType="com.nevergetme.nevergetmeweb.bean.User">
             <id property="id" column="user_id"/>
             <result property="username" column="username"/>
@@ -20,6 +21,7 @@
         <result column="publishDate" property="publishDate"/>
         <result column="updateDate" property="updateDate"/>
         <result column="likes" property="likes"/>
+        <result column="visitTimes" property="visitTimes"/>
         <result column="shortcut" property="shortcut"/>
         <association property="author" javaType="com.nevergetme.nevergetmeweb.bean.User">
             <id property="id" column="user_id"/>
@@ -45,10 +47,14 @@
     </insert>
     <select id="getArticleList" resultMap="articleResultMapList">
         select article.id,article.title,article.shortcut,
-               DATE_FORMAT(article.publishDate,'%Y-%m-%d %H:%i') publishDate,
-               DATE_FORMAT(article.updateDate,'%Y-%m-%d %H:%i') updateDate,article.likes,
+               DATE_FORMAT(article.publishDate,'%Y-%m-%d') publishDate,
+               DATE_FORMAT(article.updateDate,'%Y-%m-%d') updateDate,article.likes,article.visitTimes,
                user.id as user_id,user.username
         from article left join user on article.authorId=user.id
+        order by article.id desc
     </select>
+    <update id="updateVisitTimes" parameterType="java.lang.Integer">
+         update article set visitTimes=visitTimes+1 where id=#{id}
+    </update>
 
 </mapper>

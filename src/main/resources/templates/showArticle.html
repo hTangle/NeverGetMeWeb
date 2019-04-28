@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>ReadArticle</title>
+    <title th:text="${article.title}"></title>
+    <link rel="shortcut icon" th:href="@{/icon/java.svg}" type="image/x-icon"/>
     <link rel="stylesheet" th:href="@{/plug/editor.md-master/css/editormd.css}"/>
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/plug/editor.md-master/lib/marked.min.js}"></script>
@@ -53,6 +54,7 @@
         </div>
     </div>
 </div>
+<div th:replace="footer::html"></div>
 <script th:inline="javascript">
     var showText=[[${article.content}]];
 </script>

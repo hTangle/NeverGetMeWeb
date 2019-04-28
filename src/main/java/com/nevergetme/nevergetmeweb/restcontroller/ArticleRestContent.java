@@ -1,7 +1,10 @@
 package com.nevergetme.nevergetmeweb.restcontroller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.nevergetme.nevergetmeweb.bean.Article;
 import com.nevergetme.nevergetmeweb.service.ArticleService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -85,11 +88,12 @@ public class ArticleRestContent {
             @RequestParam(value = "articleContent", required = true) String articleContent,
             @RequestParam(value = "articleTitle", required = true) String articleTitle,
             @RequestParam(value = "userId", required = true) int userId,
+            @RequestParam(value = "articleShortcut",required = true)String articleShortcut,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         Map<String, String> map = new HashMap<>();
-        Article article = new Article(userId, articleTitle, articleContent);
+        Article article = new Article(userId, articleTitle, articleContent,articleShortcut);
         articleService.createNewArticle(article);
         map.put("artilceId", "" + article.getId());
         return map;
@@ -101,13 +105,20 @@ public class ArticleRestContent {
                        HttpServletRequest request,
                        HttpServletResponse response
     ) {
+
         return articleService.getArticleById(articleId);
     }
 
     @RequestMapping("/article/getArticleList")
     public @ResponseBody
-    List<Article> getArtilceList(HttpServletRequest request,
-                                 HttpServletResponse response) {
-        return articleService.getArticleList();
+    PageInfo<Article> getArtilceList(
+            @Param(value = "pageNum")int pageNum,
+            @Param(value = "pageSize")int pageSize,
+            HttpServletRequest request,
+                                     HttpServletResponse response) {
+        if(pageNum<1)pageNum=1;
+        if(pageSize<5)pageSize=5;
+        PageHelper.startPage(pageNum,pageSize);
+        return new PageInfo<>(articleService.getArticleList());
     }
 }

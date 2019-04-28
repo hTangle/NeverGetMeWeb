@@ -17,33 +17,47 @@ public class Article implements Serializable {
     private String updateDate;//更新日期
     private int likes;//喜欢数
     private String shortcut;
-    public Article(){}
-    public Article(int id,String title,String content,String publishDate,String updateDate,int likes,int user_id,String username){
-        this.id=id;
-        this.title=title;
-        this.content=content;
-        this.publishDate=publishDate;
-        this.updateDate=updateDate;
-        this.likes=likes;
-        this.authorId=user_id;
-        this.author=new User(user_id,username);
+    private int visitTimes;
+
+    public Article() {
     }
-    public Article(int id,User user,String title,String content,String publishDate,String updateDate,int likes){
-        this(id,user,title,publishDate,updateDate,likes);
-        this.content=content;
+
+    public Article(int id, String title, String content, String publishDate, String updateDate, int likes, int user_id, String username) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.publishDate = publishDate;
+        this.updateDate = updateDate;
+        this.likes = likes;
+        this.authorId = user_id;
+        this.author = new User(user_id, username);
     }
-    public Article(int id,User user,String title,String publishDate,String updateDate,int likes){
-        this.id=id;
-        this.author=user;
-        this.title=title;
-        this.publishDate=publishDate;
-        this.updateDate=updateDate;
-        this.likes=likes;
+
+    public Article(int id, User user, String title, String content, String publishDate, String updateDate, int likes) {
+        this(id, user, title, publishDate, updateDate, likes);
+        this.content = content;
     }
-    public Article(int authorId,String title,String content){
-        this.title=title;
-        this.authorId=authorId;
-        this.content=content;
-        this.shortcut= ContentUtility.getArticleShortCut(content);
+
+    public Article(int id, User user, String title, String publishDate, String updateDate, int likes) {
+        this.id = id;
+        this.author = user;
+        this.title = title;
+        this.publishDate = publishDate;
+        this.updateDate = updateDate;
+        this.likes = likes;
+    }
+
+    public Article(int authorId, String title, String content) {
+        this.title = title;
+        this.authorId = authorId;
+        this.content = content;
+        //this.shortcut = ContentUtility.getArticleShortCut(content);
+    }
+
+    public Article(int authorId, String title, String content, String shortcut) {
+        this.title = title;
+        this.authorId = authorId;
+        this.content = content;
+        this.shortcut = ContentUtility.getArticleShortCut(shortcut);
     }
 }

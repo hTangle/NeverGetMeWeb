@@ -1,5 +1,7 @@
 package com.nevergetme.nevergetmeweb.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.nevergetme.nevergetmeweb.bean.Article;
 import com.nevergetme.nevergetmeweb.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,14 @@ public class MainController {
                               HttpServletRequest request) {
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
-        List<Article> articles=articleService.getArticleList();
-        if(articles.size()!=0){
-            model.addAttribute("articles",articles);
-        }
+//        PageHelper.startPage(1,5);
+//
+//        List<Article> articles=articleService.getArticleList();
+//        PageInfo<Article> p=new PageInfo<>(articles);
+//        if(articles.size()!=0){
+//            model.addAttribute("articles",articles);
+//            model.addAttribute("pageInfo",p);
+//        }
         return "index";
     }
 
@@ -41,6 +47,7 @@ public class MainController {
         Article article = articleService.getArticleById(articleId);
         if (article != null && article.getTitle() != null) {
             model.addAttribute("article", article);
+            articleService.updateVisitTimes(articleId);
         }
         response.setHeader("articleId", articleId + "");
         return "showArticle";

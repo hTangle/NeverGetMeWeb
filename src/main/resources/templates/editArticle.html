@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>EditArticle</title>
+    <link rel="shortcut" th:href="@{/icon/java.svg}"/>
     <link rel="stylesheet" th:href="@{/plug/editor.md-master/css/editormd.css}">
     <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/plug/editor.md-master/editormd.min.js}"></script>
@@ -84,7 +85,8 @@
                 {
                     userId: 10000,
                     articleTitle: $("#articleTitle").val(),
-                    articleContent: testEditor.getMarkdown()
+                    articleContent: testEditor.getMarkdown(),
+                    articleShortcut:testEditor.getHTML(),
                 },
                 function (data, status) {
                     console.log(data);
