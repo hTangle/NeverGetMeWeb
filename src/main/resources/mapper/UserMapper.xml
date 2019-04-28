@@ -10,16 +10,20 @@
     <select id="findAll" resultType="user">
         select * from user
     </select>
-    <select id="findUser" parameterType="java.lang.String" resultType="user">
+    <select id="findUser" parameterType="java.lang.String" resultType="com.nevergetme.nevergetmeweb.bean.User">
         select id,password from user where username=#{username}
     </select>
-    <select id="findUserByUserName" parameterType="java.lang.String" resultType="user">
+    <select id="findUserByUserName" parameterType="java.lang.String" resultType="com.nevergetme.nevergetmeweb.bean.User">
         select * from user where username=#{username}
     </select>
-    <select id="findUserByUserId" parameterType="java.lang.Integer" resultType="user">
+    <select id="findUserByUserId" parameterType="java.lang.Integer" resultType="com.nevergetme.nevergetmeweb.bean.User">
         select * from user where id=#{id}
     </select>
-    <select id="findUserByPhone" parameterType="java.lang.String" resultType="user">
+    <select id="findUserByPhone" parameterType="java.lang.String" resultType="com.nevergetme.nevergetmeweb.bean.User">
         select * from user where phone=#{phone}
     </select>
+    <insert id="createUser" parameterType="com.nevergetme.nevergetmeweb.bean.User">
+        insert into user(id,user_uuid,username,password,role,image)
+        values(#{id}, #{user_uuid}, #{username}, #{password}, #{role}, #{image})
+    </insert>
 </mapper>

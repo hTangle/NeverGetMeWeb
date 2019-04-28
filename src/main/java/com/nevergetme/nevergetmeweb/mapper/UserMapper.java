@@ -2,8 +2,6 @@ package com.nevergetme.nevergetmeweb.mapper;
 
 import com.nevergetme.nevergetmeweb.bean.User;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -14,4 +12,5 @@ public interface UserMapper {
     public User findUserByUserId(Integer id);
     public User findUserByUserName(String username);
     public User findUserByPhone(String phone);
+    public void createUser(User user);
 }

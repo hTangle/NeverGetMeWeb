@@ -3,16 +3,16 @@ package com.nevergetme.nevergetmeweb.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.nevergetme.nevergetmeweb.bean.Article;
+import com.nevergetme.nevergetmeweb.bean.User;
 import com.nevergetme.nevergetmeweb.service.ArticleService;
+import com.nevergetme.nevergetmeweb.utility.ContentUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @Controller
 public class MainController {
@@ -55,9 +55,13 @@ public class MainController {
 
     @GetMapping("/editArticle")
     public String editArticle(HttpServletRequest request, HttpServletResponse response, Model model) {
-        if (request.getSession(true).getAttribute("userid") == null) {
-            return "login";
-        }
+//        User user= ContentUtility.getUser();
         return "editArticle.html";
     }
+    @RequestMapping(value = "/login",method = RequestMethod.GET)
+    public String login(Model model){
+        return "login";
+    }
+
+
 }

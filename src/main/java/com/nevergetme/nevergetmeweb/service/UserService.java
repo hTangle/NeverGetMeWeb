@@ -10,6 +10,7 @@ public interface UserService {
     public User findUserByUserId(Integer id);
     public User findUserByUserName(String username);
     public User findUserByPhone(String phone);
+    public void createUser(User user);
 
     //public List<User> findExistUser();
 }

@@ -28,10 +28,18 @@
                 <a class="nav-link" href="/editArticle">写博客</a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <ul class="navbar-nav my-2 my-lg-0" id="footerUser">
+            <li class="nav-item">
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </li>
+        </ul>
+<!--        <form class="form-inline my-2 my-lg-0">-->
+<!--            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
+<!--        </form>-->
     </div>
 </nav>
 <div class="container" style="margin-top: 10px">
@@ -176,6 +184,30 @@
             });
         currentPage = newPage;
     }
+    function readUserInfo() {
+        $.post("/getCurrentUser",
+            {
+            },
+            function (data, status) {
+                if (data && status == 'success') {
+                    var appendHtml = '';
+                    if(data.id!=0){
+                        appendHtml=appendHtml+'<li class="nav-item">\n' +
+                            '                <a class="nav-link" href="/logout">Logout</a>\n' +
+                            '            </li>';
+                        appendHtml=appendHtml+'<li class="nav-item"><img class="rounded" src="'+data.image+'" style="height: 30px;width: 30px;"/></li>';
+                    }else{
+                        appendHtml=appendHtml+'<li class="nav-item">\n' +
+                            '                <a class="nav-link" href="/login">Login</a>\n' +
+                            '            </li>';
+                    }
+                    $("#footerUser").append(appendHtml);
+                }
+                console.log(status);
+            });
+    }
+    readUserInfo();
+
 </script>
 </body>
 </html>

@@ -1,9 +1,34 @@
 package com.nevergetme.nevergetmeweb.utility;
 
+import com.nevergetme.nevergetmeweb.bean.User;
 import org.jsoup.Jsoup;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Random;
 
 public class ContentUtility {
     private static final int SHORT_CUT_LINE=2;
+    public static User getUser() { //为了session从获取用户信息,可以配置如下
+        User user = new User();
+        SecurityContext ctx = SecurityContextHolder.getContext();
+        Authentication auth = ctx.getAuthentication();
+        if (auth.getPrincipal() instanceof UserDetails) user = (User) auth.getPrincipal();
+        return user;
+    }
+    public static String getRandomString(int length) {
+        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+
+        for (int i = 0; i < length; ++i) {
+            int number = random.nextInt(62);// [0,62)
+            sb.append(str.charAt(number));
+        }
+        return sb.toString();
+    }
     public static String getArticleShortCut(String articleContent){
         String s=Jsoup.parse(articleContent).text();
         return s.substring(0,100)+"...";

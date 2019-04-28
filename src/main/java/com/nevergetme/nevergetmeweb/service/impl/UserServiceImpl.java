@@ -38,4 +38,9 @@ public class UserServiceImpl implements UserService {
     public User findUserByPhone(String phone) {
         return userMapper.findUserByPhone(phone);
     }
+
+    @Override
+    public void createUser(User user) {
+        userMapper.createUser(user);
+    }
 }

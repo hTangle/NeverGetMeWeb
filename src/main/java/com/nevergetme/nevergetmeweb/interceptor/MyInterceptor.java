@@ -21,28 +21,29 @@ public class MyInterceptor implements HandlerInterceptor {
             throws Exception {
         // TODO Auto-generated method stub
         //获取session
-        logger.info("---------------------开始进入请求地址拦截----------------------------");
-        //return true;
-        HttpSession session = request.getSession(true);
-        if (session.getAttribute("userId") == null) {
-            logger.info("------:跳转到login页面！");
-//            response.reset();
-
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/json; charset=utf-8");
-            PrintWriter out = null;
-
-            JSONObject res = new JSONObject();
-            res.put("state", "0");
-            res.put("msg", "login in first");
-            res.put("output","");
-            out = response.getWriter();
-            out.append(res.toString());
-            return false;
-        } else {
-            session.setAttribute("userId", session.getAttribute("userId"));
-            return true;
-        }
+        return true;
+//        logger.info("---------------------开始进入请求地址拦截----------------------------");
+//        //return true;
+//        HttpSession session = request.getSession(true);
+//        if (session.getAttribute("userId") == null) {
+//            logger.info("------:跳转到login页面！");
+////            response.reset();
+//
+//            response.setCharacterEncoding("UTF-8");
+//            response.setContentType("application/json; charset=utf-8");
+//            PrintWriter out = null;
+//
+//            JSONObject res = new JSONObject();
+//            res.put("state", "0");
+//            res.put("msg", "login in first");
+//            res.put("output","");
+//            out = response.getWriter();
+//            out.append(res.toString());
+//            return false;
+//        } else {
+//            session.setAttribute("userId", session.getAttribute("userId"));
+//            return true;
+//        }
     }
 
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
