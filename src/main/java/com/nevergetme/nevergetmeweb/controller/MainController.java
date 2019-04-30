@@ -44,13 +44,17 @@ public class MainController {
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
         //articleService.getArticleById()
-        Article article = articleService.getArticleById(articleId);
-        if (article != null && article.getTitle() != null) {
-            model.addAttribute("article", article);
-            articleService.updateVisitTimes(articleId);
+//        Article article = articleService.getArticleById(articleId);
+//        if (article != null && article.getTitle() != null) {
+//            model.addAttribute("article", article);
+//            articleService.updateVisitTimes(articleId);
+//        }
+        if(articleId>0){
+            model.addAttribute("articleID",articleId);
+            response.setHeader("articleId", articleId + "");
+            return "showArticle";
         }
-        response.setHeader("articleId", articleId + "");
-        return "showArticle";
+        return "404";
     }
 
     @GetMapping("/editArticle")

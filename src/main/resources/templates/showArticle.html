@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${article.title}"></title>
+    <title></title>
     <link rel="shortcut icon" th:href="@{/icon/java.svg}" type="image/x-icon"/>
     <link rel="stylesheet" th:href="@{/plug/editor.md-master/css/editormd.css}"/>
     <script th:src="@{/js/jquery.min.js}"></script>
@@ -15,35 +15,16 @@
     <script th:src="@{/plug/editor.md-master/editormd.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/addsvg.js}"></script>
     <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <a class="navbar-brand" href="#">Nevergetme</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/editArticle">写博客</a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </div>
-</nav>
-<div class="container" style="margin-top: 10px">
-    <div class="card">
+<div th:replace="header::html"></div>
+<div class="container" style="margin-top: 10px;margin-bottom: 10px">
+    <div class="card" id="articleCard">
         <div class="card-header">
-            <h1 id="articleTitle" th:text="${article.title}"></h1>
+            <h1 id="articleTitle"></h1>
+            <p class="card-text"><small class="text-muted" id="articleSvg"></small></p>
         </div>
         <div class="card-body">
             <div id="layout" class="editor">
@@ -56,32 +37,33 @@
 </div>
 <div th:replace="footer::html"></div>
 <script th:inline="javascript">
-    var showText=[[${article.content}]];
+    var articleID=[[${articleID}]];
 </script>
+<script th:src="@{/js/header.js}"></script>
 <script>
+    $("#articleCard").hide();
     $(document).ready(function (){
-        var testEditor = editormd.markdownToHTML("test-editormd", {
-            markdown:showText ,
-            htmlDecode: "style,script,iframe",  // you can filter tags decode
-        });
-    });
-    // $(document).ready(function () {
-    //     var myurl=GetQueryString("id");
-    //     if(myurl ==null && myurl.toString().length<1)
-    //     {
-    //         history.back(-1);
-    //     }
-    //     $.post("/article/getArticle", {articleId: myurl}, function (data, status) {
-    //         $("#articleTitle").text(data.title);
-    //     })
-    // });
-    // function GetQueryString(name)
-    // {
-    //     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-    //     var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
-    //     if(r!=null)return  unescape(r[2]); return null;
-    // }
+        $.post("/article/getArticle",
+            {
+                articleId:articleID
+            },
+            function (data, status) {
+                if (data && status == 'success') {
+                    $("#articleTitle").text(data.title);
+                    $(document).attr("title",data.title);
+                    var testEditor = editormd.markdownToHTML("test-editormd", {
+                        markdown:data.content ,
+                        htmlDecode: "style,script,iframe",  // you can filter tags decode
+                    });
+                    $("#articleCard").show();
+                    $("#articleSvg").append(addUser(data.author.username)+addDate(data.publishDate)+addLikes(data.likes));
+                }else{
+                    window.location.href="/404";
+                }
+            });
 
+    });
+    readUserInfo();
 </script>
 </body>
 </html>

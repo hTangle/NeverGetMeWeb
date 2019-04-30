@@ -4,17 +4,26 @@ import com.nevergetme.nevergetmeweb.bean.Article;
 import com.nevergetme.nevergetmeweb.mapper.ArticleMapper;
 import com.nevergetme.nevergetmeweb.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ArticleServerImpl implements ArticleService {
+    private final String ARTICLE_KEY = "article_";
+    private final String ARTICLE_LIST_KEY = "article_list";
     @Autowired
     private ArticleMapper articleMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Override
     public List<Article> findAllArticle() {
-        List<Article> articles=articleMapper.getAllArticle();
+        List<Article> articles = articleMapper.getAllArticle();
         return articles;
     }
 
@@ -23,19 +32,72 @@ public class ArticleServerImpl implements ArticleService {
         return articleMapper.getUserArticle(userid);
     }
 
+    /**
+     * 如果缓存中存在，则从缓存中读取
+     *
+     * @param id
+     * @return
+     */
     @Override
     public Article getArticleById(int id) {
-        return articleMapper.getArticleById(id);
+        String key = ARTICLE_KEY + id;
+        ValueOperations<String, Article> operations = redisTemplate.opsForValue();
+        if (redisTemplate.hasKey(key)) {
+            return operations.get(key);
+        } else {
+            Article article = articleMapper.getArticleById(id);
+            operations.set(key, article, 5, TimeUnit.HOURS);
+            return article;
+        }
     }
 
     @Override
     public int createNewArticle(Article article) {
-        return articleMapper.createNewArticle(article);
+        ValueOperations<String, Article> operations = redisTemplate.opsForValue();
+        int articleID = articleMapper.createNewArticle(article);
+        if (articleID != 0) {
+            String key = ARTICLE_KEY + articleID;
+            if (redisTemplate.hasKey(key)) {
+                redisTemplate.delete(key);
+            }
+            Article articleNew = getArticleById(articleID);
+            if (articleNew != null) {
+                operations.set(key, articleNew, 5, TimeUnit.HOURS);
+            }
+            //updateArticleListInRedis();
+        }
+        return articleID;
     }
 
+    private void updateArticleListInRedis() {
+        ListOperations<String, Article> operations = redisTemplate.opsForList();
+        if (redisTemplate.hasKey(ARTICLE_LIST_KEY)) {
+            operations.leftPop(ARTICLE_LIST_KEY);
+        }
+        List<Article> articleList = articleMapper.getArticleList();
+        if (articleList != null && articleList.size() > 0)
+            operations.rightPushAll(ARTICLE_LIST_KEY, articleList);
+    }
+
+    /**
+     * 获取文章列表
+     * 首先从缓存中读取，如果缓存中没有，则需要读取数据库，然后更新缓存再返回
+     *
+     * @return
+     */
     @Override
     public List<Article> getArticleList() {
         return articleMapper.getArticleList();
+//        ListOperations<String,Article> operations=redisTemplate.opsForList();
+//        if(redisTemplate.hasKey(ARTICLE_LIST_KEY)){
+//            System.out.println("read article list from redis");
+//            return operations.range(ARTICLE_LIST_KEY,0,-1);
+//        }else{
+//            List<Article> articleList=articleMapper.getArticleList();
+//            if(articleList!=null&&articleList.size()>0)
+//                operations.rightPushAll(ARTICLE_LIST_KEY,articleList);
+//            return articleList;
+//        }
     }
 
     @Override

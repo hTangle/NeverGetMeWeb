@@ -83,7 +83,6 @@
             console.log(testEditor.getMarkdown());
             $.post("/article/createArticle",
                 {
-                    userId: 10000,
                     articleTitle: $("#articleTitle").val(),
                     articleContent: testEditor.getMarkdown(),
                     articleShortcut:testEditor.getHTML(),

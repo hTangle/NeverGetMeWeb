@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 @Data
 public class Article implements Serializable {
-    private static final long serialVersionUID = 2L;
-    private int id;//主键
+    private static final long serialVersionUID = 1L;
+    private Integer id;//主键
     private int authorId;
     private User author;
     private String title;//标题

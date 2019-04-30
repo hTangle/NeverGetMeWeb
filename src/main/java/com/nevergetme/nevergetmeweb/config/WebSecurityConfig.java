@@ -35,8 +35,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests().
                 antMatchers("/").permitAll().
-                antMatchers("/article/**").permitAll().
-                antMatchers("/article/showArticle/**").permitAll().
+                antMatchers("/404").permitAll().
+                antMatchers("/article/*").permitAll().
+                antMatchers("/article/showArticle/*").permitAll().
                 antMatchers("/icon/**").permitAll().
                 antMatchers("/js/**").permitAll().
                 antMatchers("/css/**").permitAll().
@@ -88,7 +89,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
                 User userDetails = (User) authentication.getPrincipal();
                 logger.info("USER : " + userDetails.getUsername() + " LOGIN SUCCESS !  ");
-                System.out.println("USER : " + userDetails.getUsername() + " LOGIN SUCCESS !  ");
+//                System.out.println("USER : " + userDetails.getUsername() + " LOGIN SUCCESS !  ");
                 super.onAuthenticationSuccess(request, response, authentication);
             }
         };

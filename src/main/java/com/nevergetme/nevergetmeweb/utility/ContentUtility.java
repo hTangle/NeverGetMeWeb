@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ContentUtility {
     private static final int SHORT_CUT_LINE=2;
@@ -20,12 +21,10 @@ public class ContentUtility {
     }
     public static String getRandomString(int length) {
         String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random random = new Random();
         StringBuffer sb = new StringBuffer();
-
+        ThreadLocalRandom uuidRandom=ThreadLocalRandom.current();
         for (int i = 0; i < length; ++i) {
-            int number = random.nextInt(62);// [0,62)
-            sb.append(str.charAt(number));
+            sb.append(str.charAt(uuidRandom.nextInt(62)));
         }
         return sb.toString();
     }

@@ -3,7 +3,9 @@ package com.nevergetme.nevergetmeweb.restcontroller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.nevergetme.nevergetmeweb.bean.Article;
+import com.nevergetme.nevergetmeweb.bean.User;
 import com.nevergetme.nevergetmeweb.service.ArticleService;
+import com.nevergetme.nevergetmeweb.utility.ContentUtility;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,7 +68,7 @@ public class ArticleRestContent {
         String suffix = trueFileName.substring(trueFileName.lastIndexOf("."));
         String fileName = System.currentTimeMillis() + "_" + (new Random().nextInt(89999) + 10000) + suffix;
         String path = uploadFilePath;
-        System.out.println(path);
+//        System.out.println(path);
         File target = new File(path, fileName);
         Map<String, String> map = new HashMap<>();
         try {
@@ -87,15 +89,19 @@ public class ArticleRestContent {
     Map<String, String> createArticle(
             @RequestParam(value = "articleContent", required = true) String articleContent,
             @RequestParam(value = "articleTitle", required = true) String articleTitle,
-            @RequestParam(value = "userId", required = true) int userId,
             @RequestParam(value = "articleShortcut",required = true)String articleShortcut,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         Map<String, String> map = new HashMap<>();
-        Article article = new Article(userId, articleTitle, articleContent,articleShortcut);
-        articleService.createNewArticle(article);
-        map.put("artilceId", "" + article.getId());
+        User user= ContentUtility.getUser();
+        if(user!=null&&user.getId()!=0) {
+            Article article = new Article(user.getId(), articleTitle, articleContent, articleShortcut);
+            articleService.createNewArticle(article);
+            map.put("artilceId", "" + article.getId());
+        }else{
+            map.put("error","login in first");
+        }
         return map;
     }
 
@@ -105,7 +111,7 @@ public class ArticleRestContent {
                        HttpServletRequest request,
                        HttpServletResponse response
     ) {
-
+        articleService.updateVisitTimes(articleId);
         return articleService.getArticleById(articleId);
     }
 
@@ -115,7 +121,8 @@ public class ArticleRestContent {
             @Param(value = "pageNum")int pageNum,
             @Param(value = "pageSize")int pageSize,
             HttpServletRequest request,
-                                     HttpServletResponse response) {
+            HttpServletResponse response
+    ) {
         if(pageNum<1)pageNum=1;
         if(pageSize<5)pageSize=5;
         PageHelper.startPage(pageNum,pageSize);
