@@ -2,21 +2,28 @@ package com.nevergetme.nevergetmeweb.utility;
 
 import com.nevergetme.nevergetmeweb.bean.User;
 import org.jsoup.Jsoup;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ContentUtility {
     private static final int SHORT_CUT_LINE=2;
+    public static String encodeByMd5(String string) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        // 确定计算方法
+        MessageDigest md5 = MessageDigest.getInstance("MD5");
+        Base64.Encoder base64Encoder = Base64.getEncoder();
+        // 加密字符串
+        return base64Encoder.encodeToString(md5.digest(string.getBytes("utf-8")));
+    }
     public static User getUser() { //为了session从获取用户信息,可以配置如下
         User user = new User();
-        SecurityContext ctx = SecurityContextHolder.getContext();
-        Authentication auth = ctx.getAuthentication();
-        if (auth.getPrincipal() instanceof UserDetails) user = (User) auth.getPrincipal();
+//        SecurityContext ctx = SecurityContextHolder.getContext();
+//        Authentication auth = ctx.getAuthentication();
+//        if (auth.getPrincipal() instanceof UserDetails) user = (User) auth.getPrincipal();
         return user;
     }
     public static String getRandomString(int length) {

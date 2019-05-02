@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Signin Template · Bootstrap</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/sign-in/">
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -32,24 +30,24 @@
     <script th:src="@{/js/popper.min.js}"></script>
 </head>
 <body class="text-center">
-<form class="form-signin" action="/login" method="post">
-    <label for="username" class="sr-only">用户名</label><input id="username" type="text" name="username" class="form-control"/>
-    <label for="password" class="sr-only">密码</label><input id="password" type="password" name="password" class="form-control"/>
-    <input type="submit" value="登录">
-    <!--<img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">-->
-<!--    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>-->
-<!--    <label for="inputEmail" class="sr-only">Email address</label>-->
-<!--    <input type="email"  class="form-control" required autofocus>-->
-<!--    <label for="inputPassword" class="sr-only">Password</label>-->
-<!--    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>-->
-<!--    <div class="checkbox mb-3">-->
-<!--        <label>-->
-<!--            <input type="checkbox" value="remember-me"> Remember me-->
-<!--        </label>-->
-<!--    </div>-->
-<!--    <button class="btn btn-lg btn-primary btn-block" type="button" id="SendInfo">Sign in</button>-->
-<!--    <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>-->
-</form>
+<!--<form class="form-signin">-->
+<!--    <label for="username" class="sr-only">用户名</label><input id="username" type="text" name="username" class="form-control"/>-->
+<!--    <label for="password" class="sr-only">密码</label><input id="password" type="password" name="password" class="form-control"/>-->
+<!--    <input type="submit" value="登录">-->
+<!--    <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">-->
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="inputEmail" class="sr-only">Email address</label>
+    <input type="email" id="inputEmail"  class="form-control" required autofocus>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="button" id="SendInfo">Sign in</button>
+    <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
+<!--</form>-->
 <script>
     $(document).ready(function () {
         $('#SendInfo').click(function () {
@@ -62,9 +60,9 @@
                     },
                     function (data, status) {
                         console.log(data);
-                        if(data.state=="1"){
-                            history.back(-1);
-                        }
+                        // if(data.state=="1"){
+                        //     history.back(-1);
+                        // }
                         //$('#receiverShow').text(data.output)
                         //$('#exampleModalCenter').modal(exampleModalCenter)
                         // alert("数据：" + data.output + "\n状态：" + status);

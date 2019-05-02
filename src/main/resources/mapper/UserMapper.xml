@@ -22,6 +22,9 @@
     <select id="findUserByPhone" parameterType="java.lang.String" resultType="com.nevergetme.nevergetmeweb.bean.User">
         select * from user where phone=#{phone}
     </select>
+    <select id="findUserByUserNameAndPassword" parameterType="java.lang.String" resultType="com.nevergetme.nevergetmeweb.bean.User">
+        select id,user_uuid,username from user where username=#{username} and password=#{password}
+    </select>
     <insert id="createUser" parameterType="com.nevergetme.nevergetmeweb.bean.User">
         insert into user(id,user_uuid,username,password,role,image)
         values(#{id}, #{user_uuid}, #{username}, #{password}, #{role}, #{image})

@@ -3,6 +3,7 @@ package com.nevergetme.nevergetmeweb.service.impl;
 import com.nevergetme.nevergetmeweb.bean.User;
 import com.nevergetme.nevergetmeweb.mapper.UserMapper;
 import com.nevergetme.nevergetmeweb.service.UserService;
+import com.nevergetme.nevergetmeweb.utility.ContentUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUserName(String username) {
         return userMapper.findUserByUserName(username);
+    }
+
+    @Override
+    public User findUserByUserNameAndPassword(String username, String password) {
+        try {
+            return userMapper.findUserByUserNameAndPassword(username, ContentUtility.encodeByMd5(password));
+        }catch (Exception e){
+            return null;
+        }
     }
 
     @Override

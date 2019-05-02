@@ -9,6 +9,7 @@ public interface UserService {
     public List<User> findUser(String username);
     public User findUserByUserId(Integer id);
     public User findUserByUserName(String username);
+    public User findUserByUserNameAndPassword(String username,String password);
     public User findUserByPhone(String phone);
     public void createUser(User user);
 

@@ -1,5 +1,7 @@
 # NeverGetMeWeb
 
+## 更新2019-05-01
+* 去掉Spring Security，使用HttpSession
 ## 更新2019-04-30
 * 将head和footer分离
 * 引入redis缓存：

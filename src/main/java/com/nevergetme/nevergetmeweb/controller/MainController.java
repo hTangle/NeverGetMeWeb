@@ -67,5 +67,8 @@ public class MainController {
         return "login";
     }
 
-
+    @GetMapping("/404")
+    public String get404(){
+        return "404";
+    }
 }

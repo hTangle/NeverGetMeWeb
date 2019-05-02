@@ -13,4 +13,5 @@ public interface UserMapper {
     public User findUserByUserName(String username);
     public User findUserByPhone(String phone);
     public void createUser(User user);
+    public User findUserByUserNameAndPassword(String username,String password);
 }
