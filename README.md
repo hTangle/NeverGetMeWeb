@@ -1,5 +1,13 @@
 # NeverGetMeWeb
 
+## 更新 2019-05-02
+* 更改了container样式，能够显示阴影
+* 更改了header和footer的颜色
+* 增加了标签内容
+* 修改了博文其他信息的显示方式
+* 修复了不能够连续ctrl+v上传图片的bug
+* 可用通过https访问网站
+
 ## 更新2019-05-01
 * 去掉Spring Security，使用HttpSession
 ## 更新2019-04-30

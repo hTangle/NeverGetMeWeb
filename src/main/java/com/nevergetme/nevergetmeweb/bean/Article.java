@@ -4,6 +4,7 @@ import com.nevergetme.nevergetmeweb.utility.ContentUtility;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 public class Article implements Serializable {
@@ -18,6 +19,8 @@ public class Article implements Serializable {
     private int likes;//喜欢数
     private String shortcut;
     private int visitTimes;
+    private int isOriginal;
+    List<Tags> tagsList;
 
     public Article() {
     }
@@ -54,10 +57,11 @@ public class Article implements Serializable {
         //this.shortcut = ContentUtility.getArticleShortCut(content);
     }
 
-    public Article(int authorId, String title, String content, String shortcut) {
+    public Article(int authorId, String title, String content, String shortcut,int isOriginal) {
         this.title = title;
         this.authorId = authorId;
         this.content = content;
         this.shortcut = ContentUtility.getArticleShortCut(shortcut);
+        this.isOriginal=isOriginal;
     }
 }

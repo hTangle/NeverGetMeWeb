@@ -27,6 +27,7 @@
             <id property="id" column="user_id"/>
             <result property="username" column="username"/>
         </association>
+        <collection property="tagsList" column="id" select="com.nevergetme.nevergetmeweb.mapper.ArticleMapper.getTagsByArticleId"/>
     </resultMap>
 
     <select id="getAllArticle" resultType="com.nevergetme.nevergetmeweb.bean.Article">
@@ -42,8 +43,11 @@
                user.id as user_id,user.username
                from article left join user on article.authorId=user.id where article.id=#{id}
     </select>
+    <select id="getTagsByArticleId" parameterType="java.lang.Integer" resultType="com.nevergetme.nevergetmeweb.bean.Tags">
+        select articleTags.id,tags.value from articleTags left join tags on articleTags.tagid=tags.id where articleTags.articleid=#{id};
+    </select>
     <insert id="createNewArticle" parameterType="com.nevergetme.nevergetmeweb.bean.Article" useGeneratedKeys="true" keyProperty="id">
-        insert into article(authorId,title,content,shortcut) values(#{authorId},#{title},#{content},#{shortcut})
+        insert into article(authorId,title,content,shortcut,isOriginal) values(#{authorId},#{title},#{content},#{shortcut},#{isOriginal})
     </insert>
     <select id="getArticleList" resultMap="articleResultMapList">
         select article.id,article.title,article.shortcut,
@@ -53,8 +57,17 @@
         from article left join user on article.authorId=user.id
         order by article.id desc
     </select>
+    <select id="getTotalArticleCount" resultType="java.lang.Integer">
+        select count(*) from article;
+    </select>
     <update id="updateVisitTimes" parameterType="java.lang.Integer">
          update article set visitTimes=visitTimes+1 where id=#{id}
     </update>
 
+    <select id="getAllTags" resultType="com.nevergetme.nevergetmeweb.bean.Tags">
+        select * from tags;
+    </select>
+    <insert id="setArticleTags"  parameterType="java.lang.Integer">
+        insert into articleTags(tagid,articleid) values(#{tagid},#{articleId})
+    </insert>
 </mapper>

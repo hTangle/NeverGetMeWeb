@@ -26,24 +26,25 @@
     <nav class="navbar navbar-expand-sm navbar-light bg-light">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="input-group mb-3">
-            <input type="text" class="form-control" id="articleTitle" placeholder="articleTitle" aria-label="articleTitle"
-            aria-describedby="button-addon2">
-            <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2">发布文章</button>
-            </div>
+                <input type="text" class="form-control" id="articleTitle" placeholder="articleTitle"
+                       aria-label="articleTitle"
+                       aria-describedby="button-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">发布文章</button>
+                </div>
             </div>
             <!--<form class="form-inline my-2 my-lg-0">-->
-                <!--<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
-                <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
+            <!--<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
+            <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
             <!--</form>-->
         </div>
     </nav>
     <!--<div class="input-group mb-3">-->
-        <!--<input type="text" class="form-control" id="articleTitle" placeholder="articleTitle" aria-label="articleTitle"-->
-               <!--aria-describedby="button-addon2">-->
-        <!--<div class="input-group-append">-->
-            <!--<button class="btn btn-outline-secondary" type="button" id="button-addon2">发布文章</button>-->
-        <!--</div>-->
+    <!--<input type="text" class="form-control" id="articleTitle" placeholder="articleTitle" aria-label="articleTitle"-->
+    <!--aria-describedby="button-addon2">-->
+    <!--<div class="input-group-append">-->
+    <!--<button class="btn btn-outline-secondary" type="button" id="button-addon2">发布文章</button>-->
+    <!--</div>-->
     <!--</div>-->
     <div id="layout" class="editor h-100" style="top:45px">
         <div id="test-editormd">
@@ -51,8 +52,59 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="setTagForArticle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">文章设置</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">类型</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect01">
+                        <option value="0">原创</option>
+                        <option value="1">转载</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-append">
+                        <label class="input-group-text" for="inputGroupSelect02">Tags</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect02">
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="SaveArticle">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="messageInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageInfoTitle">Tips</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="messageInfoMessage">
 
-
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     var testEditor;
     testEditor = editormd("test-editormd", {
@@ -65,6 +117,7 @@
         // editorTheme: "pastel-on-dark",//编辑主题
         saveHTMLToTextarea: true,
         emoji: false,
+        atLink: false,    // disable @link
         taskList: true,
         tocm: true,         // Using [TOCM]
         tex: true,                   // 开启科学公式TeX语言支持，默认关闭
@@ -79,22 +132,61 @@
     });
     testEditor.imagePaste();
     $(document).ready(function () {
+        $.get("/article/getAllTags",function (data,status) {
+            if(data){
+                var appendSelector='';
+                for(var i in data){
+                    var tag=data[i];
+                    appendSelector=appendSelector+'<option value="'+tag.id+'">'+tag.value+'</option>';
+                }
+                $("#inputGroupSelect02").append(appendSelector);
+            }
+        });
         $("#button-addon2").click(function () {
-            console.log(testEditor.getMarkdown());
+            // console.log(testEditor.getMarkdown());
+            if($("#articleTitle").val()&&$("#articleTitle").val()!=''){
+                if(testEditor.getMarkdown()&&testEditor.getMarkdown()!=''){
+                    $("#setTagForArticle").modal('show');
+                }else{
+                    $("#messageInfoMessage").text("内容不能为空！");
+                    $("#messageInfo").modal('show');
+                }
+            }else{
+                $("#messageInfoMessage").text("标题不能为空！");
+                $("#messageInfo").modal('show');
+            }
+
+            // $.post("/article/createArticle",
+            //     {
+            //         articleTitle: $("#articleTitle").val(),
+            //         articleContent: testEditor.getMarkdown(),
+            //         articleShortcut: testEditor.getHTML(),
+            //     },
+            //     function (data, status) {
+            //         // console.log(data);
+            //         if (data.artilceId) {
+            //             window.location.href = "/article/showArticle/" + data.artilceId;
+            //         }
+            //         //$('#receiverShow').text(data.output)
+            //         //$('#exampleModalCenter').modal(exampleModalCenter)
+            //         // alert("数据：" + data.output + "\n状态：" + status);
+            //     });
+        });
+        $("#SaveArticle").click(function () {
+            console.log($("#inputGroupSelect01").val(),$("#inputGroupSelect02").val());
             $.post("/article/createArticle",
                 {
                     articleTitle: $("#articleTitle").val(),
                     articleContent: testEditor.getMarkdown(),
-                    articleShortcut:testEditor.getHTML(),
+                    articleShortcut: testEditor.getHTML(),
+                    articleOriginal:$("#inputGroupSelect01").val(),
+                    articleTags:$("#inputGroupSelect02").val()
                 },
                 function (data, status) {
-                    console.log(data);
-                    if(data.artilceId){
-                        window.location.href="/article/showArticle/"+data.artilceId;
+                    // console.log(data);Editor.md Ctrl+V粘贴上传图片
+                    if (data.artilceId) {
+                        window.location.href = "/article/showArticle/" + data.artilceId;
                     }
-                    //$('#receiverShow').text(data.output)
-                    //$('#exampleModalCenter').modal(exampleModalCenter)
-                    // alert("数据：" + data.output + "\n状态：" + status);
                 });
         });
     });

@@ -1,13 +1,12 @@
 function addUser(username) {
-    return '<img class="rounded" src="/icon/user-w.svg" style="height: 20px;width: 20px;"/>'+username;
+    return '<span class="badge badge-secondary">author:'+username+'</span>';
 }
 function addDate(publishdate) {
-    return '<img class="rounded" src="/icon/date.svg" style="height: 20px;width: 20px;"/>' + publishdate;
-
+    return '<span class="badge badge-success">date:' + publishdate+'</span>';
 }
 function addLikes(likes){
-    return '<img class="rounded" src="/icon/like.svg" style="height: 20px;width: 20px;"/>' + likes;
+    return '<span class="badge badge-danger">likes:' + likes+"</span>";
 }
 function addEyes(eyes) {
-    return '<img class="rounded" src="/icon/eye.svg" style="height: 20px;width: 20px;"/>'+eyes;
+    return '<span class="badge badge-info">eyes:'+eyes+'</span>';
 }

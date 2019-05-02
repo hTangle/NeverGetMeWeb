@@ -3,7 +3,9 @@ package com.nevergetme.nevergetmeweb.restcontroller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.nevergetme.nevergetmeweb.bean.Article;
+import com.nevergetme.nevergetmeweb.bean.Tags;
 import com.nevergetme.nevergetmeweb.bean.User;
+import com.nevergetme.nevergetmeweb.config.StaticConfigParam;
 import com.nevergetme.nevergetmeweb.service.ArticleService;
 import com.nevergetme.nevergetmeweb.utility.ContentUtility;
 import org.apache.ibatis.annotations.Param;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -90,14 +93,17 @@ public class ArticleRestContent {
             @RequestParam(value = "articleContent", required = true) String articleContent,
             @RequestParam(value = "articleTitle", required = true) String articleTitle,
             @RequestParam(value = "articleShortcut",required = true)String articleShortcut,
+            @RequestParam(value = "articleOriginal",required = true)int articleOriginal,
+            @RequestParam(value = "articleTags",required = true)int articleTags,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         Map<String, String> map = new HashMap<>();
-        User user= ContentUtility.getUser();
-        if(user!=null&&user.getId()!=0) {
-            Article article = new Article(user.getId(), articleTitle, articleContent, articleShortcut);
-            articleService.createNewArticle(article);
+        HttpSession session = request.getSession();
+        if(session.getAttribute(StaticConfigParam.LOGIN_IN_USER_ID)!=null) {
+            int id = (Integer) session.getAttribute(StaticConfigParam.LOGIN_IN_USER_ID);
+            Article article = new Article(id, articleTitle, articleContent, articleShortcut,articleOriginal);
+            articleService.createNewArticle(article,articleTags);
             map.put("artilceId", "" + article.getId());
         }else{
             map.put("error","login in first");
@@ -125,7 +131,12 @@ public class ArticleRestContent {
     ) {
         if(pageNum<1)pageNum=1;
         if(pageSize<5)pageSize=5;
-        PageHelper.startPage(pageNum,pageSize);
-        return new PageInfo<>(articleService.getArticleList());
+        PageHelper.startPage(pageNum,StaticConfigParam.PAGE_SIZE);
+        return new PageInfo<>(articleService.getArticleList(pageNum));
+    }
+
+    @RequestMapping("/article/getAllTags")
+    public @ResponseBody List<Tags> getAllTags(){
+        return articleService.getAllTags();
     }
 }

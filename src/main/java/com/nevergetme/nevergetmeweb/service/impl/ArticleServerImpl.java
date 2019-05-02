@@ -1,6 +1,8 @@
 package com.nevergetme.nevergetmeweb.service.impl;
 
 import com.nevergetme.nevergetmeweb.bean.Article;
+import com.nevergetme.nevergetmeweb.bean.Tags;
+import com.nevergetme.nevergetmeweb.config.StaticConfigParam;
 import com.nevergetme.nevergetmeweb.mapper.ArticleMapper;
 import com.nevergetme.nevergetmeweb.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class ArticleServerImpl implements ArticleService {
     private final String ARTICLE_KEY = "article_";
-    private final String ARTICLE_LIST_KEY = "article_list";
+
     @Autowired
     private ArticleMapper articleMapper;
     @Autowired
@@ -52,9 +55,12 @@ public class ArticleServerImpl implements ArticleService {
     }
 
     @Override
-    public int createNewArticle(Article article) {
+    @Transactional
+    public int createNewArticle(Article article,int tagid) {
         ValueOperations<String, Article> operations = redisTemplate.opsForValue();
-        int articleID = articleMapper.createNewArticle(article);
+        articleMapper.createNewArticle(article);
+        int articleID =article.getId();
+        articleMapper.setArticleTags(articleID,tagid);
         if (articleID != 0) {
             String key = ARTICLE_KEY + articleID;
             if (redisTemplate.hasKey(key)) {
@@ -71,12 +77,12 @@ public class ArticleServerImpl implements ArticleService {
 
     private void updateArticleListInRedis() {
         ListOperations<String, Article> operations = redisTemplate.opsForList();
-        if (redisTemplate.hasKey(ARTICLE_LIST_KEY)) {
-            operations.leftPop(ARTICLE_LIST_KEY);
+        int pages=(int)Math.ceil(articleMapper.getTotalArticleCount()*1.0/StaticConfigParam.PAGE_SIZE);
+        for(int i=0;i<=pages;i++){
+            if(redisTemplate.hasKey(StaticConfigParam.ARTICLE_LIST_KEY+i)){
+                redisTemplate.delete(StaticConfigParam.ARTICLE_LIST_KEY+i);
+            }
         }
-        List<Article> articleList = articleMapper.getArticleList();
-        if (articleList != null && articleList.size() > 0)
-            operations.rightPushAll(ARTICLE_LIST_KEY, articleList);
     }
 
     /**
@@ -86,16 +92,19 @@ public class ArticleServerImpl implements ArticleService {
      * @return
      */
     @Override
-    public List<Article> getArticleList() {
+    public List<Article> getArticleList(int pageNum) {
         return articleMapper.getArticleList();
 //        ListOperations<String,Article> operations=redisTemplate.opsForList();
-//        if(redisTemplate.hasKey(ARTICLE_LIST_KEY)){
+//        String key=StaticConfigParam.ARTICLE_LIST_KEY+pageNum;
+//        if(redisTemplate.hasKey(key)){
 //            System.out.println("read article list from redis");
-//            return operations.range(ARTICLE_LIST_KEY,0,-1);
+//            return operations.range(key,0,-1);
 //        }else{
 //            List<Article> articleList=articleMapper.getArticleList();
-//            if(articleList!=null&&articleList.size()>0)
-//                operations.rightPushAll(ARTICLE_LIST_KEY,articleList);
+//            if(articleList!=null&&articleList.size()>0){
+//                operations.rightPushAll(key,articleList);
+//            }
+//                //
 //            return articleList;
 //        }
     }
@@ -103,5 +112,15 @@ public class ArticleServerImpl implements ArticleService {
     @Override
     public void updateVisitTimes(int id) {
         articleMapper.updateVisitTimes(id);
+    }
+
+    @Override
+    public List<Tags> getAllTags(){
+        return articleMapper.getAllTags();
+    }
+
+    @Override
+    public void setArticleTags(int articleId,int tagid){
+        articleMapper.setArticleTags(articleId,tagid);
     }
 }

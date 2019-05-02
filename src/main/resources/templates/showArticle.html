@@ -21,7 +21,7 @@
 <body>
 <div th:replace="header::html"></div>
 <div class="container" style="margin-top: 10px;margin-bottom: 10px">
-    <div class="card" id="articleCard">
+    <div class="card mb-3 shadow-lg p-3 bg-white rounded" id="articleCard">
         <div class="card-header">
             <h1 id="articleTitle"></h1>
             <p class="card-text"><small class="text-muted" id="articleSvg"></small></p>
@@ -53,6 +53,7 @@
                     $(document).attr("title",data.title);
                     var testEditor = editormd.markdownToHTML("test-editormd", {
                         markdown:data.content ,
+                        atLink    : false,    // disable @link
                         htmlDecode: "style,script,iframe",  // you can filter tags decode
                     });
                     $("#articleCard").show();
@@ -64,7 +65,6 @@
 
     });
 </script>
-<script th:src="@{/js/header.js}"></script>
 <script>
     readUserInfo();
 </script>

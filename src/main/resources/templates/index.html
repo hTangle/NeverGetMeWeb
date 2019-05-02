@@ -76,18 +76,25 @@
         var appendHtml = '';
         for (var i in articleList) {
             var article = articleList[i];
-            appendHtml = appendHtml + '<div class="card mb-3">\n' +
-                '                <div class="card-body">\n' +
-                '<h4 class="card-title"><a href="/article/showArticle/' + article.id + '"\n' +
-                'style="color: #000000">' + article.title + '</a></h4>' +
-                '                    <p class="card-text">' + article.shortcut + '</p>\n' +
-                '                </div>\n' +
-                '<div class="card-footer text-muted">\n' +
-                '<img class="rounded" src="/icon/user-w.svg" style="height: 20px;width: 20px;"/>'+article.author.username+
-                '<img class="rounded" src="/icon/date.svg" style="height: 20px;width: 20px;"/>' + article.publishDate +
-                '<img class="rounded" src="/icon/like.svg" style="height: 20px;width: 20px;"/>' + article.likes + '' +
-                '<img class="rounded" src="/icon/eye.svg" style="height: 20px;width: 20px;"/>'+article.visitTimes+
-                '  </div></div>';
+            appendHtml=appendHtml+'<div class="card mb-3 shadow-lg p-3 bg-white rounded"><div class="card-body">';
+            appendHtml = appendHtml + '\n' +
+                '                \n' +
+                '<div class="card-title"><h3><a href="/article/showArticle/' + article.id + '"\n' +
+                'style="color: #000000">' + article.title + '</a></h3>' +
+                '<div class="text-muted">\n' +
+                '<span class="badge badge-secondary">author:'+article.author.username+
+                '</span><span class="badge badge-success">date:' + article.publishDate +
+                '</span><span class="badge badge-info">eyes:'+article.visitTimes+
+                '</span></div>' +
+                '</div>' +
+                '<div class="card-text">' + article.shortcut + '<a href="/article/showArticle/'+article.id+'">阅读全文</a>\n' +
+                '</div>\n';
+            var tagsList=article.tagsList;
+            appendHtml=appendHtml+'<div class="card-text text-muted">'
+            for(var j in tagsList){
+                appendHtml=appendHtml+'<span class="badge badge-warning">'+tagsList[j].value+'</span>';
+            }
+            appendHtml=appendHtml+'</div></div></div>';
         }
         $("#articleTables").append(appendHtml);
     }
