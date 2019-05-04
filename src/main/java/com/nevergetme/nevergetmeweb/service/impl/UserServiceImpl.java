@@ -43,6 +43,14 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
+    @Override
+    public User findUserByUserEmailAndPassword(String email, String password) {
+        try {
+            return userMapper.findUserByUserEmailAndPassword(email, ContentUtility.encodeByMd5(password));
+        }catch (Exception e){
+            return null;
+        }
+    }
 
     @Override
     public User findUserByPhone(String phone) {
@@ -52,5 +60,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(User user) {
         userMapper.createUser(user);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userMapper.findUserByEmail(email);
     }
 }

@@ -6,10 +6,13 @@
     <link rel="shortcut" th:href="@{/icon/java.svg}"/>
     <link rel="stylesheet" th:href="@{/plug/editor.md-master/css/editormd.css}">
     <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+
     <script th:src="@{/plug/editor.md-master/editormd.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap-select.js}"></script>
     <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/css/bootstrap-select.css}" rel="stylesheet">
     <!--引入插件-->
     <script th:src="@{/plug/editor.md-master/plugins/image-handle-paste/image-handle-paste.js}"></script>
 
@@ -67,7 +70,7 @@
                     <div class="input-group-prepend">
                         <label class="input-group-text" for="inputGroupSelect01">类型</label>
                     </div>
-                    <select class="custom-select" id="inputGroupSelect01">
+                    <select class="custom-select " id="inputGroupSelect01">
                         <option value="0">原创</option>
                         <option value="1">转载</option>
                     </select>
@@ -76,7 +79,7 @@
                     <div class="input-group-append">
                         <label class="input-group-text" for="inputGroupSelect02">Tags</label>
                     </div>
-                    <select class="custom-select" id="inputGroupSelect02">
+                    <select name="inputGroupSelect02" class="selectpicker show-tick form-control" multiple data-live-search="true" data-actions-box="true" id="inputGroupSelect02">
                     </select>
                 </div>
             </div>
@@ -132,6 +135,7 @@
     });
     testEditor.imagePaste();
     $(document).ready(function () {
+        $('.selectpicker').selectpicker();
         $.get("/article/getAllTags",function (data,status) {
             if(data){
                 var appendSelector='';
@@ -139,7 +143,11 @@
                     var tag=data[i];
                     appendSelector=appendSelector+'<option value="'+tag.id+'">'+tag.value+'</option>';
                 }
-                $("#inputGroupSelect02").append(appendSelector);
+                console.log(appendSelector);
+                $(".selectpicker").html(appendSelector);
+                $('.selectpicker').selectpicker('refresh');//动态刷新
+                // $("#inputGroupSelect02").append(appendSelector);
+                // $("#setTagForArticle").modal('show');
             }
         });
         $("#button-addon2").click(function () {
@@ -174,13 +182,18 @@
         });
         $("#SaveArticle").click(function () {
             console.log($("#inputGroupSelect01").val(),$("#inputGroupSelect02").val());
+            var tags=$("#inputGroupSelect02").val();
+            var articleTags='';
+            for(var t in tags){
+                articleTags=articleTags+tags[t]+",";
+            }
             $.post("/article/createArticle",
                 {
                     articleTitle: $("#articleTitle").val(),
                     articleContent: testEditor.getMarkdown(),
                     articleShortcut: testEditor.getHTML(),
                     articleOriginal:$("#inputGroupSelect01").val(),
-                    articleTags:$("#inputGroupSelect02").val()
+                    articleTags:articleTags
                 },
                 function (data, status) {
                     // console.log(data);Editor.md Ctrl+V粘贴上传图片

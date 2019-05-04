@@ -6,29 +6,21 @@
 <body>
 <nav class="navbar navbar-expand-lg shadow navbar-light bg-light sticky-top">
     <a class="navbar-brand" href="/">Nevergetme</a>
-<!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
-<!--            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--        <span class="navbar-toggler-icon"></span>-->
-<!--    </button>-->
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-<!--            <li class="nav-item active">-->
-<!--                <a class="nav-link" href="/">Home</a>-->
-<!--            </li>-->
             <li class="nav-item">
-                <a class="nav-link" href="/editArticle">写博客</a>
+                <a class="nav-link" href="/editArticle" id="GoToWritePage">写博客</a>
             </li>
         </ul>
         <ul class="navbar-nav my-2 my-lg-0" id="footerUser">
             <li class="nav-item">
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    <button  class="btn btn-light">Search</button>
                 </form>
             </li>
             <li class="nav-item">
-                <button class="btn btn-outline-success my-2 my-sm-0" id="logInOrLogout" >Logouts</button>
+                <button  class="btn btn-light" id="logInOrLogout" >Logouts</button>
             </li>
         </ul>
     </div>
@@ -46,23 +38,90 @@
             </div>
             <div class="modal-body" id="receiverShow" style="color:black">
                 <form>
-                    <div class="form-group row">
-                        <label for="loginInFormUserName" class="col-sm-2 col-form-label">Username</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control-plaintext" id="loginInFormUserName">
+                    <div class="form-group">
+                        <label for="LoginModalEmail">Email</label>
+                        <input type="email" class="form-control" id="LoginModalEmail" placeholder="Email">
+                        <div class="invalid-feedback">
+                            请输入正确的Email
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="loginInFormPassword" class="col-sm-2 col-form-label">Password</label>
-                        <div class="col-sm-10">
-                            <input type="password" class="form-control" id="loginInFormPassword" placeholder="Password">
+                    <div class="form-group">
+                        <label for="LoginModalPassword">Password</label>
+                        <input type="password" class="form-control" id="LoginModalPassword" placeholder="password">
+                        <div class="invalid-feedback">
+                            密码长度不小于6，只能包含数字字母和标点符号
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <a id="LoginInFormMessage"></a>
+                <button type="button" class="btn btn-secondary" id="GoToRegisterFromLogin">注册</button>
                 <button type="button" class="btn btn-secondary" id="LoginInButton">LoginIn</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:black">注册</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="color:black">
+                <form>
+                    <div class="form-group">
+                        <label for="RegisterModalEmail">Email</label>
+                        <input type="email" class="form-control" id="RegisterModalEmail" placeholder="Email">
+                        <div class="invalid-feedback">
+                            请输入正确的Email,不要使用被别人注册过的email
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="RegisterModalUserName">Username</label>
+                        <input type="text" class="form-control" id="RegisterModalUserName">
+                        <div class="invalid-feedback">
+                            用户名长度小于10
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="RegisterModalPassword">Password</label>
+                            <input type="password" class="form-control" id="RegisterModalPassword" placeholder="password">
+                            <div class="invalid-feedback">
+                                密码长度不小于6，只能包含数字字母和标点符号
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="RegisterModalRepeatPassword">Repeat Password</label>
+                            <input type="password" class="form-control" id="RegisterModalRepeatPassword" placeholder="Password">
+                            <div class="invalid-feedback">
+                                请保持前后输入密码一致
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label for="RegisterModalAuthCode">验证码</label>
+                            <input type="number" class="form-control" id="RegisterModalAuthCode">
+                            <div class="invalid-feedback">
+                                请输入验证码，验证码可能出现在垃圾箱中
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="RegisterModalGetAuthCode" style="color: #FFFFFF">验证码</label>
+                            <button type="button" class="btn btn-secondary" id="RegisterModalGetAuthCode">获取验证码</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="RegisterModalButton">注册</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>

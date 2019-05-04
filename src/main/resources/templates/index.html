@@ -83,16 +83,16 @@
                 'style="color: #000000">' + article.title + '</a></h3>' +
                 '<div class="text-muted">\n' +
                 '<span class="badge badge-secondary">author:'+article.author.username+
-                '</span><span class="badge badge-success">date:' + article.publishDate +
-                '</span><span class="badge badge-info">eyes:'+article.visitTimes+
-                '</span></div>' +
+                '</span><span class="badge badge-light"> </span><span class="badge badge-success">date:' + article.publishDate +
+                '</span><span class="badge badge-light"> </span><span class="badge badge-info">eyes:'+article.visitTimes+
+                '  </span></div>' +
                 '</div>' +
                 '<div class="card-text">' + article.shortcut + '<a href="/article/showArticle/'+article.id+'">阅读全文</a>\n' +
                 '</div>\n';
             var tagsList=article.tagsList;
             appendHtml=appendHtml+'<div class="card-text text-muted">'
             for(var j in tagsList){
-                appendHtml=appendHtml+'<span class="badge badge-warning">'+tagsList[j].value+'</span>';
+                appendHtml=appendHtml+'<span class="badge badge-warning">'+tagsList[j].value+'</span><span class="badge badge-light"> </span>';
             }
             appendHtml=appendHtml+'</div></div></div>';
         }

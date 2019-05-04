@@ -9,7 +9,7 @@ public interface ArticleService {
     List<Article> findAllArticle();
     List<Article> findUserArticle(int userid);
     Article getArticleById(int id);
-    int createNewArticle(Article article,int tagid);
+    int createNewArticle(Article article,List<Integer> tagid);
     List<Article> getArticleList(int pageNum);
     void updateVisitTimes(int id);
     List<Tags> getAllTags();

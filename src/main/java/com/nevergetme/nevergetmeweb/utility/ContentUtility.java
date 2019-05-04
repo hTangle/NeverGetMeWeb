@@ -1,6 +1,7 @@
 package com.nevergetme.nevergetmeweb.utility;
 
 import com.nevergetme.nevergetmeweb.bean.User;
+import com.nevergetme.nevergetmeweb.config.StaticConfigParam;
 import org.jsoup.Jsoup;
 
 import java.io.UnsupportedEncodingException;
@@ -34,6 +35,10 @@ public class ContentUtility {
             sb.append(str.charAt(uuidRandom.nextInt(62)));
         }
         return sb.toString();
+    }
+    public static int getRandomInteger(){
+        ThreadLocalRandom authCodeRandom=ThreadLocalRandom.current();
+        return authCodeRandom.nextInt(StaticConfigParam.EMAIL_CODE_BEGIN,StaticConfigParam.EMAIL_CODE_MAXIMUM);
     }
     public static String getArticleShortCut(String articleContent){
         String s=Jsoup.parse(articleContent).text();

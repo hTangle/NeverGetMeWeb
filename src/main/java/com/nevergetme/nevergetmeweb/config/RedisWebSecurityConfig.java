@@ -15,11 +15,12 @@ public class RedisWebSecurityConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(interceptor).
                 addPathPatterns("/editArticle").
-                addPathPatterns("/createUser").
+                excludePathPatterns("/createUser").
                 addPathPatterns("/user/logout").
                 addPathPatterns("/article/createArticle").
                 addPathPatterns("/article/uploadImage").
                 excludePathPatterns("/user/login").
+                excludePathPatterns("/user/getAuthCode").
                 excludePathPatterns("/").
                 excludePathPatterns("/404").
                 excludePathPatterns("/article/*").

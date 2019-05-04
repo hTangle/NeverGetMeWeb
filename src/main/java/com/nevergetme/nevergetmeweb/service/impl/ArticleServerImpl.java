@@ -56,11 +56,12 @@ public class ArticleServerImpl implements ArticleService {
 
     @Override
     @Transactional
-    public int createNewArticle(Article article,int tagid) {
+    public int createNewArticle(Article article,List<Integer> tagid) {
         ValueOperations<String, Article> operations = redisTemplate.opsForValue();
         articleMapper.createNewArticle(article);
         int articleID =article.getId();
-        articleMapper.setArticleTags(articleID,tagid);
+        for(int k:tagid)
+            articleMapper.setArticleTags(articleID,k);
         if (articleID != 0) {
             String key = ARTICLE_KEY + articleID;
             if (redisTemplate.hasKey(key)) {

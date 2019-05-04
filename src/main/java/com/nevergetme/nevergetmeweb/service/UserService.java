@@ -5,13 +5,14 @@ import com.nevergetme.nevergetmeweb.bean.User;
 import java.util.List;
 
 public interface UserService {
-    public List<User> findAllUser();
-    public List<User> findUser(String username);
-    public User findUserByUserId(Integer id);
-    public User findUserByUserName(String username);
-    public User findUserByUserNameAndPassword(String username,String password);
-    public User findUserByPhone(String phone);
-    public void createUser(User user);
-
+    List<User> findAllUser();
+    List<User> findUser(String username);
+    User findUserByUserId(Integer id);
+    User findUserByUserName(String username);
+    User findUserByUserNameAndPassword(String username,String password);
+    User findUserByUserEmailAndPassword(String email,String password);
+    User findUserByPhone(String phone);
+    void createUser(User user);
+    User findUserByEmail(String email);
     //public List<User> findExistUser();
 }

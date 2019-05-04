@@ -25,8 +25,14 @@
     <select id="findUserByUserNameAndPassword" parameterType="java.lang.String" resultType="com.nevergetme.nevergetmeweb.bean.User">
         select id,user_uuid,username from user where username=#{username} and password=#{password}
     </select>
+    <select id="findUserByUserEmailAndPassword" parameterType="java.lang.String" resultType="com.nevergetme.nevergetmeweb.bean.User">
+        select id,user_uuid,username from user where email=#{email} and password=#{password}
+    </select>
+    <select id="findUserByEmail" parameterType="java.lang.String" resultType="com.nevergetme.nevergetmeweb.bean.User">
+        select id from user where email=#{email}
+    </select>
     <insert id="createUser" parameterType="com.nevergetme.nevergetmeweb.bean.User">
-        insert into user(id,user_uuid,username,password,role,image)
-        values(#{id}, #{user_uuid}, #{username}, #{password}, #{role}, #{image})
+        insert into user(user_uuid,username,password,email,image)
+        values(#{user_uuid}, #{username}, #{password}, #{email}, #{image})
     </insert>
 </mapper>

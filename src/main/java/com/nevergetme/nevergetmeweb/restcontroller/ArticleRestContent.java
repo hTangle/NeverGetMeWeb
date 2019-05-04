@@ -23,10 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @RestController
 @EnableAutoConfiguration
@@ -94,7 +91,7 @@ public class ArticleRestContent {
             @RequestParam(value = "articleTitle", required = true) String articleTitle,
             @RequestParam(value = "articleShortcut",required = true)String articleShortcut,
             @RequestParam(value = "articleOriginal",required = true)int articleOriginal,
-            @RequestParam(value = "articleTags",required = true)int articleTags,
+            @RequestParam(value = "articleTags",required = true)String articleTags,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
@@ -103,7 +100,15 @@ public class ArticleRestContent {
         if(session.getAttribute(StaticConfigParam.LOGIN_IN_USER_ID)!=null) {
             int id = (Integer) session.getAttribute(StaticConfigParam.LOGIN_IN_USER_ID);
             Article article = new Article(id, articleTitle, articleContent, articleShortcut,articleOriginal);
-            articleService.createNewArticle(article,articleTags);
+            List<Integer> arttcleTagsList=new ArrayList<>();
+            if(articleTags.length()>4) {
+                String[] tags = articleTags.split(",");
+                for (int i = 0; i < tags.length; i++) {
+                    if(tags[i].length()>3)
+                        arttcleTagsList.add(Integer.parseInt(tags[i]));
+                }
+            }
+            articleService.createNewArticle(article,arttcleTagsList);
             map.put("artilceId", "" + article.getId());
         }else{
             map.put("error","login in first");
