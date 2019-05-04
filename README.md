@@ -1,5 +1,9 @@
 # NeverGetMeWeb
 
+## 更新
+* 新增了注册界面
+* 能够通过邮箱注册
+
 ## 更新 2019-05-02
 * 更改了container样式，能够显示阴影
 * 更改了header和footer的颜色
