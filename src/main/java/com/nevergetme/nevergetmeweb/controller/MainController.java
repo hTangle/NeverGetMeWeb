@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.nevergetme.nevergetmeweb.bean.Article;
 import com.nevergetme.nevergetmeweb.bean.User;
+import com.nevergetme.nevergetmeweb.config.StaticConfigParam;
 import com.nevergetme.nevergetmeweb.service.ArticleService;
 import com.nevergetme.nevergetmeweb.utility.ContentUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class MainController {
@@ -37,24 +39,49 @@ public class MainController {
     }
 
     @GetMapping("/article/showArticle/{articleId}")
+     /**
+     　　* @description: TODO
+     　　* @param [articleId, response, model, request]
+     　　* @return java.lang.String
+     　　* @throws
+     　　* @author Alden He
+     　　* @date 2019/5/6 15:02
+     　　*/
     public String showArticle(@PathVariable("articleId") int articleId,
                               HttpServletResponse response,
                               Model model,
                               HttpServletRequest request) {
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
-        //articleService.getArticleById()
-//        Article article = articleService.getArticleById(articleId);
-//        if (article != null && article.getTitle() != null) {
-//            model.addAttribute("article", article);
-//            articleService.updateVisitTimes(articleId);
-//        }
         if(articleId>0){
             model.addAttribute("articleID",articleId);
             response.setHeader("articleId", articleId + "");
             return "showArticle";
         }
         return "404";
+    }
+
+    @GetMapping("/editArticle/{articleId}")
+    public String updateArticle(@PathVariable("articleId") int articleId,
+                                HttpServletResponse response,
+                                Model model,
+                                HttpServletRequest request){
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        HttpSession session=request.getSession();
+        if(session.getAttribute(StaticConfigParam.LOGIN_IN_USER_ID)!=null){
+            int authorId=(Integer) session.getAttribute(StaticConfigParam.LOGIN_IN_USER_ID);
+            Article article=articleService.getArticleByUserIDAndID(articleId,authorId);
+            if(article==null){
+                return "404";
+            }else{
+                model.addAttribute("article",article);
+                return "editArticle";
+            }
+        }else{
+            return "404";
+        }
+
     }
 
     @GetMapping("/editArticle")

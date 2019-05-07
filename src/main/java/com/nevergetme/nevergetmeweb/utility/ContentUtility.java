@@ -4,6 +4,8 @@ import com.nevergetme.nevergetmeweb.bean.User;
 import com.nevergetme.nevergetmeweb.config.StaticConfigParam;
 import org.jsoup.Jsoup;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -55,5 +57,13 @@ public class ContentUtility {
 //            }
 //        }
 //        return articleContent.substring(index);
+    }
+    public static int getCurrentUserId(HttpServletRequest request){
+        HttpSession session=request.getSession();
+        if(session.getAttribute(StaticConfigParam.LOGIN_IN_USER_ID)!=null){
+            return (Integer)session.getAttribute(StaticConfigParam.LOGIN_IN_USER_ID);
+        }else{
+            return -1;
+        }
     }
 }

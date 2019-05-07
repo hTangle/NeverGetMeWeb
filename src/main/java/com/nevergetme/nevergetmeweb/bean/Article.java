@@ -50,7 +50,8 @@ public class Article implements Serializable {
         this.likes = likes;
     }
 
-    public Article(int authorId, String title, String content) {
+    public Article(int id,int authorId, String title, String content) {
+        this.id=id;
         this.title = title;
         this.authorId = authorId;
         this.content = content;

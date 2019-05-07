@@ -53,6 +53,33 @@ public class ArticleServerImpl implements ArticleService {
             return article;
         }
     }
+    @Override
+    public Article getArticleByUserIDAndID(int id,int authorId){
+        Article article=getArticleById(id);
+        if(article.getAuthor().getId()==authorId){
+            return article;
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+     /**
+     　　* @description: TODO
+     　　* @param [article] 
+     　　* @return int
+     　　* @throws 
+     　　* @author Alden He
+     　　* @date 2019/5/6 15:47
+     　　*/
+    public int updateArticleByIdAndUserid(Article article){
+        int status=articleMapper.updateArticleByIdAndUserid(article);
+        String key = ARTICLE_KEY + article.getId();
+        if (redisTemplate.hasKey(key)) {
+            redisTemplate.delete(key);
+        }
+        return status;
+    }
 
     @Override
     @Transactional

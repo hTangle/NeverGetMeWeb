@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nevergetme.nevergetmeweb.mapper.ArticleCommentMapper">
+    <resultMap id="articleCommentsWithUser" type="com.nevergetme.nevergetmeweb.bean.ArticleComment">
+        <id column="id" property="id"/>
+        <result column="commentUserId" property="commentUserId"/>
+        <result column="articleId" property="articleId"/>
+        <result column="content" property="content"/>
+        <result column="createTime" property="createTime"/>
+        <association property="user" javaType="com.nevergetme.nevergetmeweb.bean.User">
+            <id property="id" column="user_id"/>
+            <result property="username" column="username"/>
+            <result property="image" column="image"/>
+        </association>
+    </resultMap>
+    <select id="getArticleCommentsByArticleId" parameterType="java.lang.Integer" resultMap="articleCommentsWithUser">
+        select A.id,A.commentUserId,A.articleId,A.content,A.createTime,
+        U.id as user_id,U.username,U.image from ArticleComments A left join user U on A.commentUserId=U.id
+         where A.articleId=#{id}
+    </select>
+    <insert id="addArticleComment" parameterType="com.nevergetme.nevergetmeweb.bean.ArticleComment" useGeneratedKeys="true" keyProperty="id">
+        insert into ArticleComments(commentUserId,articleId,content) values(#{commentUserId},#{articleId},#{content})
+    </insert>
+</mapper>

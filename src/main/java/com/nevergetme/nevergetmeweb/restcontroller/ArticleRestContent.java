@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.nevergetme.nevergetmeweb.bean.Article;
 import com.nevergetme.nevergetmeweb.bean.Tags;
-import com.nevergetme.nevergetmeweb.bean.User;
 import com.nevergetme.nevergetmeweb.config.StaticConfigParam;
 import com.nevergetme.nevergetmeweb.service.ArticleService;
 import com.nevergetme.nevergetmeweb.utility.ContentUtility;
@@ -89,29 +88,50 @@ public class ArticleRestContent {
     Map<String, String> createArticle(
             @RequestParam(value = "articleContent", required = true) String articleContent,
             @RequestParam(value = "articleTitle", required = true) String articleTitle,
-            @RequestParam(value = "articleShortcut",required = true)String articleShortcut,
-            @RequestParam(value = "articleOriginal",required = true)int articleOriginal,
-            @RequestParam(value = "articleTags",required = true)String articleTags,
+            @RequestParam(value = "articleShortcut", required = true) String articleShortcut,
+            @RequestParam(value = "articleOriginal", required = true) int articleOriginal,
+            @RequestParam(value = "articleTags", required = true) String articleTags,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         Map<String, String> map = new HashMap<>();
-        HttpSession session = request.getSession();
-        if(session.getAttribute(StaticConfigParam.LOGIN_IN_USER_ID)!=null) {
-            int id = (Integer) session.getAttribute(StaticConfigParam.LOGIN_IN_USER_ID);
-            Article article = new Article(id, articleTitle, articleContent, articleShortcut,articleOriginal);
-            List<Integer> arttcleTagsList=new ArrayList<>();
-            if(articleTags.length()>4) {
+        int id;
+        if ((id= ContentUtility.getCurrentUserId(request))!=-1) {
+            Article article = new Article(id, articleTitle, articleContent, articleShortcut, articleOriginal);
+            List<Integer> arttcleTagsList = new ArrayList<>();
+            if (articleTags.length() > 4) {
                 String[] tags = articleTags.split(",");
                 for (int i = 0; i < tags.length; i++) {
-                    if(tags[i].length()>3)
+                    if (tags[i].length() > 3)
                         arttcleTagsList.add(Integer.parseInt(tags[i]));
                 }
             }
-            articleService.createNewArticle(article,arttcleTagsList);
+            articleService.createNewArticle(article, arttcleTagsList);
             map.put("artilceId", "" + article.getId());
+        } else {
+            map.put("error", "login in first");
+        }
+        return map;
+    }
+
+    @RequestMapping(value = "/article/updateArticle")
+    public @ResponseBody
+    Map<String, String> updateArticle(@RequestParam(value = "articleContent", required = true) String articleContent,
+                                      @RequestParam(value = "articleTitle", required = true) String articleTitle,
+                                      @RequestParam(value = "articleID", required = true) int articleID,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) {
+        Map<String, String> map = new HashMap<>();
+        HttpSession session = request.getSession();
+        int userId;
+        if ((userId=ContentUtility.getCurrentUserId(request))!=-1) {
+            Article article = new Article(articleID,userId,articleTitle,articleContent);
+            int status=articleService.updateArticleByIdAndUserid(article);
+            map.put("status",""+status);
+            map.put("success","1");
+            map.put("articleID",""+articleID);
         }else{
-            map.put("error","login in first");
+            map.put("success","0");
         }
         return map;
     }
@@ -129,19 +149,20 @@ public class ArticleRestContent {
     @RequestMapping("/article/getArticleList")
     public @ResponseBody
     PageInfo<Article> getArtilceList(
-            @Param(value = "pageNum")int pageNum,
-            @Param(value = "pageSize")int pageSize,
+            @Param(value = "pageNum") int pageNum,
+            @Param(value = "pageSize") int pageSize,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        if(pageNum<1)pageNum=1;
-        if(pageSize<5)pageSize=5;
-        PageHelper.startPage(pageNum,StaticConfigParam.PAGE_SIZE);
+        if (pageNum < 1) pageNum = 1;
+        if (pageSize < 5) pageSize = 5;
+        PageHelper.startPage(pageNum, StaticConfigParam.PAGE_SIZE);
         return new PageInfo<>(articleService.getArticleList(pageNum));
     }
 
     @RequestMapping("/article/getAllTags")
-    public @ResponseBody List<Tags> getAllTags(){
+    public @ResponseBody
+    List<Tags> getAllTags() {
         return articleService.getAllTags();
     }
 }

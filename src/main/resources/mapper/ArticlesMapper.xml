@@ -64,6 +64,10 @@
          update article set visitTimes=visitTimes+1 where id=#{id}
     </update>
 
+    <update id="updateArticleByIdAndUserid" parameterType="com.nevergetme.nevergetmeweb.bean.Article" useGeneratedKeys="true" keyProperty="id">
+        update article set content=#{content},title=#{title} where id=#{id} and authorId=#{authorId}
+    </update>
+
     <select id="getAllTags" resultType="com.nevergetme.nevergetmeweb.bean.Tags">
         select * from tags;
     </select>

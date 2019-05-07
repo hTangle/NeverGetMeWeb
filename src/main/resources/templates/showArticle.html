@@ -24,7 +24,9 @@
     <div class="card mb-3 shadow-lg p-3 bg-white rounded" id="articleCard">
         <div class="card-header">
             <h1 id="articleTitle"></h1>
-            <p class="card-text"><small class="text-muted" id="articleSvg"></small></p>
+            <p class="card-text">
+                <small class="text-muted" id="articleSvg"></small>
+            </p>
         </div>
         <div class="card-body">
             <div id="layout" class="editor">
@@ -34,45 +36,110 @@
             </div>
         </div>
         <div class="card-footer">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <form>
+                <div class="form-group">
+                    <textarea class="form-control border border-primary" aria-label="With textarea"
+                              id="articleCommentContent"></textarea>
+                    <div class="invalid-feedback">
+                        评论长度不能大于100
+                    </div>
+                </div>
+                <button type="button" id="addArticleComment" style="float: right" class="btn btn-primary"
+                        data-toggle="button" aria-pressed="false"
+                        autocomplete="off">
+                    发表评论
+                </button>
+            </form>
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-top: 10px">
                 <li class="nav-item">
-                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">评论</a>
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#commentsLists" role="tab"
+                       aria-controls="home" aria-selected="true">评论</a>
                 </li>
             </ul>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
+            <div class="tab-content shadow-lg" id="myTabContent">
+                <div class="tab-pane fade show active" id="commentsLists" role="tabpanel" aria-labelledby="home-tab">
+                </div>
             </div>
         </div>
     </div>
 </div>
+</div>
 <div th:replace="footer::html"></div>
 <script th:inline="javascript">
-    var articleID=[[${articleID}]];
+    var articleID = [[${articleID}]];
 </script>
 <script th:src="@{/js/header.js}"></script>
 <script>
     $("#articleCard").hide();
-    $(document).ready(function (){
+    $(document).ready(function () {
         $.post("/article/getArticle",
             {
-                articleId:articleID
+                articleId: articleID
             },
             function (data, status) {
                 if (data && status == 'success') {
                     $("#articleTitle").text(data.title);
-                    $(document).attr("title",data.title);
+                    $(document).attr("title", data.title);
                     var testEditor = editormd.markdownToHTML("test-editormd", {
-                        markdown:data.content ,
-                        atLink    : false,    // disable @link
+                        markdown: data.content,
+                        atLink: false,    // disable @link
                         htmlDecode: "style,script,iframe",  // you can filter tags decode
                     });
                     $("#articleCard").show();
-                    $("#articleSvg").append(addUser(data.author.username)+addDate(data.publishDate)+addLikes(data.likes));
-                }else{
-                    window.location.href="/404";
+                    $("#articleSvg").append(addUser(data.author.username) + addDate(data.publishDate) + addLikes(data.likes));
+                } else {
+                    window.location.href = "/404";
                 }
             });
+        $.post("/comments/getComments", {
+            articleId: articleID
+        }, function (data, status) {
+            console.log(data);
+            if(data){
+                var appendHtml='';
+                for(var i in data){
+                    var comments=data[i];
+                    appendHtml=appendHtml+'<div class="card mb-3">\n' +
+                        '<div class="row no-gutters">\n' +
+                        '<div class="card-body">\n' +
+                        '<h5 class="card-title"><img class="rounded-circle" src="'+comments.user.image+'" style="height: 30px;width: 30px;"/>\n' +
+                        comments.user.username+'<small class="text-muted" style="float: right">'+comments.createTime+'</small></h5>\n' +
+                        '<p class="card-text">' +comments.content+
+                        '</p>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
+                }
+                $("#commentsLists").append(appendHtml);
+            }
+        });
+    });
+    $("#addArticleComment").click(function () {
+        if ($("#articleCommentContent").val() != "" && $("#articleCommentContent").val().length <= 100) {
+            $.post("/comments/addComments", {
+                articleId: articleID,
+                content: $("#articleCommentContent").val()
+            }, function (data, status) {
+                if(data){
+                    window.location.reload();
+                }
+            });
+        }
+    });
+    $("#articleCommentContent").bind("input propertychange", function () {
+        if ($("#articleCommentContent").val().length <= 100) {
+            if ($("#articleCommentContent").hasClass("is-invalid")) {
+                $("#articleCommentContent").removeClass("is-invalid");
+            }
+            $("#addArticleComment").attr("disabled", false);
+        } else {
+            if (!$("#articleCommentContent").hasClass("is-invalid")) {
+                $("#articleCommentContent").addClass("is-invalid");
+            }
+            $("#addArticleComment").attr("disabled", false);
 
+        }
     });
 </script>
 <script>

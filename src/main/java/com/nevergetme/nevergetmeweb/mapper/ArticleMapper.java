@@ -17,4 +17,5 @@ public interface ArticleMapper {
     List<Tags> getTagsByArticleId(int id);
     List<Tags> getAllTags();
     void setArticleTags(int articleId,int tagid);
+    int updateArticleByIdAndUserid(Article article);
 }
