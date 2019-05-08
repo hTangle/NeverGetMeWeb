@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nevergetme.nevergetmeweb.mapper.ReplyCommentMapper">
+    <resultMap id="ReplyCommentWithUser" type="com.nevergetme.nevergetmeweb.bean.ReplyComment">
+        <id column="id" property="id"/>
+        <result column="articleId" property="articleId"/>
+        <result column="commentId" property="commentId"/>
+        <result column="replyUserId" property="replyUserId"/>
+        <result column="repliedUserId" property="repliedUserId"/>
+        <result column="content" property="content"/>
+        <result column="createTime" property="createTime"/>
+        <association property="user" javaType="com.nevergetme.nevergetmeweb.bean.User">
+            <id property="id" column="user_id"/>
+            <result property="username" column="username"/>
+            <result property="image" column="image"/>
+        </association>
+    </resultMap>
+    <insert id="addReplyCommentMapper" parameterType="com.nevergetme.nevergetmeweb.bean.ReplyComment" useGeneratedKeys="true" keyProperty="id">
+        insert into ReplyComment(articleId,commentId,replyUserId,repliedUserId,content)
+        values(#{articleId},#{commentId},#{replyUserId},#{repliedUserId},#{content})
+    </insert>
+    <select id="getReplyCommentsByCommentId" parameterType="java.lang.Integer" resultMap="ReplyCommentWithUser">
+        select R.id,R.articleId,R.commentId,R.replyUserId,R.repliedUserId,R.content,R.createTime,
+                U.id as user_id,U.username,U.image from ReplyComment R
+                left join user U on R.replyUserId=U.id
+                where R.commentId=#{id}
+    </select>
+</mapper>

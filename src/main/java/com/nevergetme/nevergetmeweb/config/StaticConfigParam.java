@@ -1,6 +1,10 @@
 package com.nevergetme.nevergetmeweb.config;
 
 public class StaticConfigParam {
+    public static final int USER_ID_BEGIN=10000;
+    public static final int ARTICLE_ID_BEGIN=100000;
+    public static final int COMMENT_MAX_LENGTH=100;
+
     public static final String LOGIN_IN_USER="login_user_";
     public static final String LOGIN_IN_USER_ID="loginInUserID";
     public static final long EXIPRE_TIME=10*24*60*60;

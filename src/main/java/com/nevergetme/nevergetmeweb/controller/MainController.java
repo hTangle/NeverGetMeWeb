@@ -55,6 +55,7 @@ public class MainController {
         response.setContentType("text/html;charset=utf-8");
         if(articleId>0){
             model.addAttribute("articleID",articleId);
+            model.addAttribute("userId",ContentUtility.getCurrentUserId(request));
             response.setHeader("articleId", articleId + "");
             return "showArticle";
         }

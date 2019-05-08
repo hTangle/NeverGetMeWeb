@@ -1,3 +1,4 @@
+var userLoginStatus=false;
 function readUserInfo() {
     $.post("/getCurrentUser",
         {
@@ -6,9 +7,11 @@ function readUserInfo() {
             if (data && status == 'success') {
                 var appendHtml = '';
                 if(data.id!=0){
+                    userLoginStatus=true;
                     $("#logInOrLogout").text("Logout");
                     appendHtml=appendHtml+'<li class="nav-item"><img class="rounded" src="'+data.image+'" style="height: 30px;width: 30px;"/></li>';
                 }else{
+                    userLoginStatus=false;
                     $("#logInOrLogout").text("Login");
                     $("#GoToWritePage").hide();
                 }

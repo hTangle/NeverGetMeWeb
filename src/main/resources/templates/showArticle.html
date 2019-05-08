@@ -36,19 +36,17 @@
             </div>
         </div>
         <div class="card-footer">
-            <form>
+            <form class="mb-3">
                 <div class="form-group">
                     <textarea class="form-control border border-primary" aria-label="With textarea"
                               id="articleCommentContent"></textarea>
                     <div class="invalid-feedback">
-                        评论长度不能大于100
+                        评论长度不能大于100也不能为空
                     </div>
                 </div>
-                <button type="button" id="addArticleComment" style="float: right" class="btn btn-primary"
-                        data-toggle="button" aria-pressed="false"
-                        autocomplete="off">
-                    发表评论
-                </button>
+                <div class="form-group">
+                    <a href="#" class="btn btn-primary disabled" role="button" id="addArticleComment" style="float: right">发表评论</a>
+                </div>
             </form>
 
             <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-top: 10px">
@@ -65,12 +63,58 @@
     </div>
 </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="ReplyComment" tabindex="-1" role="dialog" aria-labelledby="ReplyCommentTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ReplyCommentTitle">回复</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="mb-3">
+                    <div class="form-group">
+                    <textarea class="form-control border border-primary" aria-label="With textarea"
+                              id="ReplyCommentContent"></textarea>
+                        <div class="invalid-feedback">
+                            评论长度不能大于100也不能为空
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="ReplyCommentSend">发表回复</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div th:replace="footer::html"></div>
 <script th:inline="javascript">
     var articleID = [[${articleID}]];
+    var userID=[[${userId}]];
 </script>
 <script th:src="@{/js/header.js}"></script>
 <script>
+    function getReplyComments(replyCommentList){
+        var appendHtml='';
+        for(var i in replyCommentList){
+            var replyCom=replyCommentList[i];
+            appendHtml=appendHtml+'<div class="card">\n' +
+                '<div class="row no-gutters">\n' +
+                '<div class="card-body">\n' +
+                '<h5 class="card-title"><img class="rounded-circle" src="'+replyCom.user.image+'" style="height: 30px;width: 30px;"/>\n' +
+                replyCom.user.username+'<small class="text-muted" style="float: right">'+replyCom.createTime+'</small></h5>\n' +
+                '<p class="card-text">' +replyCom.content+
+                '</p><a href="javascript:showReplyCommentDialog('+replyCom.commentId+','+replyCom.replyUserId+');">回复</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+        }
+        return appendHtml;
+    }
     $("#articleCard").hide();
     $(document).ready(function () {
         $.post("/article/getArticle",
@@ -100,13 +144,14 @@
                 var appendHtml='';
                 for(var i in data){
                     var comments=data[i];
-                    appendHtml=appendHtml+'<div class="card mb-3">\n' +
+                    appendHtml=appendHtml+'<div class="card">\n' +
                         '<div class="row no-gutters">\n' +
                         '<div class="card-body">\n' +
                         '<h5 class="card-title"><img class="rounded-circle" src="'+comments.user.image+'" style="height: 30px;width: 30px;"/>\n' +
                         comments.user.username+'<small class="text-muted" style="float: right">'+comments.createTime+'</small></h5>\n' +
                         '<p class="card-text">' +comments.content+
-                        '</p>' +
+                        '</p><a href="javascript:showReplyCommentDialog('+comments.id+','+comments.commentUserId+');">回复</a>' +
+                        getReplyComments(comments.replyCommentList)+
                         '</div>' +
                         '</div>' +
                         '</div>';
@@ -114,6 +159,10 @@
                 $("#commentsLists").append(appendHtml);
             }
         });
+        if(userID==-1){
+            $("#articleCommentContent").attr("disabled","disabled");
+            $("#articleCommentContent").text("登录后发表评论");
+        }
     });
     $("#addArticleComment").click(function () {
         if ($("#articleCommentContent").val() != "" && $("#articleCommentContent").val().length <= 100) {
@@ -127,20 +176,67 @@
             });
         }
     });
+    $("#ReplyCommentSend").click(function () {
+        if($("#ReplyCommentContent").val()!=""&&$("#ReplyCommentContent").val().length<=100){
+            addReplyComment($("#ReplyCommentContent").val());
+        }
+
+    });
     $("#articleCommentContent").bind("input propertychange", function () {
-        if ($("#articleCommentContent").val().length <= 100) {
+        if ($("#articleCommentContent").val().length <= 100&&$("#articleCommentContent").val()!="") {
             if ($("#articleCommentContent").hasClass("is-invalid")) {
                 $("#articleCommentContent").removeClass("is-invalid");
             }
-            $("#addArticleComment").attr("disabled", false);
+            if($("#addArticleComment").hasClass("disabled"))
+                $("#addArticleComment").removeClass("disabled");
         } else {
             if (!$("#articleCommentContent").hasClass("is-invalid")) {
                 $("#articleCommentContent").addClass("is-invalid");
             }
-            $("#addArticleComment").attr("disabled", false);
-
+            if(!$("#addArticleComment").hasClass("disabled"))
+                $("#addArticleComment").addClass("disabled");
         }
     });
+    $("#ReplyCommentContent").bind("input propertychange", function () {
+        if ($("#ReplyCommentContent").val().length <= 100&&$("#ReplyCommentContent").val()!="") {
+            if ($("#ReplyCommentContent").hasClass("is-invalid")) {
+                $("#ReplyCommentContent").removeClass("is-invalid");
+            }
+            if($("#ReplyCommentSend").hasClass("disabled"))
+                $("#ReplyCommentSend").removeClass("disabled");
+        } else {
+            if (!$("#ReplyCommentContent").hasClass("is-invalid")) {
+                $("#ReplyCommentContent").addClass("is-invalid");
+            }
+            if(!$("#ReplyCommentSend").hasClass("disabled"))
+                $("#ReplyCommentSend").addClass("disabled");
+        }
+    });
+    var commentIdCurrent,repliedUserIdCurrent;
+
+    function addReplyComment(content) {
+        $.post("/comments/addReplyComment",{
+            articleId:articleID,
+            commentId:commentIdCurrent,
+            repliedUserId:repliedUserIdCurrent,
+            content:content
+        },function (data,status) {
+            if(data){
+                window.location.reload();
+            }
+        });
+    }
+
+    function showReplyCommentDialog(commentId,repliedUserId) {
+        if(userID!=-1){
+            commentIdCurrent=commentId;
+            repliedUserIdCurrent=repliedUserId;
+            $("#ReplyComment").modal("show");
+        }else{
+
+        }
+
+    }
 </script>
 <script>
     readUserInfo();

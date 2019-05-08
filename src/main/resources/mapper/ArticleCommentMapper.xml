@@ -12,6 +12,7 @@
             <result property="username" column="username"/>
             <result property="image" column="image"/>
         </association>
+        <collection property="replyCommentList" column="id" select="com.nevergetme.nevergetmeweb.mapper.ReplyCommentMapper.getReplyCommentsByCommentId"/>
     </resultMap>
     <select id="getArticleCommentsByArticleId" parameterType="java.lang.Integer" resultMap="articleCommentsWithUser">
         select A.id,A.commentUserId,A.articleId,A.content,A.createTime,

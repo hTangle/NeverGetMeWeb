@@ -2,6 +2,8 @@ package com.nevergetme.nevergetmeweb.bean;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Create by Alden He on 2019/5/7
  */
@@ -13,6 +15,7 @@ public class ArticleComment {
     private int articleId;//评论的文章id
     private String content;//评论内容
     private String createTime;//评论的日期
+    private List<ReplyComment> replyCommentList;
     public ArticleComment(){}
     public ArticleComment(int commentUserId,int articleId,String content){
         this.articleId=articleId;
