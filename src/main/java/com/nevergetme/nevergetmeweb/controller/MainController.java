@@ -99,4 +99,9 @@ public class MainController {
     public String get404(){
         return "404";
     }
+
+    @GetMapping("/admin")
+    public String getAdmin(){
+        return "admin";
+    }
 }

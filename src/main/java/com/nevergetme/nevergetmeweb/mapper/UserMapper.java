@@ -10,7 +10,7 @@ public interface UserMapper {
     List<User> findAll();
     List<User> findUser(String username);
     User findUserByUserId(Integer id);
-    User findUserByUserName(String username);
+//    User findUserByUserName(String username);
     User findUserByPhone(String phone);
     void createUser(User user);
     User findUserByUserNameAndPassword(String username,String password);

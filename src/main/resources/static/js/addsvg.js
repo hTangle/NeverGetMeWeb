@@ -10,3 +10,7 @@ function addLikes(likes){
 function addEyes(eyes) {
     return '<span class="badge badge-info">eyes:'+eyes+'</span><span class="badge badge-light"> </span>';
 }
+
+function modifyTitleAndIdToATag(title,id) {
+    return '<a href="/article/showArticle/'+id+'">'+title+'</a>';
+}

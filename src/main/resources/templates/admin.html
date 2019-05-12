@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>NeverGetMe</title>
+    <link rel="shortcut" th:href="@{/icon/java.svg}"/>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script th:src="@{js/popper.min.js}"></script>
+    <script th:src="@{plug/echarts/echarts.min.js}"></script>
+</head>
+<body>
+<div th:replace="header::html"></div>
+<div class="container-fluid mb-3 mt-3">
+    <div class="row">
+        <div class="col-2">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">用户管理</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">博客管理</a>
+                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">统计数据</a>
+                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+            </div>
+        </div>
+        <div class="col-10">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">uuid</th>
+                            <th scope="col">username</th>
+                            <th scope="col">email</th>
+                            <th scope="col">telephone</th>
+                            <th scope="col">role</th>
+                        </tr>
+                        </thead>
+                        <tbody id="userTableShow">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">author</th>
+                            <th scope="col">title</th>
+                            <th scope="col">publishDate</th>
+                            <th scope="col">likes</th>
+                            <th scope="col">visitTimes</th>
+                            <th scope="col">isOriginal</th>
+                            <th scope="col">tags</th>
+                        </tr>
+                        </thead>
+                        <tbody id="articleTableShow">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                    <div id="statisticalData" style="width: 600px;height:400px;"></div>
+                    <div id="TagsArticleCountStatistics" style="width: 600px;height:400px;"></div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="footer::html"></div>
+<script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/addsvg.js}"></script>
+<script>
+    readUserInfo();
+    var myChart = echarts.init(document.getElementById('statisticalData'));
+    var tagsArticleCountStatisticsChart=echarts.init(document.getElementById("TagsArticleCountStatistics"));
+</script>
+<script>
+    function loadECharData(myData,chart){
+        // 指定图表的配置项和数据
+        option = {
+            title: {
+                text: myData.title
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            toolbox: {
+                feature: {
+                    dataView: {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            legend: {
+                data:myData.tips
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: myData.xData,
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: '数量',
+                    axisLabel: {
+                        formatter: '{value}'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name:myData.amountName,
+                    type:'bar',
+                    data:myData.amount
+                },
+                {
+                    name:myData.sumName,
+                    type:'line',
+                    data:myData.sum
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        chart.setOption(option);
+    }
+    function loadPieChartData(title,name,myData,chart){
+        var option = {
+            title : {
+                text: title,
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: myData.legendData
+            },
+            series : [
+                {
+                    name: name,
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:myData.seriesData,
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        chart.setOption(option);
+    }
+    $(document).ready(function () {
+       $.post("/admin/getUserList",{},function (data,statue) {
+           if(data){
+               var appendHtml='';
+               for(var i in data){
+                   var user=data[i];
+                   appendHtml=appendHtml+'<tr>\n' +
+                       '<th scope="row">'+user.id+'</th>' +
+                       '<td>'+user.user_uuid+'</td>' +
+                       '<td>'+user.username+'</td>' +
+                       '<td>'+user.email+'</td><td>'+user.telephone+'</td><td>'+user.role+'</td></tr>';
+               }
+               $("#userTableShow").append(appendHtml);
+           }
+       });
+       $.post("/admin/getArticleList",{},function (data,statue) {
+           if(data){
+               var appendHtml='';
+               for(var i in data){
+                   var article=data[i];
+                   var tags='';
+                   for(var j in article.tagsList){
+                       var tag=article.tagsList[j];
+                       tags+=tag.value+' ';
+                   }
+                   appendHtml+='<tr><th scope="row">'+article.id+'</th><td>' +article.author.username+
+                       '</td><td>' +modifyTitleAndIdToATag(article.title,article.id)+
+                       '</td><td>' +article.publishDate+
+                       '</td><td>' +article.likes+
+                       '</td><td>' +article.visitTimes+
+                       '</td><td>' +article.isOriginal+
+                       '</td><td>' +tags+
+                       '</td></tr>';
+               }
+               $("#articleTableShow").append(appendHtml);
+           }
+       });
+       $.post("/admin/getStatisticalDataOfPublishDate",{},function (data,status) {
+           if(data){
+               var myData={};
+               myData.title="博客发布日期统计图";
+               myData.tips=["博客数量","博客总量"];
+               myData.xData=[];
+               myData.amountName="当天发布博客数量";
+               myData.sumName="发布文章总和";
+               myData.amount=[]
+               myData.sum=[]
+               var sum=0;
+               for(var i in data){
+                   var s=data[i];
+                   myData.xData.push(s.publishDate);
+                   myData.amount.push(s.dailyCount);
+                   sum+=s.dailyCount;
+                   myData.sum.push(sum);
+               }
+               loadECharData(myData,myChart);
+               // console.log(data);
+           }
+       });
+       $.post("/admin/getTagsOfArticleCountStatistics",{},function (data,status) {
+          if(data){
+              var xData={legendData:[],seriesData:[]};
+              for(var i in data){
+                  var s=data[i];
+                  xData.legendData.push(s.value);
+                  xData.seriesData.push({value:s.amount,name:s.value});
+                  // xData.push({value:s.amount,name:});
+              }
+              loadPieChartData("文章标签统计图","文章数量",xData,tagsArticleCountStatisticsChart);
+          }
+       });
+    });
+</script>
+</body>
+</html>

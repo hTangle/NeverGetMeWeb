@@ -8,7 +8,7 @@
         <result column="phone" property="phone"/>
     </resultMap>
     <select id="findAll" resultType="user">
-        select * from user
+        select id,user_uuid,username,email,telephone,role from user
     </select>
     <select id="findUser" parameterType="java.lang.String" resultType="com.nevergetme.nevergetmeweb.bean.User">
         select id,password from user where username=#{username}
@@ -17,10 +17,10 @@
         select * from user where username=#{username}
     </select>
     <select id="findUserByUserId" parameterType="java.lang.Integer" resultType="com.nevergetme.nevergetmeweb.bean.User">
-        select * from user where id=#{id}
+        select id,email,image,username,role from user where id=#{id}
     </select>
     <select id="findUserByPhone" parameterType="java.lang.String" resultType="com.nevergetme.nevergetmeweb.bean.User">
-        select * from user where phone=#{phone}
+        select id from user where phone=#{phone}
     </select>
     <select id="findUserByUserNameAndPassword" parameterType="java.lang.String" resultType="com.nevergetme.nevergetmeweb.bean.User">
         select id,user_uuid,username from user where username=#{username} and password=#{password}

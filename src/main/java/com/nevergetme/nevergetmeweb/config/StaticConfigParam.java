@@ -18,4 +18,6 @@ public class StaticConfigParam {
     public static final String REGISTER_EMAIL_CODE_REDIS="send_email_";
     public static final String DEFAULT_USER_ROLE="0";
     public static final String DEFAULT_USER_IMAGE="/icon/user.svg";
+
+    public static final String ADMIN_ROLE="10";
 }

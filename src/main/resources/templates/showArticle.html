@@ -129,6 +129,11 @@
                         markdown: data.content,
                         atLink: false,    // disable @link
                         htmlDecode: "style,script,iframe",  // you can filter tags decode
+                        emoji: false,
+                        atLink: false,    // disable @link
+                        taskList: true,
+                        tocm: true,         // Using [TOCM]
+                        tex: true,                   // 开启科学公式TeX语言支持，默认关闭
                     });
                     $("#articleCard").show();
                     $("#articleSvg").append(addUser(data.author.username) + addDate(data.publishDate) + addLikes(data.likes));

@@ -1,6 +1,7 @@
 package com.nevergetme.nevergetmeweb.mapper;
 
 import com.nevergetme.nevergetmeweb.bean.Article;
+import com.nevergetme.nevergetmeweb.bean.PublishDateStatistical;
 import com.nevergetme.nevergetmeweb.bean.Tags;
 import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
@@ -18,4 +19,6 @@ public interface ArticleMapper {
     List<Tags> getAllTags();
     void setArticleTags(int articleId,int tagid);
     int updateArticleByIdAndUserid(Article article);
+
+    List<PublishDateStatistical> getStatisticalDataOfPublishDate();
 }

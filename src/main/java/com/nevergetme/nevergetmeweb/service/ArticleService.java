@@ -1,6 +1,7 @@
 package com.nevergetme.nevergetmeweb.service;
 
 import com.nevergetme.nevergetmeweb.bean.Article;
+import com.nevergetme.nevergetmeweb.bean.PublishDateStatistical;
 import com.nevergetme.nevergetmeweb.bean.Tags;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface ArticleService {
     void updateVisitTimes(int id);
     List<Tags> getAllTags();
     void setArticleTags(int articleId,int tagid);
+    List<PublishDateStatistical> getStatisticalDataOfPublishDate();
 }

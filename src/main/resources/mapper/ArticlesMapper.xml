@@ -30,8 +30,13 @@
         <collection property="tagsList" column="id" select="com.nevergetme.nevergetmeweb.mapper.ArticleMapper.getTagsByArticleId"/>
     </resultMap>
 
-    <select id="getAllArticle" resultType="com.nevergetme.nevergetmeweb.bean.Article">
-        select * from article
+    <select id="getAllArticle" resultMap="articleResultMapList">
+        select article.id,article.title,article.shortcut,
+               DATE_FORMAT(article.publishDate,'%Y-%m-%d') publishDate,
+               DATE_FORMAT(article.updateDate,'%Y-%m-%d') updateDate,article.likes,article.visitTimes,
+               user.id as user_id,user.username
+        from article left join user on article.authorId=user.id
+        order by article.id desc
     </select>
     <select id="getUserArticle" parameterType="java.lang.Integer" resultType="com.nevergetme.nevergetmeweb.bean.Article">
         select * from article where authorId=#{userid}
@@ -74,4 +79,7 @@
     <insert id="setArticleTags"  parameterType="java.lang.Integer">
         insert into articleTags(tagid,articleid) values(#{tagid},#{articleId})
     </insert>
+    <select id="getStatisticalDataOfPublishDate" resultType="com.nevergetme.nevergetmeweb.bean.PublishDateStatistical">
+        select DATE_FORMAT(publishDate,'%Y-%m-%d') publishDate,count(*) dailyCount from article group by DATE_FORMAT(publishDate,'%Y-%m-%d');
+    </select>
 </mapper>

@@ -10,11 +10,13 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ContentUtility {
     private static final int SHORT_CUT_LINE=2;
+    public static void main(String[] args) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        System.out.println(encodeByMd5("he187127..."));
+    }
     public static String encodeByMd5(String string) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         // 确定计算方法
         MessageDigest md5 = MessageDigest.getInstance("MD5");

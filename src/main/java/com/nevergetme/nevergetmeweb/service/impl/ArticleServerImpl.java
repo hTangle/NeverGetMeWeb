@@ -1,6 +1,7 @@
 package com.nevergetme.nevergetmeweb.service.impl;
 
 import com.nevergetme.nevergetmeweb.bean.Article;
+import com.nevergetme.nevergetmeweb.bean.PublishDateStatistical;
 import com.nevergetme.nevergetmeweb.bean.Tags;
 import com.nevergetme.nevergetmeweb.config.StaticConfigParam;
 import com.nevergetme.nevergetmeweb.mapper.ArticleMapper;
@@ -150,5 +151,10 @@ public class ArticleServerImpl implements ArticleService {
     @Override
     public void setArticleTags(int articleId,int tagid){
         articleMapper.setArticleTags(articleId,tagid);
+    }
+
+    @Override
+    public List<PublishDateStatistical> getStatisticalDataOfPublishDate(){
+        return articleMapper.getStatisticalDataOfPublishDate();
     }
 }

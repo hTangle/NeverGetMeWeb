@@ -100,6 +100,7 @@
     }
     function updateFooter(data){
         if(data>=5){//fixed-bottom sticky-bottom
+            //不小于5的时候应该sticky-bottom
             if($("#footer").hasClass("fixed-bottom")){
                 $("#footer").removeClass("fixed-bottom");
             }
