@@ -9,6 +9,7 @@
         <result column="updateDate" property="updateDate"/>
         <result column="likes" property="likes"/>
         <result column="visitTimes" property="visitTimes"/>
+        <result column="isStick" property="isStick"/>
         <association property="author" javaType="com.nevergetme.nevergetmeweb.bean.User">
             <id property="id" column="user_id"/>
             <result property="username" column="username"/>
@@ -23,6 +24,7 @@
         <result column="likes" property="likes"/>
         <result column="visitTimes" property="visitTimes"/>
         <result column="shortcut" property="shortcut"/>
+        <result column="isStick" property="isStick"/>
         <association property="author" javaType="com.nevergetme.nevergetmeweb.bean.User">
             <id property="id" column="user_id"/>
             <result property="username" column="username"/>
@@ -33,10 +35,10 @@
     <select id="getAllArticle" resultMap="articleResultMapList">
         select article.id,article.title,article.shortcut,
                DATE_FORMAT(article.publishDate,'%Y-%m-%d') publishDate,
-               DATE_FORMAT(article.updateDate,'%Y-%m-%d') updateDate,article.likes,article.visitTimes,
+               DATE_FORMAT(article.updateDate,'%Y-%m-%d') updateDate,article.likes,article.visitTimes,isStick,
                user.id as user_id,user.username
         from article left join user on article.authorId=user.id
-        order by article.id desc
+        order by isStick desc,article.id desc
     </select>
     <select id="getUserArticle" parameterType="java.lang.Integer" resultType="com.nevergetme.nevergetmeweb.bean.Article">
         select * from article where authorId=#{userid}
@@ -44,7 +46,7 @@
     <select id="getArticleById" parameterType="java.lang.Integer" resultMap="articleResultMap">
         select article.id,article.title,article.content,
                DATE_FORMAT(article.publishDate,'%Y-%m-%d %H:%i:%s') publishDate,
-               DATE_FORMAT(article.updateDate,'%Y-%m-%d %H:%i:%s') updateDate,article.likes,
+               DATE_FORMAT(article.updateDate,'%Y-%m-%d %H:%i:%s') updateDate,article.likes,isStick,
                user.id as user_id,user.username
                from article left join user on article.authorId=user.id where article.id=#{id}
     </select>

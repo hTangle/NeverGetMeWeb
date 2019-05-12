@@ -32,14 +32,12 @@ public class AdminRestController {
     private StatisticsService statisticsService;
 
     public boolean isAdmin(HttpServletRequest request){
-        int id;
-        if((id= ContentUtility.getCurrentUserId(request))!=-1){
-            User user=userService.findUserByUserId(id);
-            if(StaticConfigParam.ADMIN_ROLE.equals(user.getRole())){
-                return true;
-            }
+        User user;
+        if((user=ContentUtility.getCurrentUser(request))!=null&&StaticConfigParam.ADMIN_ROLE.equals(user.getRole())){
+            return true;
+        }else {
+            return false;
         }
-        return false;
     }
 
     @RequestMapping(value = "/admin/getUserList")

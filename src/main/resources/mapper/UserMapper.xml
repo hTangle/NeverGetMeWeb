@@ -26,7 +26,7 @@
         select id,user_uuid,username from user where username=#{username} and password=#{password}
     </select>
     <select id="findUserByUserEmailAndPassword" parameterType="java.lang.String" resultType="com.nevergetme.nevergetmeweb.bean.User">
-        select id,user_uuid,username from user where email=#{email} and password=#{password}
+        select id,user_uuid,username,email,role from user where email=#{email} and password=#{password}
     </select>
     <select id="findUserByEmail" parameterType="java.lang.String" resultType="com.nevergetme.nevergetmeweb.bean.User">
         select id from user where email=#{email}

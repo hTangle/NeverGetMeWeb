@@ -77,6 +77,7 @@ public class UserRestController {
             if(user!=null){
                 HttpSession session=request.getSession();
                 session.setAttribute(StaticConfigParam.LOGIN_IN_USER_ID,user.getId());
+                session.setAttribute(StaticConfigParam.LOGIN_USER,user);
                 map.put("state","1");
             }else{
                 map.put("state","0");
@@ -90,8 +91,10 @@ public class UserRestController {
     public @ResponseBody Map<String,String> userLogOut(HttpServletRequest request){
         Map<String,String> map=new HashMap<>();
         HttpSession session=request.getSession();
-        if(session.getAttribute(StaticConfigParam.LOGIN_IN_USER_ID)!=null)
+        if(session.getAttribute(StaticConfigParam.LOGIN_IN_USER_ID)!=null) {
             session.removeAttribute(StaticConfigParam.LOGIN_IN_USER_ID);
+            session.removeAttribute(StaticConfigParam.LOGIN_USER);
+        }
         map.put("state","1");
         return map;
     }

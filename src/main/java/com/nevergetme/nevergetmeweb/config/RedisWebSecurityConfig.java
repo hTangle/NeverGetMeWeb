@@ -1,6 +1,7 @@
 package com.nevergetme.nevergetmeweb.config;
 
 import com.nevergetme.nevergetmeweb.interceptor.RedisSessionInterceptor;
+import com.nevergetme.nevergetmeweb.interceptor.RedisSessionRoleInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -11,8 +12,11 @@ import javax.annotation.Resource;
 public class RedisWebSecurityConfig implements WebMvcConfigurer {
     @Resource
     private RedisSessionInterceptor interceptor;
+    @Resource
+    private RedisSessionRoleInterceptor redisSessionRoleInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(redisSessionRoleInterceptor).addPathPatterns("/admin").addPathPatterns("/admin/**");
         registry.addInterceptor(interceptor).
                 addPathPatterns("/editArticle").
                 excludePathPatterns("/createUser").
@@ -22,8 +26,6 @@ public class RedisWebSecurityConfig implements WebMvcConfigurer {
                 addPathPatterns("/user/logout").
                 addPathPatterns("/article/createArticle").
                 addPathPatterns("/article/uploadImage").
-                addPathPatterns("/admin").
-                addPathPatterns("/admin/*").
                 excludePathPatterns("/user/login").
                 excludePathPatterns("/user/getAuthCode").
                 excludePathPatterns("/").
@@ -37,19 +39,6 @@ public class RedisWebSecurityConfig implements WebMvcConfigurer {
                 excludePathPatterns("/source/**").
                 excludePathPatterns("/bootstrap/**").
                 excludePathPatterns("/getCurrentUser")
-        ;//.excludePathPatterns("/login.html").excludePathPatterns("/*.min.js.*");
+        ;
     }
-    //                antMatchers("/").permitAll().
-//                antMatchers("/404").permitAll().
-//                antMatchers("/article/*").permitAll().
-//                antMatchers("/article/showArticle/*").permitAll().
-//                antMatchers("/icon/**").permitAll().
-//                antMatchers("/js/**").permitAll().
-//                antMatchers("/css/**").permitAll().
-//                antMatchers("/plug/**").permitAll().
-//                antMatchers("/source/**").permitAll().
-//                antMatchers("/bootstrap/**").permitAll().
-////                antMatchers("/createUser").permitAll().
-//                antMatchers("/getCurrentUser").permitAll().
-//                antMatchers("/editArticle").permitAll().anyRequest().authenticated().
 }

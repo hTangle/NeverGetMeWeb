@@ -20,6 +20,7 @@ public class Article implements Serializable {
     private String shortcut;
     private int visitTimes;
     private int isOriginal;
+    private int isStick;
     List<Tags> tagsList;
 
     public Article() {

@@ -68,4 +68,12 @@ public class ContentUtility {
             return -1;
         }
     }
+    public static User getCurrentUser(HttpServletRequest request){
+        HttpSession session=request.getSession();
+        if(session.getAttribute(StaticConfigParam.LOGIN_USER)!=null){
+            return (User)session.getAttribute(StaticConfigParam.LOGIN_USER);
+        }else {
+            return null;
+        }
+    }
 }
