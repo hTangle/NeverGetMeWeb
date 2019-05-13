@@ -76,11 +76,15 @@
         var appendHtml = '';
         for (var i in articleList) {
             var article = articleList[i];
+            var isStickHtml='';
+            if(article.isStick==1){
+                isStickHtml='<h6 style="display: inline;"><span style="display: inline;" class="badge badge-danger">置顶</span></h6>';
+            }
             appendHtml=appendHtml+'<div class="card mb-3 shadow-lg p-3 bg-white rounded"><div class="card-body">';
             appendHtml = appendHtml + '\n' +
                 '                \n' +
-                '<div class="card-title"><h3><a href="/article/showArticle/' + article.id + '"\n' +
-                'style="color: #000000">' + article.title + '</a></h3>' +
+                '<div class="card-title"><h3 style="display: inline;"><a href="/article/showArticle/' + article.id + '"\n' +
+                'style="display: inline;color: #000000">' + article.title+isStickHtml + '</a>'+'</h3>' +
                 '<div class="text-muted">\n' +
                 '<span class="badge badge-secondary">author:'+article.author.username+
                 '</span><span class="badge badge-light"> </span><span class="badge badge-success">date:' + article.publishDate +

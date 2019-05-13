@@ -179,7 +179,15 @@
             if($("#articleTitle").val()&&$("#articleTitle").val()!=''){
                 if(testEditor.getMarkdown()&&testEditor.getMarkdown()!=''){
                     if(article){
-
+                        $.post("/article/updateArticle",{
+                            articleContent:testEditor.getMarkdown(),
+                            articleTitle:$("#articleTitle").val(),
+                            articleID:article.id
+                        },function (data,status) {
+                            if(data&&data.status){
+                                window.location.href = "/article/showArticle/" + article.id;
+                            }
+                        })
                     }else{
                         $("#setTagForArticle").modal('show');
                     }

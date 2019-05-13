@@ -59,10 +59,10 @@
     <select id="getArticleList" resultMap="articleResultMapList">
         select article.id,article.title,article.shortcut,
                DATE_FORMAT(article.publishDate,'%Y-%m-%d') publishDate,
-               DATE_FORMAT(article.updateDate,'%Y-%m-%d') updateDate,article.likes,article.visitTimes,
+               DATE_FORMAT(article.updateDate,'%Y-%m-%d') updateDate,article.likes,article.visitTimes,isStick,
                user.id as user_id,user.username
         from article left join user on article.authorId=user.id
-        order by article.id desc
+        order by isStick desc,article.id desc
     </select>
     <select id="getTotalArticleCount" resultType="java.lang.Integer">
         select count(*) from article;
@@ -73,6 +73,10 @@
 
     <update id="updateArticleByIdAndUserid" parameterType="com.nevergetme.nevergetmeweb.bean.Article" useGeneratedKeys="true" keyProperty="id">
         update article set content=#{content},title=#{title} where id=#{id} and authorId=#{authorId}
+    </update>
+
+    <update id="updateArticleIsStick" parameterType="java.lang.Integer">
+        update article set isStick=#{isStick} where id=#{id}
     </update>
 
     <select id="getAllTags" resultType="com.nevergetme.nevergetmeweb.bean.Tags">

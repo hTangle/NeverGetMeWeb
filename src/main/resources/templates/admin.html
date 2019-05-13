@@ -106,7 +106,10 @@
     var tagsArticleCountStatisticsChart=echarts.init(document.getElementById("TagsArticleCountStatistics"));
 </script>
 <script>
+    var method_id,method_item;
     function itemClickMethod(id,item) {
+        method_id=id;
+        method_item=item;
         $("#AdminSetModalTitle").text(id+item);
         $("#AdminSetModal").modal('show');
     }
@@ -205,44 +208,52 @@
         };
         chart.setOption(option);
     }
+    function updateUserList(){
+        $("#userTableShow").empty();
+        $.post("/admin/getUserList",{},function (data,statue) {
+            if(data){
+                var appendHtml='';
+                for(var i in data){
+                    var user=data[i];
+                    appendHtml=appendHtml+'<tr>\n' +
+                        '<th scope="row">'+user.id+'</th>' +
+                        '<td>'+user.user_uuid+'</td>' +
+                        '<td>'+user.username+'</td>' +
+                        '<td>'+user.email+'</td><td>'+user.telephone+'</td><td><button type="button" class="btn btn-link" onclick="itemClickMethod('+user.id+',\'role\')">'+user.role+'</button></td></tr>';
+                }
+                $("#userTableShow").append(appendHtml);
+            }
+        });
+    }
+    function updateArticleList(){
+        $("#articleTableShow").empty();
+        $.post("/admin/getArticleList",{},function (data,statue) {
+            if(data){
+                var appendHtml='';
+                for(var i in data){
+                    var article=data[i];
+                    var tags='';
+                    for(var j in article.tagsList){
+                        var tag=article.tagsList[j];
+                        tags+=tag.value+' ';
+                    }
+                    appendHtml+='<tr><th scope="row">'+article.id+'</th><td>' +article.author.username+
+                        '</td><td>' +modifyTitleAndIdToATag(article.title,article.id)+
+                        '</td><td>' +article.publishDate+
+                        '</td><td>' +article.likes+
+                        '</td><td>' +article.visitTimes+
+                        '</td><td>' +article.isOriginal+
+                        '</td><td><button type="button" class="btn btn-link" onclick="itemClickMethod('+article.id+',\'isStick\')">' +article.isStick+'</button>'+
+                        '</td><td>' +tags+
+                        '</td></tr>';
+                }
+                $("#articleTableShow").append(appendHtml);
+            }
+        });
+    }
     $(document).ready(function () {
-       $.post("/admin/getUserList",{},function (data,statue) {
-           if(data){
-               var appendHtml='';
-               for(var i in data){
-                   var user=data[i];
-                   appendHtml=appendHtml+'<tr>\n' +
-                       '<th scope="row">'+user.id+'</th>' +
-                       '<td>'+user.user_uuid+'</td>' +
-                       '<td>'+user.username+'</td>' +
-                       '<td>'+user.email+'</td><td>'+user.telephone+'</td><td><button type="button" class="btn btn-link" onclick="itemClickMethod('+user.id+',\'role\')">'+user.role+'</button></td></tr>';
-               }
-               $("#userTableShow").append(appendHtml);
-           }
-       });
-       $.post("/admin/getArticleList",{},function (data,statue) {
-           if(data){
-               var appendHtml='';
-               for(var i in data){
-                   var article=data[i];
-                   var tags='';
-                   for(var j in article.tagsList){
-                       var tag=article.tagsList[j];
-                       tags+=tag.value+' ';
-                   }
-                   appendHtml+='<tr><th scope="row">'+article.id+'</th><td>' +article.author.username+
-                       '</td><td>' +modifyTitleAndIdToATag(article.title,article.id)+
-                       '</td><td>' +article.publishDate+
-                       '</td><td>' +article.likes+
-                       '</td><td>' +article.visitTimes+
-                       '</td><td>' +article.isOriginal+
-                       '</td><td><button type="button" class="btn btn-link" onclick="itemClickMethod('+article.id+',\'isStick\')">' +article.isStick+'</button>'+
-                       '</td><td>' +tags+
-                       '</td></tr>';
-               }
-               $("#articleTableShow").append(appendHtml);
-           }
-       });
+        updateUserList();
+        updateArticleList();
        $.post("/admin/getStatisticalDataOfPublishDate",{},function (data,status) {
            if(data){
                var myData={};
@@ -277,6 +288,36 @@
               loadPieChartData("文章标签统计图","文章数量",xData,tagsArticleCountStatisticsChart);
           }
        });
+       $("#AdminSetModalInputEnter").click(function () {
+           if(method_item){
+               if(method_item=="role"){
+                    if(method_id&&$("#AdminSetModalInput").val()){
+                        $.post("/admin/updateUserRoleById",{
+                            userID:method_id,
+                            role:$("#AdminSetModalInput").val()
+                        },function (data,status) {
+                            if(data){
+                                $("#AdminSetModal").modal('hide');
+                                updateUserList();
+                            }
+                        });
+                    }
+               }else if(method_item=="isStick"){
+                    if(method_id&&$("#AdminSetModalInput").val()){
+                        $.post("/admin/updateArticleIsStick",{
+                            articleID:method_id,
+                            isStick:$("#AdminSetModalInput").val()
+                        },function (data,status) {
+                            console.log(status)
+                            if(status=="success"){
+                                $("#AdminSetModal").modal('hide');
+                                updateArticleList();
+                            }
+                        });
+                    }
+               }
+           }
+       })
     });
 </script>
 </body>

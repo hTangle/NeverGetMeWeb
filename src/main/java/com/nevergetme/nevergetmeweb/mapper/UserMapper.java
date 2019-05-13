@@ -16,4 +16,5 @@ public interface UserMapper {
     User findUserByUserNameAndPassword(String username,String password);
     User findUserByUserEmailAndPassword(String email,String password);
     User findUserByEmail(String email);
+    void updateUserRoleById(int id,int role);
 }

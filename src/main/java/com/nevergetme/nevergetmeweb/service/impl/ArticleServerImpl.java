@@ -157,4 +157,8 @@ public class ArticleServerImpl implements ArticleService {
     public List<PublishDateStatistical> getStatisticalDataOfPublishDate(){
         return articleMapper.getStatisticalDataOfPublishDate();
     }
+    @Override
+    public void updateArticleIsStick(int id,int isStick){
+        articleMapper.updateArticleIsStick(id,isStick);
+    }
 }

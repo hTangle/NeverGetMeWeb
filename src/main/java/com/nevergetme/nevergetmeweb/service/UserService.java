@@ -14,5 +14,6 @@ public interface UserService {
     User findUserByPhone(String phone);
     void createUser(User user);
     User findUserByEmail(String email);
+    void updateUserRoleById(int id,int role);
     //public List<User> findExistUser();
 }

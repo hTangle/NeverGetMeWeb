@@ -18,4 +18,5 @@ public interface ArticleService {
     List<Tags> getAllTags();
     void setArticleTags(int articleId,int tagid);
     List<PublishDateStatistical> getStatisticalDataOfPublishDate();
+    void updateArticleIsStick(int id,int isStick);
 }

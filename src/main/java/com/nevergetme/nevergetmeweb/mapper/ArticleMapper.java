@@ -21,4 +21,5 @@ public interface ArticleMapper {
     int updateArticleByIdAndUserid(Article article);
 
     List<PublishDateStatistical> getStatisticalDataOfPublishDate();
+    void updateArticleIsStick(int id,int isStick);
 }

@@ -35,4 +35,7 @@
         insert into user(user_uuid,username,password,email,image)
         values(#{user_uuid}, #{username}, #{password}, #{email}, #{image})
     </insert>
+    <update id="updateUserRoleById" parameterType="java.lang.Integer">
+        update user set role=#{role} where id=#{id}
+    </update>
 </mapper>

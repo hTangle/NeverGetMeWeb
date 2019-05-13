@@ -66,4 +66,9 @@ public class UserServiceImpl implements UserService {
     public User findUserByEmail(String email) {
         return userMapper.findUserByEmail(email);
     }
+
+    @Override
+    public void updateUserRoleById(int id,int role){
+        userMapper.updateUserRoleById(id,role);
+    }
 }
