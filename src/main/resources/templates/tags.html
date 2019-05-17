@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>NeverGetMe</title>
+    <link rel="shortcut" th:href="@{/icon/java.svg}"/>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script th:src="@{/js/popper.min.js}"></script>
+</head>
+<body>
+<div th:replace="header::html"></div>
+<div class="container" style="margin-top: 10px">
+    <div class="container">
+        <div class="container" id="articleTables">
+        </div>
+    </div>
+</div>
+<div th:replace="footer::html"></div>
+<script th:src="@{/js/articleList.js}"></script>
+<script th:inline="javascript">
+    var tagId=[[${tagId}]];
+</script>
+<script>
+    $(document).ready(function () {
+        if(tagId){
+            $.post("/article/getArticleListByTagId",{
+                tagId:tagId
+            },function (data,status) {
+
+                if(data){
+                    updateArticleList(data);
+                    updateFooter(data.length);
+                }
+            })
+        }
+
+    });
+</script>
+<script th:src="@{/js/header.js}"></script>
+<script>
+    readUserInfo();
+</script>
+</body>
+</html>

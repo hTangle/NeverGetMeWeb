@@ -21,6 +21,7 @@ public class Article implements Serializable {
     private int visitTimes;
     private int isOriginal;
     private int isStick;
+    private String cover;
     List<Tags> tagsList;
 
     public Article() {
@@ -65,5 +66,6 @@ public class Article implements Serializable {
         this.content = content;
         this.shortcut = ContentUtility.getArticleShortCut(shortcut);
         this.isOriginal=isOriginal;
+        this.cover=ContentUtility.getCoverFromContent(content);
     }
 }

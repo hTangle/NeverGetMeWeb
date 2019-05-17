@@ -8,6 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface ArticleMapper {
+    List<Article> findAllArticleWithoutUserAndTags();
     List<Article> getAllArticle();
     List<Article> getUserArticle(int userId);
     Article getArticleById(int id);
@@ -19,7 +20,8 @@ public interface ArticleMapper {
     List<Tags> getAllTags();
     void setArticleTags(int articleId,int tagid);
     int updateArticleByIdAndUserid(Article article);
-
+    List<Article> getArticleListByTagId(int tagid);
     List<PublishDateStatistical> getStatisticalDataOfPublishDate();
     void updateArticleIsStick(int id,int isStick);
+    void updateArticleCover(Article article);
 }

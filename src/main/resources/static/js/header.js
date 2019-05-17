@@ -1,4 +1,19 @@
 var userLoginStatus=false;
+function readHeaderTagsList() {
+    $.get("/article/getAllTags",function (data,status) {
+        if(data){
+            var appendHtml='';
+            for(var i in data){
+                var tag=data[i];
+                appendHtml+='<a class="dropdown-item" href="/tags/'+tag.id+'">'+tag.value+'</a>';
+                //appendHtml=appendHtml+'<option value="'+tag.id+'">'+tag.value+'</option>';
+            }
+            $("#HeaderTagsLists").empty();
+            $("#HeaderTagsLists").append(appendHtml);
+        }
+    });
+}
+readHeaderTagsList();
 function readUserInfo() {
     $.post("/getCurrentUser",
         {
@@ -8,14 +23,20 @@ function readUserInfo() {
                 var appendHtml = '';
                 if(data.id!=0){
                     userLoginStatus=true;
-                    $("#logInOrLogout").text("Logout");
-                    appendHtml=appendHtml+'<li class="nav-item"><img class="rounded" src="'+data.image+'" style="height: 30px;width: 30px;"/></li>';
+                    $("#logInOrLogout").hide();
+                    $("#UserLoginShowStatus").show();
+                    $("#GoToAdminPage").show();
+
+                    $("#LoginUserHeader").attr('src',data.image);
+                    // appendHtml=appendHtml+'<li class="nav-item"><img class="rounded" src="'+data.image+'" style="height: 30px;width: 30px;"/></li>';
                 }else{
                     userLoginStatus=false;
-                    $("#logInOrLogout").text("Login");
+                    $("#logInOrLogout").show();
+                    $("#UserLoginShowStatus").hide();
                     $("#GoToWritePage").hide();
+                    $("#GoToAdminPage").hide();
                 }
-                $("#footerUser").append(appendHtml);
+                // $("#footerUser").append(appendHtml);
             }
             console.log(status);
         });
@@ -28,15 +49,22 @@ function userLoginOut(){
         window.location.reload();
     });
 }
+//登录
+$("#LoginUserLogout").click(function () {
+    userLoginOut();
+});
 $("#logInOrLogout").click(function () {
     // console.log("click here");
-    console.log($("#logInOrLogout").text());
-    if($("#logInOrLogout").text()=="Logout"){
-        userLoginOut();
-    }else{
-        $("#LoginInFormMessage").hide();
-        $("#exampleModalCenter").modal('show');
-    }
+    //userLoginOut();
+    $("#LoginInFormMessage").hide();
+    $("#exampleModalCenter").modal('show');
+    // console.log($("#logInOrLogout").text());
+    // if($("#logInOrLogout").text()=="Logout"){
+    //     userLoginOut();
+    // }else{
+    //     $("#LoginInFormMessage").hide();
+    //     $("#exampleModalCenter").modal('show');
+    // }
 });
 $("#GoToRegisterFromLogin").click(function () {
     $("#exampleModalCenter").modal('hide');
@@ -222,5 +250,9 @@ $("#RegisterModalButton").click(function () {
        })
    }
 });
+function showImage(srcUrl) {
+    $("#ImageShowContent").attr('src',srcUrl);
+    $("#ImageShowModal").modal('show');
+}
 
 

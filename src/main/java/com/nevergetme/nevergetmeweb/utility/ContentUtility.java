@@ -11,9 +11,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ContentUtility {
     private static final int SHORT_CUT_LINE=2;
+    private static final Pattern PATTERN_COVER=Pattern.compile("\\]\\(/[0-9]{13,14}_[0-9]{5}.png\\)");
     public static void main(String[] args) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         System.out.println(encodeByMd5("he187127..."));
     }
@@ -75,5 +78,21 @@ public class ContentUtility {
         }else {
             return null;
         }
+    }
+     /**
+     　　* @description: TODO 查找content中符合![**](*.png)的内容
+     　　* @param
+     　　* @return 
+     　　* @throws 
+     　　* @author Alden He
+     　　* @date 2019/5/15 19:36 
+     　　*/
+    public static String getCoverFromContent(String content){
+        Matcher m=PATTERN_COVER.matcher(content);
+        if(m.find()){
+            String cover=m.group(0);
+            return cover.substring(2,cover.length()-1);
+        }
+        return null;
     }
 }

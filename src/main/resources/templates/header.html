@@ -4,23 +4,44 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg shadow navbar-light bg-light sticky-top">
+<nav class="navbar navbar-expand-lg shadow navbar-dark bg-dark sticky-top">
     <a class="navbar-brand" href="/">Nevergetme</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    标签
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="HeaderTagsLists">
+                </div>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="/statistics">统计数据</a></li>
             <li class="nav-item">
                 <a class="nav-link" href="/editArticle" id="GoToWritePage">写博客</a>
             </li>
+            <li class="nav-item"><a class="nav-link" href="/admin" id="GoToAdminPage">站点管理</a></li>
         </ul>
-        <ul class="navbar-nav my-2 my-lg-0" id="footerUser">
+        <ul class="navbar-nav my-2 my-lg-0 mr-2" id="footerUser">
             <li class="nav-item">
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button  class="btn btn-light">Search</button>
+                    <button  class="btn btn-dark">Search</button>
                 </form>
             </li>
             <li class="nav-item">
-                <button  class="btn btn-light" id="logInOrLogout" >Logouts</button>
+                <button  class="btn btn-dark" id="logInOrLogout" >登录</button>
+            </li>
+            <li class="nav-item dropdown" id="UserLoginShowStatus">
+                <a class="nav-link dropdown-toggle" href="#" id="LoginUserDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img class="rounded" src="" id="LoginUserHeader" style="height: 30px;width: 30px;"/>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="LoginUserDropdown" id="LoginUserDropdownMenu">
+                    <a class="dropdown-item" href="/my">我的主页</a>
+                    <button class="dropdown-item" id="LoginUserLogout">注销</button>
+                </div>
             </li>
         </ul>
     </div>
@@ -127,5 +148,14 @@
         </div>
     </div>
 </div>
+<div class="modal fade bd-example-modal-lg text-center" id="ImageShowModal" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="display: inline-block; width: auto;height: auto">
+        <div class="modal-content">
+            <img src="" id="ImageShowContent">
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

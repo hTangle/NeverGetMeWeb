@@ -26,6 +26,11 @@ public class ArticleServerImpl implements ArticleService {
     private RedisTemplate redisTemplate;
 
     @Override
+    public List<Article> findAllArticleWithoutUserAndTags(){
+        return articleMapper.findAllArticleWithoutUserAndTags();
+    }
+
+    @Override
     public List<Article> findAllArticle() {
         List<Article> articles = articleMapper.getAllArticle();
         return articles;
@@ -139,6 +144,16 @@ public class ArticleServerImpl implements ArticleService {
     }
 
     @Override
+    public List<Article> getArticleList(){
+        return articleMapper.getAllArticle();
+    }
+
+    @Override
+    public List<Article> getArticleListByTagId(int tagid){
+        return articleMapper.getArticleListByTagId(tagid);
+    }
+
+    @Override
     public void updateVisitTimes(int id) {
         articleMapper.updateVisitTimes(id);
     }
@@ -160,5 +175,10 @@ public class ArticleServerImpl implements ArticleService {
     @Override
     public void updateArticleIsStick(int id,int isStick){
         articleMapper.updateArticleIsStick(id,isStick);
+    }
+
+    @Override
+    public void updateArticleCover(Article article){
+        articleMapper.updateArticleCover(article);
     }
 }

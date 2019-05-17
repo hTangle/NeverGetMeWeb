@@ -62,17 +62,17 @@ public class AdminRestController {
     @RequestMapping(value = "/admin/getStatisticalDataOfPublishDate")
     public @ResponseBody
     List<PublishDateStatistical> getStatisticalDataOfPublishDate(HttpServletRequest request) {
-        if (isAdmin(request))
+        //if (isAdmin(request))
             return articleService.getStatisticalDataOfPublishDate();
-        return null;
+        //return null;
     }
 
     @RequestMapping(value = "/admin/getTagsOfArticleCountStatistics")
     public @ResponseBody
     List<Tags> getTagsOfArticleCountStatistics(HttpServletRequest request) {
-        if (isAdmin(request))
+        //if (isAdmin(request))
             return statisticsService.getTagsOfArticleCountStatistics();
-        return null;
+        //return null;
     }
 
     @RequestMapping(value = "/admin/updateUserRoleById")

@@ -20,7 +20,7 @@
         values(#{articleId},#{commentId},#{replyUserId},#{repliedUserId},#{content})
     </insert>
     <select id="getReplyCommentsByCommentId" parameterType="java.lang.Integer" resultMap="ReplyCommentWithUser">
-        select R.id,R.articleId,R.commentId,R.replyUserId,R.repliedUserId,R.content,R.createTime,
+        select R.id,R.articleId,R.commentId,R.replyUserId,R.repliedUserId,R.content,DATE_FORMAT(R.createTime,'%Y-%m-%d %H:%i:%s') as createTime,
                 U.id as user_id,U.username,U.image from ReplyComment R
                 left join user U on R.replyUserId=U.id
                 where R.commentId=#{id}

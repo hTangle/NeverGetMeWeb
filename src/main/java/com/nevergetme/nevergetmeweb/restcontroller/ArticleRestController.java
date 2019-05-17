@@ -27,7 +27,7 @@ import java.util.*;
 
 @RestController
 @EnableAutoConfiguration
-public class ArticleRestContent {
+public class ArticleRestController {
 
     @Autowired
     private ArticleService articleService;
@@ -161,11 +161,27 @@ public class ArticleRestContent {
         return new PageInfo<>(articleService.getArticleList(pageNum));
     }
 
+    @RequestMapping("/article/getArticleListByTagId")
+    public @ResponseBody
+    List<Article> getArticleListByTagId(@Param(value = "tagId") int tagId){
+        return articleService.getArticleListByTagId(tagId);
+    }
+
     @RequestMapping("/article/getAllTags")
     public @ResponseBody
     List<Tags> getAllTags() {
         return articleService.getAllTags();
     }
 
-
+    @RequestMapping("/article/updateCover")
+    public void updateCoverByContent(){
+        List<Article> articles=articleService.findAllArticleWithoutUserAndTags();
+        for(Article a:articles){
+            a.setCover(ContentUtility.getCoverFromContent(a.getContent()));
+            if(a.getCover()!=null){
+                articleService.updateArticleCover(a);
+                //articleService
+            }
+        }
+    }
 }

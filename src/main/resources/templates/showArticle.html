@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title></title>
     <link rel="shortcut icon" th:href="@{/icon/java.svg}" type="image/x-icon"/>
     <link rel="stylesheet" th:href="@{/plug/editor.md-master/css/editormd.css}"/>
@@ -20,7 +21,7 @@
 </head>
 <body>
 <div th:replace="header::html"></div>
-<div class="container" style="margin-top: 10px;margin-bottom: 10px">
+<div class="container" id="MainBodyShow" style="margin-top: 10px;margin-bottom: 10px">
     <div class="card mb-3 shadow-lg p-3 bg-white rounded" id="articleCard">
         <div class="card-header">
             <h1 id="articleTitle"></h1>
@@ -102,16 +103,19 @@
         var appendHtml='';
         for(var i in replyCommentList){
             var replyCom=replyCommentList[i];
-            appendHtml=appendHtml+'<div class="card">\n' +
-                '<div class="row no-gutters">\n' +
-                '<div class="card-body">\n' +
-                '<h5 class="card-title"><img class="rounded-circle" src="'+replyCom.user.image+'" style="height: 30px;width: 30px;"/>\n' +
-                replyCom.user.username+'<small class="text-muted" style="float: right">'+replyCom.createTime+'</small></h5>\n' +
-                '<p class="card-text">' +replyCom.content+
-                '</p><a href="javascript:showReplyCommentDialog('+replyCom.commentId+','+replyCom.replyUserId+');">回复</a>' +
-                '</div>' +
-                '</div>' +
-                '</div>';
+            appendHtml=appendHtml+'<div class="media mt-3"><a class="align-self-start mr-3" href="#"><img src="'+replyCom.user.image+'" class="mr-3" style="height: 40px;width: 40px;"></a>' +
+                '<div class="media-body"><h5 class="mt-0">'+replyCom.user.username+'<small class="text-muted" style="float: right">'+replyCom.createTime+'<a href="javascript:showReplyCommentDialog('+replyCom.commentId+','+replyCom.replyUserId+');">回复</a></small></h5>' +
+                replyCom.content+'</div></div>';
+            // appendHtml=appendHtml+'<div class="card">\n' +
+            //     '<div class="row no-gutters">\n' +
+            //     '<div class="card-body">\n' +
+            //     '<h5 class="card-title"><img class="rounded-circle" src="'+replyCom.user.image+'" style="height: 30px;width: 30px;"/>\n' +
+            //     replyCom.user.username+'<small class="text-muted" style="float: right">'+replyCom.createTime+'</small></h5>\n' +
+            //     '<p class="card-text">' +replyCom.content+
+            //     '</p><a href="javascript:showReplyCommentDialog('+replyCom.commentId+','+replyCom.replyUserId+');">回复</a>' +
+            //     '</div>' +
+            //     '</div>' +
+            //     '</div>';
         }
         return appendHtml;
     }
@@ -137,6 +141,11 @@
                     });
                     $("#articleCard").show();
                     $("#articleSvg").append(addUser(data.author.username) + addDate(data.publishDate) + addLikes(data.likes));
+                    $(function () {
+                        $("#MainBodyShow img").click(function () {
+                            showImage($(this)[0].src)
+                        })
+                    });
                 } else {
                     window.location.href = "/404";
                 }
@@ -149,17 +158,22 @@
                 var appendHtml='';
                 for(var i in data){
                     var comments=data[i];
-                    appendHtml=appendHtml+'<div class="card">\n' +
-                        '<div class="row no-gutters">\n' +
-                        '<div class="card-body">\n' +
-                        '<h5 class="card-title"><img class="rounded-circle" src="'+comments.user.image+'" style="height: 30px;width: 30px;"/>\n' +
-                        comments.user.username+'<small class="text-muted" style="float: right">'+comments.createTime+'</small></h5>\n' +
-                        '<p class="card-text">' +comments.content+
-                        '</p><a href="javascript:showReplyCommentDialog('+comments.id+','+comments.commentUserId+');">回复</a>' +
-                        getReplyComments(comments.replyCommentList)+
-                        '</div>' +
-                        '</div>' +
-                        '</div>';
+                    console.log(comments.content);
+                    appendHtml+='<div class="media mt-3"><img src="'+comments.user.image+'" class="align-self-start mr-3" style="height: 40px;width: 40px;"><div class="media-body">' +
+                        '<h5 class="mt-0">'+comments.user.username+'<small class="text-muted" style="float: right">'+comments.createTime+'<a href="javascript:showReplyCommentDialog('+comments.id+','+comments.commentUserId+');">回复</a></small></h5>' +
+                        comments.content+'' +
+                        getReplyComments(comments.replyCommentList)+'</div></div>';
+                    // appendHtml=appendHtml+'<div class="card">\n' +
+                    //     '<div class="row no-gutters">\n' +
+                    //     '<div class="card-body">\n' +
+                    //     '<h5 class="card-title"><img class="rounded-circle" src="'+comments.user.image+'" style="height: 30px;width: 30px;"/>\n' +
+                    //     comments.user.username+'<small class="text-muted" style="float: right">'+comments.createTime+'</small></h5>\n' +
+                    //     '<p class="card-text">' +comments.content+
+                    //     '</p><a href="javascript:showReplyCommentDialog('+comments.id+','+comments.commentUserId+');">回复</a>' +
+                    //     getReplyComments(comments.replyCommentList)+
+                    //     '</div>' +
+                    //     '</div>' +
+                    //     '</div>';
                 }
                 $("#commentsLists").append(appendHtml);
             }

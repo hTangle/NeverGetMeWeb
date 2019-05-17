@@ -15,7 +15,7 @@
         <collection property="replyCommentList" column="id" select="com.nevergetme.nevergetmeweb.mapper.ReplyCommentMapper.getReplyCommentsByCommentId"/>
     </resultMap>
     <select id="getArticleCommentsByArticleId" parameterType="java.lang.Integer" resultMap="articleCommentsWithUser">
-        select A.id,A.commentUserId,A.articleId,A.content,A.createTime,
+        select A.id,A.commentUserId,A.articleId,A.content,DATE_FORMAT(A.createTime,'%Y-%m-%d %H:%i:%s') as createTime,
         U.id as user_id,U.username,U.image from ArticleComments A left join user U on A.commentUserId=U.id
          where A.articleId=#{id}
     </select>

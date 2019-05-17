@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>NeverGetMe</title>
     <link rel="shortcut" th:href="@{/icon/java.svg}"/>
     <script th:src="@{/js/jquery.min.js}"></script>
@@ -15,141 +16,19 @@
 <!--style="background-color: #343a40"-->
 <div th:replace="header::html"></div>
 
-<div class="container" style="margin-top: 10px">
+<div class="container" id="MainBodyShow" style="margin-top: 10px">
     <div class="container">
         <div class="container" id="articleTables">
-            <!--            <div class="card text-white bg-secondary mb-3" th:each="article:${articles}">-->
-            <!--                <div class="card-header"><a th:href="@{/article/showArticle/{articleId}(articleId=${article.id})}"-->
-            <!--                                            th:text="${article.title}" style="color: #FFFFFF"></a></div>-->
-            <!--                <div class="card-body">-->
-            <!--                    <h5 class="card-title" th:text="${article.shortcut}"></h5>-->
-            <!--                    <p class="card-text">-->
-            <!--                        <a th:text="${article.publishDate}"/>|<a th:text="${article.likes}"/>-->
-            <!--                    </p>-->
-            <!--                </div>-->
-            <!--            </div>-->
         </div>
     </div>
 </div>
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center" id="pageInfoNav">
-        <!--        <li class="page-item disabled" th:if="${pageInfo.pageNum} eq 1">-->
-        <!--            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
-        <!--        </li>-->
-        <!--        <li class="page-item" th:if="${pageInfo.pageNum} ne 1">-->
-        <!--            <a class="page-link" href="#" tabindex="-1">Previous</a>-->
-        <!--        </li>-->
-
-        <!--        <li class="page-item active" th:each="pageIn:${pageInfo.navigatepageNums}" th:if="${pageIn} eq ${pageInfo.pageNum}">-->
-        <!--            <a class="page-link" th:text="${pageIn}" href="#"></a>-->
-        <!--        </li>-->
-        <!--        <li class="page-item" th:else>-->
-        <!--            <a class="page-link" th:text="${pageIn}" href="#"></a>-->
-        <!--        </li>-->
-
-        <!--        &lt;!&ndash;        <li class="page-item  disabled" th:if="${pageInfo.pageNum} eq ${pageInfo.pages}">&ndash;&gt;-->
-        <!--        &lt;!&ndash;            <a class="page-link" href="#" aria-disabled="true">Next</a>&ndash;&gt;-->
-        <!--        &lt;!&ndash;        </li>&ndash;&gt;-->
-        <!--        <li class="page-item" th:if="${pageInfo.pageNum} ne ${pageInfo.pages}">-->
-        <!--            <a class="page-link" href="#">Next</a>-->
-        <!--        </li>-->
     </ul>
 </nav>
 <div th:replace="footer::html"></div>
-<!--<nav class="navbar navbar-dark bg-dark sticky-bottom justify-content-center" id="footer">-->
-<!--    <a class="navbar-brand" href="https://github.com/hTangle">-->
-<!--        <img src="/icon/GitHub.svg" width="30" height="30" alt="">-->
-<!--    </a>-->
-<!--    <a class="navbar-brand" href="https://blog.csdn.net/u014683187">-->
-<!--        <img src="/icon/csdn.svg" width="30" height="30" alt="">-->
-<!--    </a>-->
-<!--    <a class="navbar-brand text-muted" href="/" >-->
-<!--        <img src="/icon/police.svg" width="30" height="30" alt="">冀ICP备16001067号-->
-<!--    </a>-->
-<!--</nav>-->
-<!--<script th:inline="javascript">-->
-<!--    var pageInfos=[[${pageInfo}]];-->
-<!--</scripttext-white bg-secondary>-->
+<script th:src="@{/js/articleList.js}"></script>
 <script>
-    function updateArticleList(articleList) {
-        $("#articleTables").empty();
-        var appendHtml = '';
-        for (var i in articleList) {
-            var article = articleList[i];
-            var isStickHtml='';
-            if(article.isStick==1){
-                isStickHtml='<h6 style="display: inline;"><span style="display: inline;" class="badge badge-danger">置顶</span></h6>';
-            }
-            appendHtml=appendHtml+'<div class="card mb-3 shadow-lg p-3 bg-white rounded"><div class="card-body">';
-            appendHtml = appendHtml + '\n' +
-                '                \n' +
-                '<div class="card-title"><h3 style="display: inline;"><a href="/article/showArticle/' + article.id + '"\n' +
-                'style="display: inline;color: #000000">' + article.title+isStickHtml + '</a>'+'</h3>' +
-                '<div class="text-muted">\n' +
-                '<span class="badge badge-secondary">author:'+article.author.username+
-                '</span><span class="badge badge-light"> </span><span class="badge badge-success">date:' + article.publishDate +
-                '</span><span class="badge badge-light"> </span><span class="badge badge-info">eyes:'+article.visitTimes+
-                '  </span></div>' +
-                '</div>' +
-                '<div class="card-text">' + article.shortcut + '<a href="/article/showArticle/'+article.id+'">阅读全文</a>\n' +
-                '</div>\n';
-            var tagsList=article.tagsList;
-            appendHtml=appendHtml+'<div class="card-text text-muted">'
-            for(var j in tagsList){
-                appendHtml=appendHtml+'<span class="badge badge-warning">'+tagsList[j].value+'</span><span class="badge badge-light"> </span>';
-            }
-            appendHtml=appendHtml+'</div></div></div>';
-        }
-        $("#articleTables").append(appendHtml);
-    }
-    function updateFooter(data){
-        if(data>=5){//fixed-bottom sticky-bottom
-            //不小于5的时候应该sticky-bottom
-            if($("#footer").hasClass("fixed-bottom")){
-                $("#footer").removeClass("fixed-bottom");
-            }
-            if(!$("#footer").hasClass("sticky-bottom")){
-                $("#footer").addClass("sticky-bottom");
-            }
-        }else{
-            if(!$("#footer").hasClass("fixed-bottom")){
-                $("#footer").addClass("fixed-bottom");
-            }
-            if($("#footer").hasClass("sticky-bottom")){
-                $("#footer").removeClass("sticky-bottom");
-            }
-        }
-    }
-    function updateArticle(pageInfos) {
-        $("#pageInfoNav").empty();
-        if (pageInfos.pageNum == 1 && pageInfos.pages == 1) {
-            return;
-        }
-        var appendHtml = ""
-        if (pageInfos.pageNum != 1) {
-            appendHtml = appendHtml + '<li class="page-item">\n' +
-                '            <a class="page-link" onclick="readCurrentPage(currentPage-1)" aria-label="Previous" tabindex="-1"><span aria-hidden="true">&laquo;</span></a>\n' +
-                '        </li>';
-        }
-        for (var i = 1; i <= pageInfos.pages; i++) {
-            if (i == pageInfos.pageNum) {
-                appendHtml = appendHtml + '<li class="page-item active">\n' +
-                    '            <a class="page-link" onclick="readCurrentPage(' + i + ')">' + i + '</a>\n' +
-                    '        </li>';
-            } else {
-                appendHtml = appendHtml + '<li class="page-item">\n' +
-                    '            <a class="page-link" onclick="readCurrentPage(' + i + ')">' + i + '</a>\n' +
-                    '        </li>';
-            }
-        }
-        if (pageInfos.pageNum != pageInfos.pages) {
-            appendHtml = appendHtml + '<li class="page-item">\n' +
-                '            <a class="page-link" aria-label="Next" onclick="readCurrentPage(currentPage+1)"><span aria-hidden="true">&raquo;</span></a>\n' +
-                '        </li>';
-        }
-        $("#pageInfoNav").append(appendHtml);
-    }
-
 
     var currentPage = 1;
     readCurrentPage(1);
@@ -166,6 +45,11 @@
                     updateArticle(data);
                     updateArticleList(data.list);
                     updateFooter(data.size);
+                    $(function () {
+                        $("#MainBodyShow img").click(function () {
+                            showImage($(this)[0].src)
+                        })
+                    });
                 }
                 console.log(status);
             });

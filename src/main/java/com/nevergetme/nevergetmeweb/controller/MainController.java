@@ -104,4 +104,29 @@ public class MainController {
     public String getAdmin(){
         return "admin";
     }
+
+    @GetMapping("/tags/{tagId}")
+    public String getArticleByTagId(@PathVariable("tagId") int tagId,
+                                    HttpServletResponse response,
+                                    Model model,
+                                    HttpServletRequest request){
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        model.addAttribute("tagId",tagId);
+        return "tags";
+    }
+
+    @GetMapping("/statistics")
+    public String statisticsPage(){
+        return "statistics";
+    }
+
+    @GetMapping("/my")
+    public String getMyMainPage(HttpServletRequest request){
+        if(ContentUtility.getCurrentUser(request)!=null){
+            return "my";
+        }else{
+            return "404";
+        }
+    }
 }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>NeverGetMe</title>
+    <link rel="shortcut" th:href="@{/icon/java.svg}"/>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script th:src="@{js/popper.min.js}"></script>
+    <script th:src="@{/plug/echarts/echarts.min.js}"></script>
+
+</head>
+<body>
+<div th:replace="header::html"></div>
+
+<div class="container text-center">
+    <div id="statisticalData" style="width: auto;height:400px;"></div>
+    <div id="TagsArticleCountStatistics" style="width: auto;height:400px;"></div>
+</div>
+<div th:replace="footer::html"></div>
+<script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/addsvg.js}"></script>
+<script th:src="@{/js/loadCharts.js}"></script>
+<script>
+    readUserInfo();
+    var myChart = echarts.init(document.getElementById('statisticalData'));
+    var tagsArticleCountStatisticsChart=echarts.init(document.getElementById("TagsArticleCountStatistics"));
+
+
+</script>
+<script>
+    $(document).ready(function () {
+        loadAllCharts([myChart,tagsArticleCountStatisticsChart]);
+    });
+</script>
+</body>
+</html>

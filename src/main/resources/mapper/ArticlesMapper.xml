@@ -10,6 +10,7 @@
         <result column="likes" property="likes"/>
         <result column="visitTimes" property="visitTimes"/>
         <result column="isStick" property="isStick"/>
+        <result column="cover" property="cover"/>
         <association property="author" javaType="com.nevergetme.nevergetmeweb.bean.User">
             <id property="id" column="user_id"/>
             <result property="username" column="username"/>
@@ -25,6 +26,7 @@
         <result column="visitTimes" property="visitTimes"/>
         <result column="shortcut" property="shortcut"/>
         <result column="isStick" property="isStick"/>
+        <result column="cover" property="cover"/>
         <association property="author" javaType="com.nevergetme.nevergetmeweb.bean.User">
             <id property="id" column="user_id"/>
             <result property="username" column="username"/>
@@ -32,10 +34,14 @@
         <collection property="tagsList" column="id" select="com.nevergetme.nevergetmeweb.mapper.ArticleMapper.getTagsByArticleId"/>
     </resultMap>
 
+    <select id="findAllArticleWithoutUserAndTags" resultType="com.nevergetme.nevergetmeweb.bean.Article">
+        select * from article
+    </select>
+
     <select id="getAllArticle" resultMap="articleResultMapList">
         select article.id,article.title,article.shortcut,
                DATE_FORMAT(article.publishDate,'%Y-%m-%d') publishDate,
-               DATE_FORMAT(article.updateDate,'%Y-%m-%d') updateDate,article.likes,article.visitTimes,isStick,
+               DATE_FORMAT(article.updateDate,'%Y-%m-%d') updateDate,article.likes,article.visitTimes,article.isStick,article.cover,
                user.id as user_id,user.username
         from article left join user on article.authorId=user.id
         order by isStick desc,article.id desc
@@ -46,7 +52,7 @@
     <select id="getArticleById" parameterType="java.lang.Integer" resultMap="articleResultMap">
         select article.id,article.title,article.content,
                DATE_FORMAT(article.publishDate,'%Y-%m-%d %H:%i:%s') publishDate,
-               DATE_FORMAT(article.updateDate,'%Y-%m-%d %H:%i:%s') updateDate,article.likes,isStick,
+               DATE_FORMAT(article.updateDate,'%Y-%m-%d %H:%i:%s') updateDate,article.likes,article.isStick,article.cover,
                user.id as user_id,user.username
                from article left join user on article.authorId=user.id where article.id=#{id}
     </select>
@@ -54,15 +60,22 @@
         select articleTags.id,tags.value from articleTags left join tags on articleTags.tagid=tags.id where articleTags.articleid=#{id};
     </select>
     <insert id="createNewArticle" parameterType="com.nevergetme.nevergetmeweb.bean.Article" useGeneratedKeys="true" keyProperty="id">
-        insert into article(authorId,title,content,shortcut,isOriginal) values(#{authorId},#{title},#{content},#{shortcut},#{isOriginal})
+        insert into article(authorId,title,content,shortcut,isOriginal,cover) values(#{authorId},#{title},#{content},#{shortcut},#{isOriginal},#{cover})
     </insert>
     <select id="getArticleList" resultMap="articleResultMapList">
         select article.id,article.title,article.shortcut,
                DATE_FORMAT(article.publishDate,'%Y-%m-%d') publishDate,
-               DATE_FORMAT(article.updateDate,'%Y-%m-%d') updateDate,article.likes,article.visitTimes,isStick,
+               DATE_FORMAT(article.updateDate,'%Y-%m-%d') updateDate,article.likes,article.visitTimes,article.isStick,article.cover,
                user.id as user_id,user.username
         from article left join user on article.authorId=user.id
         order by isStick desc,article.id desc
+    </select>
+    <select id="getArticleListByTagId" parameterType="java.lang.Integer" resultMap="articleResultMapList">
+        select Z.*,U.id as user_id,U.username from (select A.id,A.title,A.shortcut,
+               DATE_FORMAT(A.publishDate,'%Y-%m-%d') publishDate,
+               DATE_FORMAT(A.updateDate,'%Y-%m-%d') updateDate,A.likes,A.visitTimes,A.isStick,A.cover,A.authorId
+        from articleTags T left join article A on A.id=T.articleid where T.tagid=#{tagid}
+        order by A.isStick desc,A.id desc) Z left join user U on Z.authorId=U.id
     </select>
     <select id="getTotalArticleCount" resultType="java.lang.Integer">
         select count(*) from article;
@@ -88,4 +101,7 @@
     <select id="getStatisticalDataOfPublishDate" resultType="com.nevergetme.nevergetmeweb.bean.PublishDateStatistical">
         select DATE_FORMAT(publishDate,'%Y-%m-%d') publishDate,count(*) dailyCount from article group by DATE_FORMAT(publishDate,'%Y-%m-%d');
     </select>
+    <update id="updateArticleCover" parameterType="com.nevergetme.nevergetmeweb.bean.Article">
+        update article set cover=#{cover} where id=#{id}
+    </update>
 </mapper>

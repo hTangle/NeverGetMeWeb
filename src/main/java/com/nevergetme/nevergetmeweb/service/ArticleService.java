@@ -7,6 +7,7 @@ import com.nevergetme.nevergetmeweb.bean.Tags;
 import java.util.List;
 
 public interface ArticleService {
+    List<Article> findAllArticleWithoutUserAndTags();
     List<Article> findAllArticle();
     List<Article> findUserArticle(int userid);
     Article getArticleByUserIDAndID(int id,int authorId);
@@ -14,9 +15,12 @@ public interface ArticleService {
     Article getArticleById(int id);
     int createNewArticle(Article article,List<Integer> tagid);
     List<Article> getArticleList(int pageNum);
+    List<Article> getArticleList();
+    List<Article> getArticleListByTagId(int tagid);
     void updateVisitTimes(int id);
     List<Tags> getAllTags();
     void setArticleTags(int articleId,int tagid);
     List<PublishDateStatistical> getStatisticalDataOfPublishDate();
     void updateArticleIsStick(int id,int isStick);
+    void updateArticleCover(Article article);
 }

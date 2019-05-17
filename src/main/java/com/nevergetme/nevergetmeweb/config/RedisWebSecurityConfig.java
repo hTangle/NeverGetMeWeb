@@ -16,7 +16,7 @@ public class RedisWebSecurityConfig implements WebMvcConfigurer {
     private RedisSessionRoleInterceptor redisSessionRoleInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(redisSessionRoleInterceptor).addPathPatterns("/admin").addPathPatterns("/admin/**");
+        registry.addInterceptor(redisSessionRoleInterceptor).addPathPatterns("/admin").excludePathPatterns("/admin/*Statistic*").addPathPatterns("/admin/**");
         registry.addInterceptor(interceptor).
                 addPathPatterns("/editArticle").
                 excludePathPatterns("/createUser").
