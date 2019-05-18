@@ -129,4 +129,14 @@ public class MainController {
             return "404";
         }
     }
+    @GetMapping("/my/{userId}")
+    public String getUserMainPage(@PathVariable("userId") int userId,
+                                  HttpServletResponse response,
+                                  Model model,
+                                  HttpServletRequest request){
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        model.addAttribute("userId",userId);
+        return "my";
+    }
 }

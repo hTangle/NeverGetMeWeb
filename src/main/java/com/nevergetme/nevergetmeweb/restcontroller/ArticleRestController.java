@@ -5,8 +5,10 @@ import com.github.pagehelper.PageInfo;
 import com.nevergetme.nevergetmeweb.bean.Article;
 import com.nevergetme.nevergetmeweb.bean.PublishDateStatistical;
 import com.nevergetme.nevergetmeweb.bean.Tags;
+import com.nevergetme.nevergetmeweb.bean.Visitor;
 import com.nevergetme.nevergetmeweb.config.StaticConfigParam;
 import com.nevergetme.nevergetmeweb.service.ArticleService;
+import com.nevergetme.nevergetmeweb.service.StatisticsService;
 import com.nevergetme.nevergetmeweb.utility.ContentUtility;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class ArticleRestController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private StatisticsService statisticsService;
 
     @RequestMapping(value = "/article/list")
     public @ResponseBody
@@ -144,6 +149,7 @@ public class ArticleRestController {
                        HttpServletResponse response
     ) {
         articleService.updateVisitTimes(articleId);
+        statisticsService.setVisitorCountStatistics(new Visitor(1));
         return articleService.getArticleById(articleId);
     }
 

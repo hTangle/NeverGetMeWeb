@@ -1,6 +1,7 @@
 package com.nevergetme.nevergetmeweb.mapper;
 
 import com.nevergetme.nevergetmeweb.bean.Tags;
+import com.nevergetme.nevergetmeweb.bean.Visitor;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -11,4 +12,6 @@ import java.util.List;
 @Mapper
 public interface StatisticsMapper {
     List<Tags> getTagsOfArticleCountStatistics();
+    List<Visitor> getVisitorCountStatistics();
+    int setVisitorCountStatistics(Visitor v);
 }

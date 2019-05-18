@@ -4,4 +4,10 @@
     <select id="getTagsOfArticleCountStatistics" resultType="com.nevergetme.nevergetmeweb.bean.Tags">
         select A.tagid id, count(*) amount,T.value from articleTags A left join tags T on T.id=A.tagid group by A.tagid
     </select>
+    <select id="getVisitorCountStatistics" resultType="com.nevergetme.nevergetmeweb.bean.Visitor">
+        select * from PageView order by visitTime
+    </select>
+    <insert id="setVisitorCountStatistics" useGeneratedKeys="true" keyProperty="id">
+        insert into PageView(visitTime,pv) values(#{visitTime},#{pv}) on duplicate key update pv=pv+1
+    </insert>
 </mapper>

@@ -1,5 +1,5 @@
-function addUser(username) {
-    return '<span class="badge badge-secondary">author:'+username+'</span><span class="badge badge-light"> </span>';
+function addUser(username,id) {
+    return '<a class="badge badge-secondary" href="/my/'+id+'">author:'+username+'</a><span class="badge badge-light"> </span>';
 }
 function addDate(publishdate) {
     return '<span class="badge badge-success">date:' + publishdate+'</span><span class="badge badge-light"> </span>';

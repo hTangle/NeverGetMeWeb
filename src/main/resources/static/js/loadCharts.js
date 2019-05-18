@@ -93,39 +93,103 @@ function loadPieChartData(title,name,myData,chart){
     };
     chart.setOption(option);
 }
+function loadVisitTimeLineChart(data,chart) {
+    var option = {
+        title: {
+            text: data.title
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                crossStyle: {
+                    color: '#999'
+                }
+            }
+        },
+        toolbox: {
+            feature: {
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: data.x,
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: 'pv',
+            axisLabel: {
+                formatter: '{value}'
+            }
+        },
+        series: [{
+            name:data.yname,
+            data: data.y,
+            type: 'line'
+        }]
+    };
+    chart.setOption(option);
+}
 function loadAllCharts(chartsList) {
-    $.post("/admin/getStatisticalDataOfPublishDate",{},function (data,status) {
-        if(data){
-            var myData={};
-            myData.title="博客发布日期统计图";
-            myData.tips=["博客数量","博客总量"];
-            myData.xData=[];
-            myData.amountName="当天发布博客数量";
-            myData.sumName="发布文章总和";
-            myData.amount=[]
-            myData.sum=[]
-            var sum=0;
-            for(var i in data){
-                var s=data[i];
-                myData.xData.push(s.publishDate);
-                myData.amount.push(s.dailyCount);
-                sum+=s.dailyCount;
-                myData.sum.push(sum);
+    if(chartsList.PublishDate){
+        $.post("/admin/getStatisticalDataOfPublishDate",{},function (data,status) {
+            if(data){
+                var myData={};
+                myData.title="博客发布日期统计图";
+                myData.tips=["博客数量","博客总量"];
+                myData.xData=[];
+                myData.amountName="当天发布博客数量";
+                myData.sumName="发布文章总和";
+                myData.amount=[]
+                myData.sum=[]
+                var sum=0;
+                for(var i in data){
+                    var s=data[i];
+                    myData.xData.push(s.publishDate);
+                    myData.amount.push(s.dailyCount);
+                    sum+=s.dailyCount;
+                    myData.sum.push(sum);
+                }
+                loadECharData(myData,chartsList.PublishDate);
+                // console.log(data);
             }
-            loadECharData(myData,chartsList[0]);
-            // console.log(data);
-        }
-    });
-    $.post("/admin/getTagsOfArticleCountStatistics",{},function (data,status) {
-        if(data){
-            var xData={legendData:[],seriesData:[]};
-            for(var i in data){
-                var s=data[i];
-                xData.legendData.push(s.value);
-                xData.seriesData.push({value:s.amount,name:s.value});
-                // xData.push({value:s.amount,name:});
+        });
+    }
+    if(chartsList.TagsArticleCount){
+        $.post("/admin/getTagsOfArticleCountStatistics",{},function (data,status) {
+            if(data){
+                var xData={legendData:[],seriesData:[]};
+                for(var i in data){
+                    var s=data[i];
+                    xData.legendData.push(s.value);
+                    xData.seriesData.push({value:s.amount,name:s.value});
+                    // xData.push({value:s.amount,name:});
+                }
+                loadPieChartData("文章标签统计图","文章数量",xData,chartsList.TagsArticleCount);
             }
-            loadPieChartData("文章标签统计图","文章数量",xData,chartsList[1]);
-        }
-    });
+        });
+    }
+    if(chartsList.PageViewCount){
+        $.post("/admin/getPageViewTimesStatistics",{},function (data,status) {
+            if(data){
+                var myData={};
+                myData.x=[];
+                myData.y=[];
+                myData.title='浏览数据统计';
+                myData.yname='访问量';
+                for(var i in data){
+                    var visit=data[i];
+                    myData.x.push(visit.visitTime);
+                    myData.y.push(visit.pv);
+                }
+                loadVisitTimeLineChart(myData,chartsList.PageViewCount);
+            }
+        });
+    }
 }

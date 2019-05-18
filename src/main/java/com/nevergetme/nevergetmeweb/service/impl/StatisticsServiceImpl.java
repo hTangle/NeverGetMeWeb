@@ -1,6 +1,7 @@
 package com.nevergetme.nevergetmeweb.service.impl;
 
 import com.nevergetme.nevergetmeweb.bean.Tags;
+import com.nevergetme.nevergetmeweb.bean.Visitor;
 import com.nevergetme.nevergetmeweb.mapper.StatisticsMapper;
 import com.nevergetme.nevergetmeweb.service.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +19,15 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public List<Tags> getTagsOfArticleCountStatistics() {
         return statisticsMapper.getTagsOfArticleCountStatistics();
+    }
+
+    @Override
+    public List<Visitor> getVisitorCountStatistics() {
+        return statisticsMapper.getVisitorCountStatistics();
+    }
+
+    @Override
+    public int setVisitorCountStatistics(Visitor v) {
+        return statisticsMapper.setVisitorCountStatistics(v);
     }
 }

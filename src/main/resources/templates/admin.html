@@ -63,8 +63,9 @@
                     </table>
                 </div>
                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                    <div id="statisticalData" style="width: 600px;height:400px;"></div>
-                    <div id="TagsArticleCountStatistics" style="width: 600px;height:400px;"></div>
+                    <div id="statisticalData" style="width: auto;height:400px;"></div>
+                    <div id="TagsArticleCountStatistics" style="width: auto;height:400px;"></div>
+                    <div id="PageViewCount" style="width: auto;height:400px;"></div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
             </div>
@@ -107,6 +108,7 @@
     readUserInfo();
     var myChart = echarts.init(document.getElementById('statisticalData'));
     var tagsArticleCountStatisticsChart=echarts.init(document.getElementById("TagsArticleCountStatistics"));
+    var pageViewCount=echarts.init(document.getElementById("PageViewCount"));
 </script>
 <script>
     var method_id,method_item;
@@ -162,7 +164,8 @@
     $(document).ready(function () {
         updateUserList();
         updateArticleList();
-        loadAllCharts([myChart,tagsArticleCountStatisticsChart]);
+        loadAllCharts({'PublishDate':myChart,'TagsArticleCount':tagsArticleCountStatisticsChart,'PageViewCount':pageViewCount});
+        //loadAllCharts([myChart,tagsArticleCountStatisticsChart]);
        $("#AdminSetModalInputEnter").click(function () {
            if(method_item){
                if(method_item=="role"){

@@ -103,7 +103,7 @@
         var appendHtml='';
         for(var i in replyCommentList){
             var replyCom=replyCommentList[i];
-            appendHtml=appendHtml+'<div class="media mt-3"><a class="align-self-start mr-3" href="#"><img src="'+replyCom.user.image+'" class="mr-3" style="height: 40px;width: 40px;"></a>' +
+            appendHtml=appendHtml+'<div class="media mt-3"><a class="align-self-start" href="#"><img src="'+replyCom.user.image+'" class="mr-3" style="height: 40px;width: 40px;"></a>' +
                 '<div class="media-body"><h5 class="mt-0">'+replyCom.user.username+'<small class="text-muted" style="float: right">'+replyCom.createTime+'<a href="javascript:showReplyCommentDialog('+replyCom.commentId+','+replyCom.replyUserId+');">回复</a></small></h5>' +
                 replyCom.content+'</div></div>';
             // appendHtml=appendHtml+'<div class="card">\n' +
@@ -140,7 +140,7 @@
                         tex: true,                   // 开启科学公式TeX语言支持，默认关闭
                     });
                     $("#articleCard").show();
-                    $("#articleSvg").append(addUser(data.author.username) + addDate(data.publishDate) + addLikes(data.likes));
+                    $("#articleSvg").append(addUser(data.author.username,data.author.id) + addDate(data.publishDate) + addLikes(data.likes));
                     $(function () {
                         $("#MainBodyShow img").click(function () {
                             showImage($(this)[0].src)
@@ -159,7 +159,7 @@
                 for(var i in data){
                     var comments=data[i];
                     console.log(comments.content);
-                    appendHtml+='<div class="media mt-3"><img src="'+comments.user.image+'" class="align-self-start mr-3" style="height: 40px;width: 40px;"><div class="media-body">' +
+                    appendHtml+='<div class="media mt-3"><img src="'+comments.user.image+'" class="align-self-start" style="height: 40px;width: 40px;"><div class="media-body">' +
                         '<h5 class="mt-0">'+comments.user.username+'<small class="text-muted" style="float: right">'+comments.createTime+'<a href="javascript:showReplyCommentDialog('+comments.id+','+comments.commentUserId+');">回复</a></small></h5>' +
                         comments.content+'' +
                         getReplyComments(comments.replyCommentList)+'</div></div>';

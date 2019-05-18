@@ -1,9 +1,6 @@
 package com.nevergetme.nevergetmeweb.restcontroller;
 
-import com.nevergetme.nevergetmeweb.bean.Article;
-import com.nevergetme.nevergetmeweb.bean.PublishDateStatistical;
-import com.nevergetme.nevergetmeweb.bean.Tags;
-import com.nevergetme.nevergetmeweb.bean.User;
+import com.nevergetme.nevergetmeweb.bean.*;
 import com.nevergetme.nevergetmeweb.config.StaticConfigParam;
 import com.nevergetme.nevergetmeweb.service.ArticleService;
 import com.nevergetme.nevergetmeweb.service.StatisticsService;
@@ -73,6 +70,12 @@ public class AdminRestController {
         //if (isAdmin(request))
             return statisticsService.getTagsOfArticleCountStatistics();
         //return null;
+    }
+
+    @RequestMapping(value = "/admin/getPageViewTimesStatistics")
+    public @ResponseBody
+    List<Visitor> getPageViewTimesStatistics(){
+        return statisticsService.getVisitorCountStatistics();
     }
 
     @RequestMapping(value = "/admin/updateUserRoleById")

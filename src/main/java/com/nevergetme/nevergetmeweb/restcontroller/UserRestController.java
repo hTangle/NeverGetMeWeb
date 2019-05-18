@@ -128,5 +128,9 @@ public class UserRestController {
         return map;
     }
 
+    @RequestMapping(value = "/user/getUserInfoById",method = RequestMethod.POST)
+    public @ResponseBody User getUserInfoById(@RequestParam(value = "userId", required = true) int userId){
+        return userService.findUserByUserId(userId);
+    }
 
 }

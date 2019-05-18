@@ -20,6 +20,7 @@
 <div class="container text-center">
     <div id="statisticalData" style="width: auto;height:400px;"></div>
     <div id="TagsArticleCountStatistics" style="width: auto;height:400px;"></div>
+    <div id="PageViewCount" style="width: auto;height:400px;"></div>
 </div>
 <div th:replace="footer::html"></div>
 <script th:src="@{/js/header.js}"></script>
@@ -29,12 +30,12 @@
     readUserInfo();
     var myChart = echarts.init(document.getElementById('statisticalData'));
     var tagsArticleCountStatisticsChart=echarts.init(document.getElementById("TagsArticleCountStatistics"));
-
+    var pageViewCount=echarts.init(document.getElementById("PageViewCount"));
 
 </script>
 <script>
     $(document).ready(function () {
-        loadAllCharts([myChart,tagsArticleCountStatisticsChart]);
+        loadAllCharts({'PublishDate':myChart,'TagsArticleCount':tagsArticleCountStatisticsChart,'PageViewCount':pageViewCount});
     });
 </script>
 </body>

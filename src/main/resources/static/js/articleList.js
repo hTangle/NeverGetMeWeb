@@ -19,8 +19,8 @@ function updateArticleList(articleList) {
             '<div class="card-title"><h3 style="display: inline;"><a target="_blank"  href="/article/showArticle/' + article.id + '"\n' +
             'style="display: inline;color: #000000">' + article.title+isStickHtml + '</a>'+'</h3>' +
             '<div class="text-muted">\n' +
-            '<span class="badge badge-secondary">author:'+article.author.username+
-            '</span><span class="badge badge-light"> </span><span class="badge badge-success">date:' + article.publishDate +
+            '<a class="badge badge-secondary" href="/my/'+article.author.id+'">author:'+article.author.username+
+            '</a><span class="badge badge-light"> </span><span class="badge badge-success">date:' + article.publishDate +
             '</span><span class="badge badge-light"> </span><span class="badge badge-info">eyes:'+article.visitTimes+
             '  </span></div>' +
             '</div>' +
