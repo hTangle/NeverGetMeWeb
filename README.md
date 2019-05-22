@@ -1,19 +1,20 @@
 # NeverGetMeWeb
-
+博客主页[https://www.nevergetme.com/](https://www.nevergetme.com/)
 
 __博客采用的技术__：
 
  1. Web框架：Springboot
- 2. 数据库ORM：MyBatis
- 3. 分页插件：PageHelper
+ 2. 数据库ORM：[MyBatis](https://blog.mybatis.org/)
+ 3. 分页插件：[PageHelper](https://pagehelper.github.io/)
  4. 数据库：MySQL
- 5. 缓存：Redis
- 6. 前端模板：Thymeleaf
- 7. 前端：Bootstrap
- 8. 文章编辑与展示：Editor.md
- 9. 项目构建：Maven
- 10. 项目部署：Docker
- 11. 鉴权：~~Spring Security(Disabled)~~
+ 5. 缓存：[Redis](https://redis.io/)
+ 6. 前端模板：[Thymeleaf](https://www.thymeleaf.org/)
+ 7. 前端：[Bootstrap](https://getbootstrap.com/)
+ 8. 文章编辑与展示：[Editor.md](https://pandao.github.io/editor.md/examples/full.html)
+ 9. 数据展示：[echarts](https://echarts.baidu.com/)
+ 10. 项目构建：Maven
+ 11. 项目部署：Docker
+ 12. 鉴权：~~Spring Security(Disabled)~~
  
 __使用的服务器__: 阿里云的学生服务器，1核2G内存1M带宽
 
@@ -164,7 +165,7 @@ CREATE TABLE `PageView` (
     - StatisticsService
     - UserService
   - utility
-    - ContentUtility:一下静态函数
+    - ContentUtility:一些静态函数
 - resources
   - mapper: MyBatis的Mapper
     - ArticleCommentMapper.xml
