@@ -120,6 +120,64 @@ CREATE TABLE `PageView` (
 ) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1
 ```
 
+## 项目目录
+- java
+  - bean
+    - Article
+    - ArticleComment
+    - PublishDateStatistical
+    - ReplyComment
+    - Tags
+    - User
+    - Visitor
+  - config
+    - RedisWebSecurityConfig：拦截器
+    - StaticConfigParam：静态参数
+  - controller
+    - MainController：返回Thymeleaf的模板控制类
+  - interceptor
+    - RedisSessionInterceptor：控制其他权限
+    - RedisSessionRoleInterceptor：控制管理员权限
+  - mapper
+    - ArticleCommentMapper
+    - ArticleMapper
+    - ReplyCommentMapper
+    - StatisticsMapper
+    - UserMapper
+  - restcontroller：处理post，get请求，返回json数据
+    - AdminRestController
+    - ArticleRestController
+    - CommentRestController
+    - UserRestController
+  - service
+    - impl
+      - ArticleCommentServiceImpl
+      - ArticleServiceImpl
+      - ReplyCommentServiceImpl
+      - SendEmailServiceImpl
+      - StatisticsServiceImpl
+      - UserServiceImpl
+    - ArticleCommentService
+    - ArticleService
+    - ReplyCommentService
+    - SendEmailService
+    - StatisticsService
+    - UserService
+  - utility
+    - ContentUtility:一下静态函数
+- resources
+  - mapper: MyBatis的Mapper
+    - ArticleCommentMapper.xml
+    - ArticlesMapper.xml
+    - ReplyCommentMapper.xml
+    - StatisticsMapper.xml
+    - UserMapper.xml
+  - static: 静态文件
+  - templates: Thymeleaf模板
+  - application.properties:公共properties，包含了Email的相关参数
+  - application-dev.properties:测试环境
+  - application-prod.properties:生产环境
+
 ## 更新2019-05-15
 * 需要增加通过标签读取文章的功能
 
