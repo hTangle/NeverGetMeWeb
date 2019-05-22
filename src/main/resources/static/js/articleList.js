@@ -8,10 +8,12 @@ function updateArticleList(articleList) {
             isStickHtml='<h6 style="display: inline;"><span style="display: inline;vertical-align:text-top" class="badge badge-danger">置顶</span></h6>';
         }
         var coverBegin='';
+        var coverImage='';
         var coverEnd='';
         if(article.cover){
-            coverBegin='<div class="row no-gutters"><div class="col-md-3"><img src="'+article.cover+'" class="card-img img-fluid" alt="Responsive image"></div><div class="col-md-9">';
-            coverEnd='</div></div>';
+            coverBegin='<div class="row no-gutters"><div class="col-md-9">';
+            coverImage='<div class="col-md-3"><img src="'+article.cover+'" class="card-img img-fluid" alt="Responsive image"></div>';
+            coverEnd=coverImage+'</div></div>';
         }
         appendHtml=appendHtml+'<div class="card mb-3 shadow-lg p-3 bg-white rounded">'+coverBegin+'<div class="card-body">';
         appendHtml = appendHtml + '\n' +

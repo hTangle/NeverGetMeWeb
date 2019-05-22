@@ -25,6 +25,7 @@ public class MainController {
     public String getMainPage(HttpServletResponse response,
                               Model model,
                               HttpServletRequest request) {
+        String refer=request.getHeader("referer");
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
 //        PageHelper.startPage(1,5);
