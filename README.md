@@ -10,6 +10,12 @@ __目前实现的功能__：用户邮箱注册，博客列表展示，按照标�
 ## 页面展示
 * 首页
   ![](https://github.com/hTangle/NeverGetMeWeb/blob/master/pic/20190522100555.png)
+* 文章编辑界面
+  ![](https://github.com/hTangle/NeverGetMeWeb/blob/master/pic/20190522101124.png)
+* 统计界面
+  ![](https://github.com/hTangle/NeverGetMeWeb/blob/master/pic/20190522101147.png)
+* 后台管理界面
+  ![](https://github.com/hTangle/NeverGetMeWeb/blob/master/pic/20190522101225.png)
 
 
 ## 更新2019-05-15
