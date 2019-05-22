@@ -1,11 +1,25 @@
 # NeverGetMeWeb
 
 
-__博客采用的框架__：SpringBoot+MyBatis+MySQL+Redis
+__博客采用的技术__：
 
+ 1. Web框架：Springboot
+ 2. 数据库ORM：MyBatis
+ 3. 分页插件：PageHelper
+ 4. 数据库：MySQL
+ 5. 缓存：Redis
+ 6. 前端模板：Thymeleaf
+ 7. 前端：Bootstrap
+ 8. 文章编辑与展示：Editor.md
+ 9. 项目构建：Maven
+ 10. 项目部署：Docker
+ 11. 鉴权：~~Spring Security(Disabled)~~
+ 
 __使用的服务器__: 阿里云的学生服务器，1核2G内存1M带宽
 
 __目前实现的功能__：用户邮箱注册，博客列表展示，按照标签分类，查看统计数据，简单后台管理以及使用Markdown语法编辑博客
+
+__部署方式__:使用Maven打包成jar然后通过Docker部署
 
 ## 页面展示
 * 首页
@@ -17,6 +31,94 @@ __目前实现的功能__：用户邮箱注册，博客列表展示，按照标�
 * 后台管理界面
   ![](https://github.com/hTangle/NeverGetMeWeb/blob/master/pic/20190522101225.png)
 
+## MySQL建表
+* 用户表
+```sql
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_uuid` varchar(70) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `telephone` varchar(255) DEFAULT NULL,
+  `role` int(10) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `last_ip` varchar(255) DEFAULT NULL,
+  `last_time` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=10005 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT
+```
+__role为10时表示用户是管理员，可以发表文章，查看管理界面，进行管理操作等__
+
+* 文章表
+```sql
+CREATE TABLE `article` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `authorId` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `content` longtext NOT NULL,
+  `publishDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updateDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `likes` int(11) NOT NULL DEFAULT '0',
+  `shortcut` varchar(255) DEFAULT NULL,
+  `visitTimes` int(11) NOT NULL DEFAULT '0',
+  `isOriginal` int(1) NOT NULL DEFAULT '0',
+  `isStick` tinyint(1) NOT NULL DEFAULT '0',
+  `cover` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=100042 DEFAULT CHARSET=utf8
+```
+* 评论表
+```sql
+CREATE TABLE `ArticleComments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `commentUserId` int(11) NOT NULL,
+  `articleId` int(11) NOT NULL,
+  `content` varchar(400) NOT NULL,
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8
+```
+* 回复表
+```sql
+CREATE TABLE `ReplyComment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `articleId` int(11) NOT NULL,
+  `commentId` int(11) NOT NULL,
+  `replyUserId` int(11) NOT NULL,
+  `repliedUserId` int(11) NOT NULL,
+  `content` varchar(200) NOT NULL,
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=100001 DEFAULT CHARSET=utf8
+```
+* 标签表
+```sql
+CREATE TABLE `tags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `value` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10006 DEFAULT CHARSET=utf8
+```
+* 文章标签表
+```sql
+CREATE TABLE `articleTags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tagid` int(11) NOT NULL,
+  `articleid` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8
+```
+* 访问记录表
+```sql
+CREATE TABLE `PageView` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `visitTime` date NOT NULL,
+  `pv` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `visitTime` (`visitTime`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1
+```
 
 ## 更新2019-05-15
 * 需要增加通过标签读取文章的功能
