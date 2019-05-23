@@ -31,7 +31,7 @@ function updateArticleList(articleList) {
         var tagsList=article.tagsList;
         appendHtml=appendHtml+'<div class="card-text text-muted">'
         for(var j in tagsList){
-            appendHtml=appendHtml+'<span class="badge badge-warning">'+tagsList[j].value+'</span><span class="badge badge-light"> </span>';
+            appendHtml=appendHtml+'<a class="badge badge-warning" href="/tags/'+tagsList[j].id+'">'+tagsList[j].value+'</a><span class="badge badge-light"> </span>';
         }
         appendHtml=appendHtml+'</div></div></div>'+coverEnd;
     }

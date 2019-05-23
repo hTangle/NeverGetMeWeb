@@ -140,4 +140,9 @@ public class MainController {
         model.addAttribute("userId",userId);
         return "my";
     }
+
+    @GetMapping("/search")
+    public String getSearchPage(){
+        return "search";
+    }
 }

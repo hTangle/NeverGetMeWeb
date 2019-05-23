@@ -2,6 +2,7 @@ package com.nevergetme.nevergetmeweb.service.impl;
 
 import com.nevergetme.nevergetmeweb.bean.Article;
 import com.nevergetme.nevergetmeweb.bean.PublishDateStatistical;
+import com.nevergetme.nevergetmeweb.bean.Search;
 import com.nevergetme.nevergetmeweb.bean.Tags;
 import com.nevergetme.nevergetmeweb.config.StaticConfigParam;
 import com.nevergetme.nevergetmeweb.mapper.ArticleMapper;
@@ -149,6 +150,21 @@ public class ArticleServerImpl implements ArticleService {
     }
 
     @Override
+     /**
+     　　* @description: 查找的匹配方式是%contents%,如果检索到，则会将这个contents加到search History中
+     　　* @param [contents]
+     　　* @return java.util.List<com.nevergetme.nevergetmeweb.bean.Article>
+     　　* @throws
+     　　* @author Alden He
+     　　* @date 2019/5/23 19:04
+     　　*/
+    public List<Article> getArticleListByTitle(String contents){
+        List<Article> list=articleMapper.getArticleListByTitle("%"+contents+"%");
+        if(list!=null&&list.size()>0)articleMapper.addSearchHistory(new Search(contents,1));
+        return list;
+    }
+
+    @Override
     public List<Article> getArticleListByTagId(int tagid){
         return articleMapper.getArticleListByTagId(tagid);
     }
@@ -180,5 +196,15 @@ public class ArticleServerImpl implements ArticleService {
     @Override
     public void updateArticleCover(Article article){
         articleMapper.updateArticleCover(article);
+    }
+
+    //搜索记录相关
+    @Override
+    public List<Search> getSearchHistory(){
+        return articleMapper.getSearchHistory();
+    }
+    @Override
+    public int addSearchHistory(Search search){
+        return articleMapper.addSearchHistory(search);
     }
 }

@@ -26,6 +26,8 @@ public class RedisWebSecurityConfig implements WebMvcConfigurer {
                 addPathPatterns("/user/logout").
                 addPathPatterns("/article/createArticle").
                 addPathPatterns("/article/uploadImage").
+                excludePathPatterns("/article/searchArticle").
+                excludePathPatterns("/article/getSearchHistory").
                 excludePathPatterns("/user/login").
                 excludePathPatterns("/user/getAuthCode").
                 excludePathPatterns("/").

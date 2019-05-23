@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>NeverGetMe</title>
+    <link rel="shortcut" th:href="@{/icon/java.svg}"/>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{plug/echarts/echarts.min.js}"></script>
+    <script th:src="@{/js/echarts-wordcloud.min.js}"></script>
+</head>
+<body>
+<div th:replace="header::html"></div>
+<div class="container">
+    <div class="card border-light" id="SearchCardShow" style="position:absolute;left: 50%;top:50%;transform: translate(-50%,-75%);width: 60%">
+        <div class="card-body" >
+            <div class="input-group" >
+                <input type="text" class="form-control" aria-describedby="SendSearchContent" id="SearchContent">
+                <div class="input-group-append">
+                    <button class="btn btn-dark" type="button" id="SendSearchContent">搜索</button>
+                </div>
+            </div>
+            <div class="container mt-3" id="articleTables">
+            </div>
+            <div id="WordCloud" style="width: auto;height:200px;"></div>
+        </div>
+    </div>
+<!--    <div class="card border-light">-->
+<!--        <div class="card-body" >-->
+<!--            <div class="input-group" >-->
+<!--                <input type="text" class="form-control" aria-describedby="SendSearchContent" id="SearchContent">-->
+<!--                <div class="input-group-append">-->
+<!--                    <button class="btn btn-dark" type="button" id="SendSearchContent">搜索</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
+<div th:replace="footer::html"></div>
+<script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/articleList.js}"></script>
+<!--<script th:inline="javascript">-->
+<!--    var userID=[[${userId}]];-->
+<!--</script>-->
+<script>
+    readUserInfo();
+    var chart=echarts.init(document.getElementById('WordCloud'));
+    function createRandomItemStyle() {
+        return {
+            normal: {
+                color: 'rgb(' + [
+                    Math.round(Math.random() * 160),
+                    Math.round(Math.random() * 160),
+                    Math.round(Math.random() * 160)
+                ].join(',') + ')'
+            }
+        };
+    }
+    function generateRequireData(data) {
+        var chartData=[];
+        for(var i in data){
+            chartData.push({name:data[i].content,value:data[i].times,textStyle: createRandomItemStyle()});
+        }
+        return chartData;
+    }
+    function loadWordCloudChart(data,chart){
+        option = {
+            tooltip: {
+                show: true
+            },
+            series: [{
+                name: 'Search Trends',
+                type: 'wordCloud',
+                size: ['80%', '80%'],
+                textRotation : [0, 45, 90, -45],
+                textPadding: 0,
+                autoSize: {
+                    enable: true,
+                    minSize: 14
+                },
+                data:generateRequireData(data)
+            }]
+        };
+        chart.setOption(option);
+    }
+
+    function setSearchShowList(status){
+        if(status){
+            $("#SearchCardShow").css("position","absolute");
+            $("#SearchCardShow").css("left","50%");
+            $("#SearchCardShow").css("transform","translate(-50%,-75%)");
+            $("#SearchCardShow").css("top","50%");
+            $("#SearchCardShow").css("width","60%");
+        }else{
+            $("#SearchCardShow").css("position","");
+            $("#SearchCardShow").css("left","");
+            $("#SearchCardShow").css("transform","");
+            $("#SearchCardShow").css("top","");
+            $("#SearchCardShow").css("width","");
+        }
+    }
+    var myStatus=true;
+    $(document).ready(function () {
+        updateFooter(1);
+        $.get("/article/getSearchHistory",function (data,status) {
+           if(data){
+               // console.log(data);
+               loadWordCloudChart(data,chart);
+           }
+
+        });
+        $("#SendSearchContent").click(function () {
+            if($("#SearchContent").val()){
+                $.post("/article/searchArticle",{
+                    contents:$("#SearchContent").val()
+                },function (data,status) {
+                    if(data){
+                        //console.log(data);
+                        setSearchShowList(false);
+                        updateArticleList(data);
+                        updateFooter(data.length);
+                        $("#WordCloud").hide();
+                    }
+                });
+            }
+        });
+    });
+
+
+</script>
+</body>
+</html>

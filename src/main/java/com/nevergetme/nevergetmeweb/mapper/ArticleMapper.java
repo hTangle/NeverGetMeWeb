@@ -2,12 +2,14 @@ package com.nevergetme.nevergetmeweb.mapper;
 
 import com.nevergetme.nevergetmeweb.bean.Article;
 import com.nevergetme.nevergetmeweb.bean.PublishDateStatistical;
+import com.nevergetme.nevergetmeweb.bean.Search;
 import com.nevergetme.nevergetmeweb.bean.Tags;
 import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 @Mapper
 public interface ArticleMapper {
+    List<Article> getArticleListByTitle(String contents);
     List<Article> findAllArticleWithoutUserAndTags();
     List<Article> getAllArticle();
     List<Article> getUserArticle(int userId);
@@ -24,4 +26,8 @@ public interface ArticleMapper {
     List<PublishDateStatistical> getStatisticalDataOfPublishDate();
     void updateArticleIsStick(int id,int isStick);
     void updateArticleCover(Article article);
+
+    //搜索记录相关
+    List<Search> getSearchHistory();
+    int addSearchHistory(Search search);
 }

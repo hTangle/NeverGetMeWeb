@@ -2,10 +2,7 @@ package com.nevergetme.nevergetmeweb.restcontroller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.nevergetme.nevergetmeweb.bean.Article;
-import com.nevergetme.nevergetmeweb.bean.PublishDateStatistical;
-import com.nevergetme.nevergetmeweb.bean.Tags;
-import com.nevergetme.nevergetmeweb.bean.Visitor;
+import com.nevergetme.nevergetmeweb.bean.*;
 import com.nevergetme.nevergetmeweb.config.StaticConfigParam;
 import com.nevergetme.nevergetmeweb.service.ArticleService;
 import com.nevergetme.nevergetmeweb.service.StatisticsService;
@@ -14,12 +11,10 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -186,8 +181,17 @@ public class ArticleRestController {
             a.setCover(ContentUtility.getCoverFromContent(a.getContent()));
             if(a.getCover()!=null){
                 articleService.updateArticleCover(a);
-                //articleService
             }
         }
+    }
+
+    @RequestMapping(value = "/article/searchArticle",method = RequestMethod.POST)
+    public @ResponseBody List<Article> searchArticle(@RequestParam("contents")String contents){
+        return articleService.getArticleListByTitle(contents);
+    }
+
+    @RequestMapping("/article/getSearchHistory")
+    public @ResponseBody List<Search> getSearchHistory(){
+        return articleService.getSearchHistory();
     }
 }

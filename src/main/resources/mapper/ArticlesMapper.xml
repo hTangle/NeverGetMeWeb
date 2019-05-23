@@ -57,7 +57,7 @@
                from article left join user on article.authorId=user.id where article.id=#{id}
     </select>
     <select id="getTagsByArticleId" parameterType="java.lang.Integer" resultType="com.nevergetme.nevergetmeweb.bean.Tags">
-        select articleTags.id,tags.value from articleTags left join tags on articleTags.tagid=tags.id where articleTags.articleid=#{id};
+        select articleTags.tagid id,tags.value from articleTags left join tags on articleTags.tagid=tags.id where articleTags.articleid=#{id};
     </select>
     <insert id="createNewArticle" parameterType="com.nevergetme.nevergetmeweb.bean.Article" useGeneratedKeys="true" keyProperty="id">
         insert into article(authorId,title,content,shortcut,isOriginal,cover) values(#{authorId},#{title},#{content},#{shortcut},#{isOriginal},#{cover})
@@ -104,4 +104,21 @@
     <update id="updateArticleCover" parameterType="com.nevergetme.nevergetmeweb.bean.Article">
         update article set cover=#{cover} where id=#{id}
     </update>
+
+    <select id="getArticleListByTitle" parameterType="java.lang.String" resultMap="articleResultMapList">
+        select article.id,article.title,article.shortcut,
+               DATE_FORMAT(article.publishDate,'%Y-%m-%d') publishDate,
+               DATE_FORMAT(article.updateDate,'%Y-%m-%d') updateDate,article.likes,article.visitTimes,article.isStick,article.cover,
+               user.id as user_id,user.username
+        from article left join user on article.authorId=user.id where article.title like #{contents}
+        order by isStick desc,article.id desc
+    </select>
+
+<!--    int addSearchHistory(Search search);-->
+    <select id="getSearchHistory" resultType="com.nevergetme.nevergetmeweb.bean.Search">
+        select * from SearchHistory
+    </select>
+    <insert id="addSearchHistory" parameterType="com.nevergetme.nevergetmeweb.bean.Search" keyProperty="id" useGeneratedKeys="true">
+        insert into SearchHistory(content,times) values(#{content},#{times}) on duplicate key update times=times+1
+    </insert>
 </mapper>

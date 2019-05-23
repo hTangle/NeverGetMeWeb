@@ -15,10 +15,19 @@ __博客采用的技术__：
  10. 项目构建：Maven
  11. 项目部署：Docker
  12. 鉴权：~~Spring Security(Disabled)~~
+ 13. [词云图](https://github.com/ecomfe/echarts-wordcloud)
  
 __使用的服务器__: 阿里云的学生服务器，1核2G内存1M带宽
 
-__目前实现的功能__：用户邮箱注册，博客列表展示，按照标签分类，查看统计数据，简单后台管理以及使用Markdown语法编辑博客
+__目前实现的功能__：
+
+* 用户邮箱注册
+* 博客列表展示
+* 按照标签分类
+* 查看统计数据
+* 简单后台管理
+* markdown语法编辑博客
+* 搜索记录词云图展示
 
 __部署方式__:使用Maven打包成jar然后通过Docker部署
 
@@ -31,7 +40,8 @@ __部署方式__:使用Maven打包成jar然后通过Docker部署
   ![](https://github.com/hTangle/NeverGetMeWeb/blob/master/pic/20190522101147.png)
 * 后台管理界面
   ![](https://github.com/hTangle/NeverGetMeWeb/blob/master/pic/20190522101225.png)
-
+* 搜索界面
+  ![](https://github.com/hTangle/NeverGetMeWeb/blob/master/pic/20190523211448.png)
 ## MySQL建表
 * 用户表
 ```sql
@@ -120,6 +130,17 @@ CREATE TABLE `PageView` (
   UNIQUE KEY `visitTime` (`visitTime`)
 ) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1
 ```
+* 搜索记录表
+```sql
+CREATE TABLE `searchhistory` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` varchar(200) NOT NULL,
+  `times` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `content` (`content`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+```
+
 
 ## 项目目录
 - java
