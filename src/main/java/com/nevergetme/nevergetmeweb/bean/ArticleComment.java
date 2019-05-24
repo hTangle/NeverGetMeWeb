@@ -2,13 +2,15 @@ package com.nevergetme.nevergetmeweb.bean;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Create by Alden He on 2019/5/7
  */
 @Data
-public class ArticleComment {
+public class ArticleComment implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Integer id;//主键id
     private int commentUserId;//创建该评论的用户id
     private User user;

@@ -2,6 +2,8 @@ package com.nevergetme.nevergetmeweb.bean;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * Create by Alden He on 2019/5/8
  * comment
@@ -20,7 +22,8 @@ createTime timestamp not null default current_timestamp
 )Engine=InnoDB auto_increment=100000 default charset=utf8;
  */
 @Data
-public class ReplyComment {
+public class ReplyComment implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Integer id;
     private int articleId;
     private int commentId;

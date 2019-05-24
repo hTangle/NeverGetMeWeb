@@ -49,6 +49,7 @@ public class ContentUtility {
     }
     public static String getArticleShortCut(String articleContent){
         String s=Jsoup.parse(articleContent).text();
+        if(s.length()<100)return s;
         return s.substring(0,100)+"...";
 //        int index=0;
 //        int count=0;

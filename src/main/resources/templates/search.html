@@ -25,7 +25,7 @@
                     <button class="btn btn-dark" type="button" id="SendSearchContent">搜索</button>
                 </div>
             </div>
-            <div class="container mt-3" id="articleTables" style="text-align: center">
+            <div class="container mt-3" id="articleTables" >
             </div>
             <div id="WordCloud" style="width: auto;height:200px;"></div>
         </div>
@@ -107,6 +107,10 @@
     var myStatus=true;
     $(document).ready(function () {
         updateFooter(1);
+        chart.on('click',function (params) {
+            console.log(params.name);
+            $("#SearchContent").val(params.name);
+        })
         $.get("/article/getSearchHistory",function (data,status) {
            if(data){
                // console.log(data);

@@ -20,6 +20,7 @@ public interface ArticleService {
     List<Article> getArticleListByTagId(int tagid);
     //模糊查找 title的相关内容
     List<Article> getArticleListByTitle(String contents);
+
     void updateVisitTimes(int id);
     List<Tags> getAllTags();
     void setArticleTags(int articleId,int tagid);
