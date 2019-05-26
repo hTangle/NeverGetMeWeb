@@ -16,6 +16,7 @@ __博客采用的技术__：
  11. 项目部署：Docker
  12. 鉴权：~~Spring Security(Disabled)~~
  13. [词云图](https://github.com/ecomfe/echarts-wordcloud)
+ 14. [Image Viewer](https://github.com/fengyuanchen/jquery-viewer)
  
 __使用的服务器__: 阿里云的学生服务器，1核2G内存1M带宽
 

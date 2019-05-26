@@ -13,6 +13,8 @@
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{plug/echarts/echarts.min.js}"></script>
     <script th:src="@{/js/echarts-wordcloud.min.js}"></script>
+    <script th:src="@{/js/viewer.min.js}"></script>
+    <link th:href="@{/css/viewer.min.css}" rel="stylesheet">
 </head>
 <body>
 <div th:replace="header::html"></div>
@@ -30,16 +32,6 @@
             <div id="WordCloud" style="width: auto;height:200px;"></div>
         </div>
     </div>
-<!--    <div class="card border-light">-->
-<!--        <div class="card-body" >-->
-<!--            <div class="input-group" >-->
-<!--                <input type="text" class="form-control" aria-describedby="SendSearchContent" id="SearchContent">-->
-<!--                <div class="input-group-append">-->
-<!--                    <button class="btn btn-dark" type="button" id="SendSearchContent">搜索</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 </div>
 <div th:replace="footer::html"></div>
 <script th:src="@{/js/header.js}"></script>
@@ -128,6 +120,11 @@
                         setSearchShowList(false);
                         updateArticleList(data);
                         updateFooter(data.length);
+                        $(function () {
+                            $("#articleTables img").click(function () {
+                                showImage($(this)[0].src)
+                            })
+                        });
                         $("#WordCloud").hide();
                     }
                 });

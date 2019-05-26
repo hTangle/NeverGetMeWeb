@@ -251,8 +251,16 @@ $("#RegisterModalButton").click(function () {
    }
 });
 function showImage(srcUrl) {
-    $("#ImageShowContent").attr('src',srcUrl);
-    $("#ImageShowModal").modal('show');
+    var image=new Image();
+    image.src=srcUrl;
+    var viewer=new Viewer(image,{
+        hidden: function () {
+            viewer.destroy();
+        },
+    });
+    viewer.show();
+    // $("#ImageShowContent").attr('src',srcUrl);
+    // $("#ImageShowModal").modal('show');
 }
 
 

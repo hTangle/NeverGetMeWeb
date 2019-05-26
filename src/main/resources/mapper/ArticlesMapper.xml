@@ -75,7 +75,7 @@
                DATE_FORMAT(A.publishDate,'%Y-%m-%d') publishDate,
                DATE_FORMAT(A.updateDate,'%Y-%m-%d') updateDate,A.likes,A.visitTimes,A.isStick,A.cover,A.authorId
         from articleTags T left join article A on A.id=T.articleid where T.tagid=#{tagid}
-        order by A.isStick desc,A.id desc) Z left join user U on Z.authorId=U.id
+        ) Z left join user U on Z.authorId=U.id order by Z.isStick desc,Z.id desc
     </select>
     <select id="getTotalArticleCount" resultType="java.lang.Integer">
         select count(*) from article;
