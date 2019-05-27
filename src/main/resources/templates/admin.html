@@ -10,8 +10,8 @@
     <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-    <script th:src="@{js/popper.min.js}"></script>
-    <script th:src="@{plug/echarts/echarts.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/plug/echarts/echarts.min.js}"></script>
 </head>
 <body>
 <div th:replace="header::html"></div>
@@ -100,9 +100,9 @@
     </div>
 </div>
 <div th:replace="footer::html"></div>
-<script th:src="@{/js/header.js}"></script>
-<script th:src="@{/js/addsvg.js}"></script>
-<script th:src="@{/js/loadCharts.js}"></script>
+<script th:src="@{/myjs/header.js}"></script>
+<script th:src="@{/myjs/addsvg.js}"></script>
+<script th:src="@{/myjs/loadCharts.js}"></script>
 
 <script>
     readUserInfo();

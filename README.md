@@ -54,15 +54,15 @@ docker run -d --name myapps -v /home/image:/home/img -p 8080:8080 wisely/myapps
 
 ## 页面展示
 * 首页
-  ![](https://github.com/hTangle/NeverGetMeWeb/blob/master/pic/20190522100555.png)
+  ![](./pic/20190522100555.png)
 * 文章编辑界面
-  ![](https://github.com/hTangle/NeverGetMeWeb/blob/master/pic/20190522101124.png)
+  ![](./pic/20190522101124.png)
 * 统计界面
-  ![](https://github.com/hTangle/NeverGetMeWeb/blob/master/pic/20190522101147.png)
+  ![](./pic/20190522101147.png)
 * 后台管理界面
-  ![](https://github.com/hTangle/NeverGetMeWeb/blob/master/pic/20190522101225.png)
+  ![](./pic/20190522101225.png)
 * 搜索界面
-  ![](https://github.com/hTangle/NeverGetMeWeb/blob/master/pic/20190523211448.png)
+  ![](./pic/20190523211448.png)
 ## MySQL建表
 * 用户表
 ```sql
@@ -220,6 +220,11 @@ CREATE TABLE `searchhistory` (
   - application.properties:公共properties，包含了Email的相关参数
   - application-dev.properties:测试环境
   - application-prod.properties:生产环境
+
+## 已知BUG
+* 词云图如果词汇变大会放不下,官方解释如下
+  > The current implementation will skip the word that can't be fit into the canvas. This is a faulty design and should be corrected. It can be fixed by laying out the words on a boundless virtual canvas, and scale the entire virtual canvas until it fits into the visual canvas. The project, however, is not trivial.
+
 
 ## 更新2019-05-15
 * 需要增加通过标签读取文章的功能

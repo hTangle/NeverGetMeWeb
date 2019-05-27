@@ -23,9 +23,9 @@
     <div id="PageViewCount" style="width: auto;height:400px;"></div>
 </div>
 <div th:replace="footer::html"></div>
-<script th:src="@{/js/header.js}"></script>
-<script th:src="@{/js/addsvg.js}"></script>
-<script th:src="@{/js/loadCharts.js}"></script>
+<script th:src="@{/myjs/header.js}"></script>
+<script th:src="@{/myjs/addsvg.js}"></script>
+<script th:src="@{/myjs/loadCharts.js}"></script>
 <script>
     readUserInfo();
     var myChart = echarts.init(document.getElementById('statisticalData'));

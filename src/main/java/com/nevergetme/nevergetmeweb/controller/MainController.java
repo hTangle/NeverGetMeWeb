@@ -70,6 +70,7 @@ public class MainController {
                                 HttpServletRequest request){
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
+
         HttpSession session=request.getSession();
         if(session.getAttribute(StaticConfigParam.LOGIN_IN_USER_ID)!=null){
             int authorId=(Integer) session.getAttribute(StaticConfigParam.LOGIN_IN_USER_ID);
