@@ -31,6 +31,7 @@ __目前实现的功能__：
 * 搜索记录词云图展示
 
 __部署方式__:使用Maven打包成jar然后通过Docker部署
+
 Dockerfile
 ```
 FROM java:8
@@ -49,7 +50,7 @@ docker build -t wisely/myapps .
 docker run -d --name myapps -v /home/image:/home/img -p 8080:8080 wisely/myapps 
 ```
 通过rz命令将jar文件复制到该文件夹，然后通过执行 run.sh即可完成部署
-* 需要给run.sh执行quanx
+* 需要给run.sh执行权限
 * mv never*.jar app.jar 按需更改
 
 ## 页面展示
