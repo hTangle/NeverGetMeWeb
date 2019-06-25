@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nevergetme.nevergetmeweb.mapper.SystemMessageMapper">
+    <insert id="addSystemMessage" parameterType="com.nevergetme.nevergetmeweb.bean.SystemMessage">
+        insert into SystemMessage(receiver,content,sendState,readState,type,url,sender)
+        values(#{receiver},#{content},#{sendState},#{readState},#{type},#{url},#{sender})
+    </insert>
+    <update id="updateSystemMessageReadState" parameterType="java.lang.Integer">
+        update SystemMessage set readState=1 where id=#{id}
+    </update>
+    <update id="updateSystemMessageSendState" parameterType="java.lang.Integer">
+        update SystemMessage set sendState=1 where id=#{id}
+    </update>
+    <select id="readSystemMessage" parameterType="java.lang.Integer" resultType="com.nevergetme.nevergetmeweb.bean.SystemMessage">
+        select * from SystemMessage where receiver=#{receiver} order by id desc
+    </select>
+</mapper>

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,20 +33,28 @@ public class ArticleServerImpl implements ArticleService {
      *      1. 使用redisTemplate进行删除时，如果存在并发删除怎么办
      *      2. searchHistory的HashTable会不会存在并发问题
      */
-    class UpdateSearchHistoryThread implements Runnable{
-        String content;
-        UpdateSearchHistoryThread(String content){
-            this.content=content;
-        }
-        @Override
-        public void run() {
-            searchHistoryTable.forEach((String s,Integer i)->{
-                if(content.contains(s)&&redisTemplate.hasKey(StaticConfigParam.SEARCH_HISTROY_LIST+s)){
-                    redisTemplate.delete(StaticConfigParam.SEARCH_HISTROY_LIST+s);
-                }
-            });
-        }
+    @Async
+    public void updateSearchHistoryAsyc(String content){
+        searchHistoryTable.forEach((String s,Integer i)->{
+            if(content.contains(s)&&redisTemplate.hasKey(StaticConfigParam.SEARCH_HISTROY_LIST+s)){
+                redisTemplate.delete(StaticConfigParam.SEARCH_HISTROY_LIST+s);
+            }
+        });
     }
+//    class UpdateSearchHistoryThread implements Runnable{
+//        String content;
+//        UpdateSearchHistoryThread(String content){
+//            this.content=content;
+//        }
+//        @Override
+//        public void run() {
+//            searchHistoryTable.forEach((String s,Integer i)->{
+//                if(content.contains(s)&&redisTemplate.hasKey(StaticConfigParam.SEARCH_HISTROY_LIST+s)){
+//                    redisTemplate.delete(StaticConfigParam.SEARCH_HISTROY_LIST+s);
+//                }
+//            });
+//        }
+//    }
     private final String ARTICLE_KEY = "article_";
 
     @Autowired
@@ -54,9 +63,10 @@ public class ArticleServerImpl implements ArticleService {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    private ExecutorService cacheThreadPool= Executors.newCachedThreadPool();
+//    private ExecutorService cacheThreadPool= Executors.newCachedThreadPool();
 
     private static final Hashtable<String,Integer> searchHistoryTable=new Hashtable<>();
+
 
 
 
@@ -104,6 +114,11 @@ public class ArticleServerImpl implements ArticleService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Article getArticleByArticleId(int id) {
+        return articleMapper.getArticleByArticleId(id);
     }
 
     @Override
@@ -156,7 +171,8 @@ public class ArticleServerImpl implements ArticleService {
         if(searchHistoryTable.size()==0){
             loadSearchHistoryTable();
         }
-        cacheThreadPool.execute(new UpdateSearchHistoryThread(article.getContent()));
+        updateSearchHistoryAsyc(article.getContent());
+        //cacheThreadPool.execute(new UpdateSearchHistoryThread(article.getContent()));
         return articleID;
     }
 

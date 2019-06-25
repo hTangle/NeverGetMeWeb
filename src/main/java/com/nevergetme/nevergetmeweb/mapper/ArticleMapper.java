@@ -14,6 +14,7 @@ public interface ArticleMapper {
     List<Article> getAllArticle();
     List<Article> getUserArticle(int userId);
     Article getArticleById(int id);
+    Article getArticleByArticleId(int id);
     int createNewArticle(Article article);
     List<Article> getArticleList();
     void updateVisitTimes(int id);

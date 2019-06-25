@@ -2,6 +2,10 @@ package com.nevergetme.nevergetmeweb.config;
 
 import com.nevergetme.nevergetmeweb.interceptor.RedisSessionInterceptor;
 import com.nevergetme.nevergetmeweb.interceptor.RedisSessionRoleInterceptor;
+import com.nevergetme.nevergetmeweb.listener.RequestListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

@@ -26,7 +26,7 @@ function readUserInfo() {
                     $("#logInOrLogout").hide();
                     $("#UserLoginShowStatus").show();
                     $("#GoToAdminPage").show();
-
+                    $("#MessageIconShow").show();
                     $("#LoginUserHeader").attr('src',data.image);
                     // appendHtml=appendHtml+'<li class="nav-item"><img class="rounded" src="'+data.image+'" style="height: 30px;width: 30px;"/></li>';
                 }else{
@@ -35,6 +35,7 @@ function readUserInfo() {
                     $("#UserLoginShowStatus").hide();
                     $("#GoToWritePage").hide();
                     $("#GoToAdminPage").hide();
+                    $("#MessageIconShow").hide();
                 }
                 // $("#footerUser").append(appendHtml);
             }

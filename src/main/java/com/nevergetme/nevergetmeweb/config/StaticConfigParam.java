@@ -26,4 +26,10 @@ public class StaticConfigParam {
     public static final String DEFAULT_USER_IMAGE="/icon/user.svg";
 
     public static final String ADMIN_ROLE="10";
+
+    //系统消息静态变量
+    public static final String SYSTEM_MESSAGE_COMMENT="你的文章被评论";
+    public static final String SYSTEM_MESSAGE_REPLY="你的评论被回复";
+    public static final int SYSTEM_MESSAGE_COMMENT_TYPE=1;
+    public static final int SYSTEM_MESSAGE_REPLY_TYPE=2;
 }

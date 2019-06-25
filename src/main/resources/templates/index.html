@@ -30,10 +30,12 @@
 </nav>
 <div th:replace="footer::html"></div>
 <script th:src="@{/myjs/articleList.js}"></script>
+<script th:src="@{/myjs/addsvg.js}"></script>
+<script th:src="@{/myjs/websocket.js}"></script>
+
 <script>
 
     var currentPage = 1;
-    readCurrentPage(1);
 
     //updateArticle(pageInfos);
     function readCurrentPage(newPage) {
@@ -49,23 +51,24 @@
                     updateFooter(data.size);
                     $(function () {
                         $("#MainBodyShow img").click(function () {
-                            // $(this).viewer();
-                            // var image=new Image();
-                            // image.src=$(this)[0].src;
-                            // var viewer=new Viewer(image,{
-                            //     hidden: function () {
-                            //         viewer.destroy();
-                            //     },
-                            // });
-                            // viewer.show();
                             showImage($(this)[0].src)
-                        })
+                        });
                     });
                 }
                 console.log(status);
             });
         currentPage = newPage;
     }
+
+    $(document).ready(function () {
+        readCurrentPage(1);
+        let websocket=initWebSocket();
+        // sendMessage("1");
+    });
+
+
+
+
 </script>
 <script th:src="@{/myjs/header.js}"></script>
 <script>

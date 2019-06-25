@@ -12,7 +12,7 @@
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{plug/echarts/echarts.min.js}"></script>
-    <script th:src="@{/js/echarts-wordcloud.min.js}"></script>
+    <script th:src="@{/js/echarts-wordcloud.js}"></script>
     <script th:src="@{/js/viewer.min.js}"></script>
     <link th:href="@{/css/viewer.min.css}" rel="stylesheet">
 </head>
@@ -60,8 +60,11 @@
         }
         return chartData;
     }
+
+
+
     function loadWordCloudChart(data,chart){
-        option = {
+        var option = {
             tooltip: {
                 show: true
             },
@@ -69,6 +72,8 @@
                 name: 'Search Trends',
                 type: 'wordCloud',
                 size: ['80%', '80%'],
+                shape: 'circle',
+                drawOutOfBound: false,
                 textRotation : [0, 45, 90, -45],
                 textPadding: 0,
                 autoSize: {

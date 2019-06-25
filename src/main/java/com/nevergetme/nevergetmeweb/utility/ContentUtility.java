@@ -72,13 +72,22 @@ public class ContentUtility {
             return -1;
         }
     }
-    public static User getCurrentUser(HttpServletRequest request){
-        HttpSession session=request.getSession();
+    public static User getCurrentUserBySession(HttpSession session){
         if(session.getAttribute(StaticConfigParam.LOGIN_USER)!=null){
             return (User)session.getAttribute(StaticConfigParam.LOGIN_USER);
         }else {
             return null;
         }
+    }
+
+    public static User getCurrentUser(HttpServletRequest request){
+        HttpSession session=request.getSession();
+        return getCurrentUserBySession(session);
+//        if(session.getAttribute(StaticConfigParam.LOGIN_USER)!=null){
+//            return (User)session.getAttribute(StaticConfigParam.LOGIN_USER);
+//        }else {
+//            return null;
+//        }
     }
      /**
      　　* @description: TODO 查找content中符合![**](*.png)的内容

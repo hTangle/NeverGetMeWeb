@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.nevergetme.nevergetmeweb.bean.*;
 import com.nevergetme.nevergetmeweb.config.StaticConfigParam;
+import com.nevergetme.nevergetmeweb.message.RabbiMQSender;
 import com.nevergetme.nevergetmeweb.service.ArticleService;
 import com.nevergetme.nevergetmeweb.service.StatisticsService;
 import com.nevergetme.nevergetmeweb.utility.ContentUtility;
@@ -31,6 +32,9 @@ public class ArticleRestController {
 
     @Autowired
     private StatisticsService statisticsService;
+
+//    @Autowired
+//    private RabbiMQSender sender;
 
     @RequestMapping(value = "/article/list")
     public @ResponseBody
@@ -171,6 +175,7 @@ public class ArticleRestController {
     @RequestMapping("/article/getAllTags")
     public @ResponseBody
     List<Tags> getAllTags() {
+//        sender.send();
         return articleService.getAllTags();
     }
 

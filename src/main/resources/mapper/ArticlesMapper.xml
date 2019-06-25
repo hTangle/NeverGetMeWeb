@@ -56,6 +56,9 @@
                user.id as user_id,user.username
                from article left join user on article.authorId=user.id where article.id=#{id}
     </select>
+    <select id="getArticleByArticleId" parameterType="java.lang.Integer" resultType="com.nevergetme.nevergetmeweb.bean.Article">
+        select * from article where id=#{id}
+    </select>
     <select id="getTagsByArticleId" parameterType="java.lang.Integer" resultType="com.nevergetme.nevergetmeweb.bean.Tags">
         select articleTags.tagid id,tags.value from articleTags left join tags on articleTags.tagid=tags.id where articleTags.articleid=#{id};
     </select>

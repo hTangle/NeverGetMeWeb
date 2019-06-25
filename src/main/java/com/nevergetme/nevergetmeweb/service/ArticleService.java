@@ -12,6 +12,7 @@ public interface ArticleService {
     List<Article> findAllArticle();
     List<Article> findUserArticle(int userid);
     Article getArticleByUserIDAndID(int id,int authorId);
+    Article getArticleByArticleId(int id);
     int updateArticleByIdAndUserid(Article article);
     Article getArticleById(int id);
     int createNewArticle(Article article,List<Integer> tagid);

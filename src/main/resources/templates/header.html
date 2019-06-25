@@ -26,8 +26,9 @@
         </ul>
         <ul class="navbar-nav my-2 my-lg-0 mr-2" id="footerUser">
             <li class="nav-item">
-                <a  class="btn btn-dark" href="/search">Search</a>
-                <button  class="btn btn-dark" id="logInOrLogout" >登录</button>
+                <a  class="btn btn-dark" href="/search" data-toggle="tooltip" data-placement="bottom" title="搜索"><img class="rounded"  th:src="@{/icon/search.svg}" style="height: 30px;width: 30px;"/></a>
+                <button  class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" title="登录" id="logInOrLogout" >登录</button>
+                <a id="MessageIconShow" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" title="消息"><img class="rounded" id="MessageIcon" th:src="@{/icon/message.svg}" style="height: 30px;width: 30px;"/></a>
             </li>
             <li class="nav-item dropdown" id="UserLoginShowStatus">
                 <a class="nav-link dropdown-toggle" href="#" id="LoginUserDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

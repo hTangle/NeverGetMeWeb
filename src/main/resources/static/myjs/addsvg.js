@@ -14,3 +14,13 @@ function addEyes(eyes) {
 function modifyTitleAndIdToATag(title,id) {
     return '<a href="/article/showArticle/'+id+'">'+title+'</a>';
 }
+function addMessageNotify() {
+    return '<span class="badge badge-danger">  </span>'
+}
+function changeMessageNotify() {
+    $("#HaveMessageFlag").removeClass('badge-light');
+    $("#HaveMessageFlag").addClass('badge-danger');
+}
+function changeMessageIcon() {
+    $("#MessageIcon").attr('src','/icon/notice.svg');
+}
