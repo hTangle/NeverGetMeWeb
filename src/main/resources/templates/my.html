@@ -15,7 +15,7 @@
 <body>
 <div th:replace="header::html"></div>
 <div class="container mt-3" style="margin-top: 10px">
-    <div class="row">
+    <div class="row" id="myInformation">
         <div class="col-2">
             <div class="list-group" id="list-tab" role="tablist">
                 <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list"
@@ -62,6 +62,36 @@
             </div>
         </div>
     </div>
+    <div id="otherInformation">
+        <div class="media">
+            <img src="" class="align-self-start" alt="" id="OtherCover">
+            <div class="media-body">
+                <form>
+                    <div class="form-group">
+                        <label for="MyEmail">Email</label>
+                        <input type="email" class="form-control" id="OtherEmail" placeholder="Email" readonly>
+                        <div class="invalid-feedback">
+                            请输入正确的Email,不要使用被别人注册过的email
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="MyUserName">Username</label>
+                        <input type="text" class="form-control" id="OtherUserName" readonly>
+                        <div class="invalid-feedback">
+                            用户名长度小于10
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="MyUserName">telephone</label>
+                        <input type="text" class="form-control" id="OtherTelephone" readonly>
+                        <div class="invalid-feedback">
+                            输入正确的号码
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 <div th:replace="footer::html"></div>
 <script th:src="@{/myjs/header.js}"></script>
@@ -69,35 +99,60 @@
 <script th:src="@{/myjs/websocket.js}"></script>
 
 <script th:inline="javascript">
-    var userID=[[${userId}]];
+    var userID=[[${CurrentUserID}]];
 </script>
 <script>
     readUserInfo();
-    function setUserInfo(data){
-        $("#MyCover").attr('src',data.image);
-        $("#MyEmail").attr('value',data.email);
-        $("#MyUserName").attr('value',data.username);
-        if(data.telephone)
-            $("#MyTelephone").attr('value',data.telephone);
+    function setUserInfo(data,other){
+        if(other){
+            $("#OtherCover").attr('src',data.image);
+            $("#OtherEmail").attr('value',data.email);
+            $("#OtherUserName").attr('value',data.username);
+            if(data.telephone)
+                $("#OtherTelephone").attr('value',data.telephone);
+        }else{
+            $("#MyCover").attr('src',data.image);
+            $("#MyEmail").attr('value',data.email);
+            $("#MyUserName").attr('value',data.username);
+            if(data.telephone)
+                $("#MyTelephone").attr('value',data.telephone);
+        }
+
     }
     $(document).ready(function () {
+        console.log(userID);
         if(userID){
+            $("#myInformation").hide();
             $.post("/user/getUserInfoById",{
                 userId:userID
             },function (data,status) {
                 if(data.id)
-                    setUserInfo(data);
+                    setUserInfo(data,true);
             });
         }else{
+            $("#otherInformation").hide();
             $.post("/getCurrentUser",{},function (data,status) {
                 if(data.id){
-                    setUserInfo(data);
+                    setUserInfo(data,false);
                 }
             });
+            $.post("/user/getUserSystemMessage",{},function (data,status) {
+                showSystemMessage(data);
+            })
         }
         let websocket=initWebSocket();
-
     });
+    function showSystemMessage(data) {
+        var appendHtml='';
+        $("#list-messages").empty();
+        for(i in data){
+            var msg=data[i];
+            appendHtml+='<div class="alert alert-primary" role="alert">\n' +
+                '<a target="_blank" href="/article/showArticle/'+msg['url']+'">'+msg['content']+'</a>'+
+                '</div>';
+        }
+        $("#list-messages").append(appendHtml);
+    }
 </script>
 </body>
 </html>

@@ -1,8 +1,10 @@
 package com.nevergetme.nevergetmeweb.restcontroller;
 
+import com.nevergetme.nevergetmeweb.bean.SystemMessage;
 import com.nevergetme.nevergetmeweb.bean.User;
 import com.nevergetme.nevergetmeweb.config.StaticConfigParam;
 import com.nevergetme.nevergetmeweb.service.SendEmailService;
+import com.nevergetme.nevergetmeweb.service.SystemMessageService;
 import com.nevergetme.nevergetmeweb.service.UserService;
 import com.nevergetme.nevergetmeweb.utility.ContentUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,6 +28,8 @@ public class UserRestController {
     private UserService userService;
     @Autowired
     private SendEmailService sendEmailService;
+    @Autowired
+    private SystemMessageService systemMessageService;
 
     @RequestMapping(value = "/createUser", method = RequestMethod.POST)
     public @ResponseBody
@@ -131,6 +136,16 @@ public class UserRestController {
     @RequestMapping(value = "/user/getUserInfoById",method = RequestMethod.POST)
     public @ResponseBody User getUserInfoById(@RequestParam(value = "userId", required = true) int userId){
         return userService.findUserByUserId(userId);
+    }
+
+    @RequestMapping(value = "/user/getUserSystemMessage",method = RequestMethod.POST)
+    public @ResponseBody
+    List<SystemMessage> getUserSystemMessage(HttpServletRequest request){
+        User u=ContentUtility.getCurrentUser(request);
+        if(u!=null)
+            return systemMessageService.readSystemMessage(u.getId());
+        else
+            return null;
     }
 
 }

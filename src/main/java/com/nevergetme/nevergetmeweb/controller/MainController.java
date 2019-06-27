@@ -136,10 +136,19 @@ public class MainController {
                                   HttpServletResponse response,
                                   Model model,
                                   HttpServletRequest request){
-        response.setCharacterEncoding("utf-8");
-        response.setContentType("text/html;charset=utf-8");
-        model.addAttribute("userId",userId);
-        return "my";
+
+        User u=ContentUtility.getCurrentUser(request);
+        if(u!=null&&u.getId()==userId){
+            //表示是自己
+            return "my";
+        }else{
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("text/html;charset=utf-8");
+            model.addAttribute("CurrentUserID",userId);
+            return "my";
+        }
+
+
     }
 
     @GetMapping("/search")

@@ -162,7 +162,21 @@ CREATE TABLE `searchhistory` (
   UNIQUE KEY `content` (`content`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ```
-
+* 系统通知表
+```sql
+CREATE TABLE `SystemMessage` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `receiver` int(11) NOT NULL,
+  `content` varchar(255) NOT NULL,
+  `sendState` tinyint(1) NOT NULL,
+  `readState` tinyint(1) NOT NULL,
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `type` int(2) NOT NULL,
+  `url` int(11) NOT NULL DEFAULT '0',
+  `sender` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+```
 
 ## 项目目录
 - java
