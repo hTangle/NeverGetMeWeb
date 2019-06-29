@@ -1,5 +1,5 @@
 // var wsUri = "ws://localhost:8088/websocket";
-var wsUri = "wss://www.nevergetme.com:8088/websocket";
+var wsUri = "wss://www.nevergetme.com/websocket";
 
 function debug(message) {
     console.log(message);
