@@ -1,5 +1,5 @@
-// var wsUri = "ws://localhost:8088/websocket";
-var wsUri = "wss://www.nevergetme.com/websocket";
+ var wsUri = "ws://localhost:8088/websocket";
+// var wsUri = "wss://www.nevergetme.com/websocket";
 
 function debug(message) {
     console.log(message);
@@ -19,7 +19,7 @@ function sendMessage(websocket,msg) {
 
 
 function initWebSocket() {
-    let websocket;
+    var websocket;
     try {
         if (typeof MozWebSocket == 'function')
             WebSocket = MozWebSocket;
