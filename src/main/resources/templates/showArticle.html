@@ -33,8 +33,8 @@
 <body>
 <div th:replace="header::html"></div>
 <div class="container" id="MainBodyShow" style="margin-top: 10px;margin-bottom: 10px">
-    <div class="card mb-3 shadow-lg p-3 bg-white rounded" id="articleCard">
-        <div class="card-header">
+    <div class="card p-3 bg-white rounded" id="articleCard" style="border: none">
+        <div class="card-body border-bottom">
             <h1 id="articleTitle"></h1>
             <p class="card-text">
                 <small class="text-muted" id="articleSvg"></small>
@@ -47,7 +47,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-footer">
+        <div class="card-body">
             <form class="mb-3">
                 <div class="form-group">
                     <textarea class="form-control border border-primary" aria-label="With textarea"
@@ -57,18 +57,23 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <a href="#" class="btn btn-primary disabled" role="button" id="addArticleComment" style="float: right">发表评论</a>
+                    <a href="#" class="btn btn-primary disabled" role="button" id="addArticleComment"
+                       style="float: right">发表评论</a>
                 </div>
             </form>
 
-            <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-top: 10px">
+        </div>
+    </div>
+    <div class="card mb-3 p-3 bg-white rounded" style="border: none" id="commentTableList">
+        <div class="card-body">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#commentsLists" role="tab"
                        aria-controls="home" aria-selected="true">评论</a>
                 </li>
             </ul>
-            <div class="tab-content shadow-lg" id="myTabContent">
-                <div class="tab-pane fade show active" id="commentsLists" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane show active" id="commentsLists" role="tabpanel" aria-labelledby="home-tab">
                 </div>
             </div>
         </div>
@@ -76,7 +81,8 @@
 </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="ReplyComment" tabindex="-1" role="dialog" aria-labelledby="ReplyCommentTitle" aria-hidden="true">
+<div class="modal fade" id="ReplyComment" tabindex="-1" role="dialog" aria-labelledby="ReplyCommentTitle"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -106,30 +112,21 @@
 <div th:replace="footer::html"></div>
 <script th:inline="javascript">
     var articleID = [[${articleID}]];
-    var userID=[[${userId}]];
+    var userID = [[${userId}]];
 </script>
 <script th:src="@{/myjs/header.js}"></script>
 <script>
-    function getReplyComments(replyCommentList){
-        var appendHtml='';
-        for(var i in replyCommentList){
-            var replyCom=replyCommentList[i];
-            appendHtml=appendHtml+'<div class="media mt-3"><a class="align-self-start" href="#"><img src="'+replyCom.user.image+'" class="mr-3" style="height: 40px;width: 40px;"></a>' +
-                '<div class="media-body"><h5 class="mt-0">'+replyCom.user.username+'<small class="text-muted" style="float: right">'+replyCom.createTime+'<a href="javascript:showReplyCommentDialog('+replyCom.commentId+','+replyCom.replyUserId+');">回复</a></small></h5>' +
-                replyCom.content+'</div></div>';
-            // appendHtml=appendHtml+'<div class="card">\n' +
-            //     '<div class="row no-gutters">\n' +
-            //     '<div class="card-body">\n' +
-            //     '<h5 class="card-title"><img class="rounded-circle" src="'+replyCom.user.image+'" style="height: 30px;width: 30px;"/>\n' +
-            //     replyCom.user.username+'<small class="text-muted" style="float: right">'+replyCom.createTime+'</small></h5>\n' +
-            //     '<p class="card-text">' +replyCom.content+
-            //     '</p><a href="javascript:showReplyCommentDialog('+replyCom.commentId+','+replyCom.replyUserId+');">回复</a>' +
-            //     '</div>' +
-            //     '</div>' +
-            //     '</div>';
+    function getReplyComments(replyCommentList) {
+        var appendHtml = '';
+        for (var i in replyCommentList) {
+            var replyCom = replyCommentList[i];
+            appendHtml = appendHtml + '<div class="media mt-3"><a class="align-self-start" href="#"><img src="' + replyCom.user.image + '" class="mr-3" style="height: 40px;width: 40px;"></a>' +
+                '<div class="media-body ml-3"><h5 class="mt-0">' + replyCom.user.username + '<small class="text-muted" style="float: right">' + replyCom.createTime + '<a href="javascript:showReplyCommentDialog(' + replyCom.commentId + ',' + replyCom.replyUserId + ');">回复</a></small></h5>' +
+                replyCom.content + '</div></div>';
         }
         return appendHtml;
     }
+
     $("#articleCard").hide();
     $(document).ready(function () {
         $.post("/article/getArticle",
@@ -151,7 +148,7 @@
                         tex: true,                   // 开启科学公式TeX语言支持，默认关闭
                     });
                     $("#articleCard").show();
-                    $("#articleSvg").append(addUser(data.author.username,data.author.id) + addDate(data.publishDate) + addLikes(data.likes));
+                    $("#articleSvg").append(addUser(data.author.username, data.author.id) + addDate(data.publishDate) + addLikes(data.likes));
                     $(function () {
                         $("#MainBodyShow img").click(function () {
                             showImage($(this)[0].src)
@@ -165,32 +162,26 @@
             articleId: articleID
         }, function (data, status) {
             console.log(data);
-            if(data){
-                var appendHtml='';
-                for(var i in data){
-                    var comments=data[i];
-                    console.log(comments.content);
-                    appendHtml+='<div class="media mt-3"><img src="'+comments.user.image+'" class="align-self-start" style="height: 40px;width: 40px;"><div class="media-body">' +
-                        '<h5 class="mt-0">'+comments.user.username+'<small class="text-muted" style="float: right">'+comments.createTime+'<a href="javascript:showReplyCommentDialog('+comments.id+','+comments.commentUserId+');">回复</a></small></h5>' +
-                        comments.content+'' +
-                        getReplyComments(comments.replyCommentList)+'</div></div>';
-                    // appendHtml=appendHtml+'<div class="card">\n' +
-                    //     '<div class="row no-gutters">\n' +
-                    //     '<div class="card-body">\n' +
-                    //     '<h5 class="card-title"><img class="rounded-circle" src="'+comments.user.image+'" style="height: 30px;width: 30px;"/>\n' +
-                    //     comments.user.username+'<small class="text-muted" style="float: right">'+comments.createTime+'</small></h5>\n' +
-                    //     '<p class="card-text">' +comments.content+
-                    //     '</p><a href="javascript:showReplyCommentDialog('+comments.id+','+comments.commentUserId+');">回复</a>' +
-                    //     getReplyComments(comments.replyCommentList)+
-                    //     '</div>' +
-                    //     '</div>' +
-                    //     '</div>';
+            if (data) {
+                var appendHtml = '';
+                if (data.length == 0) {
+                    $("#commentTableList").hide();
+                } else {
+                    for (var i in data) {
+                        var comments = data[i];
+                        console.log(comments.content);
+                        appendHtml += '<div class="media mt-3 border-bottom"><img src="' + comments.user.image + '" class="align-self-start" style="height: 40px;width: 40px;"><div class="media-body ml-3">' +
+                            '<h5 class="mt-0">' + comments.user.username + '<small class="text-muted" style="float: right">' + comments.createTime + '<a href="javascript:showReplyCommentDialog(' + comments.id + ',' + comments.commentUserId + ');">回复</a></small></h5>' +
+                            comments.content + '' +
+                            getReplyComments(comments.replyCommentList) + '</div></div>';
+                    }
+                    $("#commentsLists").append(appendHtml);
                 }
-                $("#commentsLists").append(appendHtml);
+
             }
         });
-        if(userID==-1){
-            $("#articleCommentContent").attr("disabled","disabled");
+        if (userID == -1) {
+            $("#articleCommentContent").attr("disabled", "disabled");
             $("#articleCommentContent").text("登录后发表评论");
         }
     });
@@ -200,69 +191,69 @@
                 articleId: articleID,
                 content: $("#articleCommentContent").val()
             }, function (data, status) {
-                if(data){
+                if (data) {
                     window.location.reload();
                 }
             });
         }
     });
     $("#ReplyCommentSend").click(function () {
-        if($("#ReplyCommentContent").val()!=""&&$("#ReplyCommentContent").val().length<=100){
+        if ($("#ReplyCommentContent").val() != "" && $("#ReplyCommentContent").val().length <= 100) {
             addReplyComment($("#ReplyCommentContent").val());
         }
 
     });
     $("#articleCommentContent").bind("input propertychange", function () {
-        if ($("#articleCommentContent").val().length <= 100&&$("#articleCommentContent").val()!="") {
+        if ($("#articleCommentContent").val().length <= 100 && $("#articleCommentContent").val() != "") {
             if ($("#articleCommentContent").hasClass("is-invalid")) {
                 $("#articleCommentContent").removeClass("is-invalid");
             }
-            if($("#addArticleComment").hasClass("disabled"))
+            if ($("#addArticleComment").hasClass("disabled"))
                 $("#addArticleComment").removeClass("disabled");
         } else {
             if (!$("#articleCommentContent").hasClass("is-invalid")) {
                 $("#articleCommentContent").addClass("is-invalid");
             }
-            if(!$("#addArticleComment").hasClass("disabled"))
+            if (!$("#addArticleComment").hasClass("disabled"))
                 $("#addArticleComment").addClass("disabled");
         }
     });
     $("#ReplyCommentContent").bind("input propertychange", function () {
-        if ($("#ReplyCommentContent").val().length <= 100&&$("#ReplyCommentContent").val()!="") {
+        if ($("#ReplyCommentContent").val().length <= 100 && $("#ReplyCommentContent").val() != "") {
             if ($("#ReplyCommentContent").hasClass("is-invalid")) {
                 $("#ReplyCommentContent").removeClass("is-invalid");
             }
-            if($("#ReplyCommentSend").hasClass("disabled"))
+            if ($("#ReplyCommentSend").hasClass("disabled"))
                 $("#ReplyCommentSend").removeClass("disabled");
         } else {
             if (!$("#ReplyCommentContent").hasClass("is-invalid")) {
                 $("#ReplyCommentContent").addClass("is-invalid");
             }
-            if(!$("#ReplyCommentSend").hasClass("disabled"))
+            if (!$("#ReplyCommentSend").hasClass("disabled"))
                 $("#ReplyCommentSend").addClass("disabled");
         }
     });
-    var commentIdCurrent,repliedUserIdCurrent;
+    var commentIdCurrent, repliedUserIdCurrent;
 
     function addReplyComment(content) {
-        $.post("/comments/addReplyComment",{
-            articleId:articleID,
-            commentId:commentIdCurrent,
-            repliedUserId:repliedUserIdCurrent,
-            content:content
-        },function (data,status) {
-            if(data){
+        $.post("/comments/addReplyComment", {
+            articleId: articleID,
+            commentId: commentIdCurrent,
+            repliedUserId: repliedUserIdCurrent,
+            content: content
+        }, function (data, status) {
+            if (data) {
                 window.location.reload();
             }
         });
     }
 
-    function showReplyCommentDialog(commentId,repliedUserId) {
-        if(userID!=-1){
-            commentIdCurrent=commentId;
-            repliedUserIdCurrent=repliedUserId;
+    function showReplyCommentDialog(commentId, repliedUserId) {
+        if (userID != -1) {
+            commentIdCurrent = commentId;
+            repliedUserIdCurrent = repliedUserId;
             $("#ReplyComment").modal("show");
-        }else{
+        } else {
 
         }
 
